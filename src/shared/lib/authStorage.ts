@@ -1,0 +1,92 @@
+import Cookies from 'js-cookie';
+import { STORAGE_KEYS } from '../config/constants';
+
+/**
+ * Auth Storage
+ * Utility untuk mengelola authentication tokens
+ * Tokens disimpan di localStorage DAN cookies (agar bisa diakses oleh middleware)
+ */
+export const authStorage = {
+    /**
+     * Get Access Token
+     * Mengambil access token dari localStorage
+     */
+    getAccessToken: (): string | null => {
+        if (typeof window === 'undefined') return null;
+        return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
+    },
+
+    /**
+     * Set Access Token
+     * Menyimpan access token ke localStorage dan cookies
+     * @param token - JWT access token
+     */
+    setAccessToken: (token: string): void => {
+        if (typeof window === 'undefined') return;
+
+        // Simpan ke localStorage
+        localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, token);
+
+        // Simpan ke cookies (expires 1 hari)
+        // Cookies dibutuhkan agar middleware bisa membaca token
+        Cookies.set(STORAGE_KEYS.ACCESS_TOKEN, token, {
+            expires: 1, // 1 hari
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production', // Hanya HTTPS di production
+        });
+    },
+
+    /**
+     * Get Refresh Token
+     * Mengambil refresh token dari localStorage
+     */
+    getRefreshToken: (): string | null => {
+        if (typeof window === 'undefined') return null;
+        return localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
+    },
+
+    /**
+     * Set Refresh Token
+     * Menyimpan refresh token ke localStorage dan cookies
+     * @param token - JWT refresh token
+     */
+    setRefreshToken: (token: string): void => {
+        if (typeof window === 'undefined') return;
+
+        // Simpan ke localStorage
+        localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, token);
+
+        // Simpan ke cookies (expires 7 hari)
+        Cookies.set(STORAGE_KEYS.REFRESH_TOKEN, token, {
+            expires: 7, // 7 hari
+            sameSite: 'strict',
+            secure: process.env.NODE_ENV === 'production',
+        });
+    },
+
+    /**
+     * Clear Tokens
+     * Menghapus semua tokens dari localStorage dan cookies
+     * Biasanya dipanggil saat logout atau token expired
+     */
+    clearTokens: (): void => {
+        if (typeof window === 'undefined') return;
+
+        // Hapus dari localStorage
+        localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+
+        // Hapus dari cookies
+        Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN);
+        Cookies.remove(STORAGE_KEYS.REFRESH_TOKEN);
+    },
+
+    /**
+     * Has Token
+     * Cek apakah user sudah punya access token
+     * @returns true jika ada access token
+     */
+    hasToken: (): boolean => {
+        return !!authStorage.getAccessToken();
+    },
+};
