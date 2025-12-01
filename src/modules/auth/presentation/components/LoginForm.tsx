@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
+import { Eye, EyeOff } from 'lucide-react';
 import { loginSchema, LoginRequest } from '../../domain/auth.types';
 import { useLogin } from '../../application/useLogin';
 import { useGoogleLogin } from '../../application/useGoogleLogin';
@@ -14,6 +16,7 @@ import { useGoogleLogin } from '../../application/useGoogleLogin';
 export const LoginForm = () => {
     const { login, isLoading, error } = useLogin();
     const { loginWithGoogle, isLoading: isGoogleLoading } = useGoogleLogin();
+    const [showPassword, setShowPassword] = useState(false);
 
     const {
         register,
@@ -21,6 +24,7 @@ export const LoginForm = () => {
         formState: { errors },
     } = useForm<LoginRequest>({
         resolver: zodResolver(loginSchema),
+        mode: 'onChange',
     });
 
     const onSubmit = (data: LoginRequest) => {
@@ -76,15 +80,29 @@ export const LoginForm = () => {
                     >
                         Password
                     </label>
-                    <input
-                        id="password"
-                        type="password"
-                        {...register('password')}
-                        className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ${errors.password ? 'border-red-500' : 'border-gray-300'
-                            }`}
-                        placeholder="••••••••"
-                        disabled={isLoading}
-                    />
+                    <div className="relative">
+                        <input
+                            id="password"
+                            type={showPassword ? 'text' : 'password'}
+                            {...register('password')}
+                            className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition pr-10 ${errors.password ? 'border-red-500' : 'border-gray-300'
+                                }`}
+                            placeholder="••••••••"
+                            disabled={isLoading}
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="cursor-pointer absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
+                            tabIndex={-1}
+                        >
+                            {showPassword ? (
+                                <EyeOff className="h-5 w-5" />
+                            ) : (
+                                <Eye className="h-5 w-5" />
+                            )}
+                        </button>
+                    </div>
                     {errors.password && (
                         <p className="mt-1 text-xs text-red-500">
                             {errors.password.message}
@@ -96,7 +114,7 @@ export const LoginForm = () => {
                 <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full py-2.5 px-4 bg-blue-600 cursor-pointer hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {isLoading ? 'Memproses...' : 'Masuk'}
                 </button>
@@ -117,7 +135,7 @@ export const LoginForm = () => {
                 type="button"
                 onClick={loginWithGoogle}
                 disabled={isGoogleLoading || isLoading}
-                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path

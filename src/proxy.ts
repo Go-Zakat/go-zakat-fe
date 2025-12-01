@@ -17,7 +17,7 @@ const protectedRoutes = [
 // Daftar route publik (untuk auth seperti login/register)
 const publicRoutes = ['/login', '/register'];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
     // Ambil token dari cookies
     const token = request.cookies.get('accessToken')?.value;
     const { pathname } = request.nextUrl;
@@ -33,7 +33,10 @@ export function middleware(request: NextRequest) {
     );
 
     // Redirect ke login jika akses route terproteksi tanpa token
-    if (isProtectedRoute && !token) {
+    // KECUALI jika ada access_token di query params (callback dari Google Auth)
+    const hasAccessTokenParam = request.nextUrl.searchParams.has('access_token');
+
+    if (isProtectedRoute && !token && !hasAccessTokenParam) {
         const loginUrl = new URL('/login', request.url);
         // loginUrl.searchParams.set('from', pathname); // Optional: simpan halaman asal untuk redirect setelah login
         return NextResponse.redirect(loginUrl);

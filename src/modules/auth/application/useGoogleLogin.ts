@@ -1,8 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { authStorage } from '@/src/shared/lib/authStorage';
-import { env } from '@/src/shared/config/env';
+import { authApi } from '../infrastructure/auth.api';
 
 /**
  * useGoogleLogin Hook
@@ -19,8 +18,16 @@ export const useGoogleLogin = () => {
         setIsLoading(true);
 
         try {
-            // Redirect ke endpoint Google login untuk mendapatkan OAuth URL
-            window.location.href = `${env.NEXT_PUBLIC_API_URL}/api/v1/auth/google/login`;
+            // Fetch auth URL dari backend menggunakan authApi
+            const response = await authApi.getGoogleLoginUrl();
+
+            if (response.success && response.data?.auth_url) {
+                // Redirect ke Google OAuth page
+                window.location.href = response.data.auth_url;
+            } else {
+                console.error('Failed to get Google auth URL:', response);
+                setIsLoading(false);
+            }
         } catch (error) {
             console.error('Google login error:', error);
             setIsLoading(false);

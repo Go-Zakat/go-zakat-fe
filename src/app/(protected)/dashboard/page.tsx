@@ -1,13 +1,29 @@
 'use client';
 
+import { useEffect, Suspense } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { authStorage } from '@/src/shared/lib/authStorage';
 import { useLogout } from '@/src/modules/auth/application/useLogout';
 
-/**
- * Dashboard Page
- * Halaman dashboard utama (placeholder)
- */
-export default function DashboardPage() {
+function DashboardContent() {
+    const router = useRouter();
+    const searchParams = useSearchParams();
     const { logout } = useLogout();
+
+    // Handle Google OAuth callback params
+    useEffect(() => {
+        const accessToken = searchParams.get('access_token');
+        const refreshToken = searchParams.get('refresh_token');
+
+        if (accessToken && refreshToken) {
+            // Simpan tokens
+            authStorage.setAccessToken(accessToken);
+            authStorage.setRefreshToken(refreshToken);
+
+            // Bersihkan URL params agar lebih rapi
+            router.replace('/dashboard');
+        }
+    }, [searchParams, router]);
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
@@ -33,5 +49,17 @@ export default function DashboardPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+/**
+ * Dashboard Page
+ * Halaman dashboard utama
+ */
+export default function DashboardPage() {
+    return (
+        <Suspense fallback={<div>Loading...</div>}>
+            <DashboardContent />
+        </Suspense>
     );
 }

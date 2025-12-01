@@ -8,9 +8,13 @@ import { z } from 'zod';
  * Login Schema
  * Validasi untuk form login
  */
+/**
+ * Login Schema
+ * Validasi untuk form login
+ */
 export const loginSchema = z.object({
-    email: z.email('Email tidak valid'),
-    password: z.string().min(6, 'Password minimal 6 karakter'),
+    email: z.email('Format email tidak valid'),
+    password: z.string().min(8, 'Password minimal 8 karakter'),
 });
 
 export type LoginRequest = z.infer<typeof loginSchema>;
@@ -26,9 +30,9 @@ export type LoginRequest = z.infer<typeof loginSchema>;
 export const registerSchema = z
     .object({
         name: z.string().min(3, 'Nama minimal 3 karakter'),
-        email: z.email('Email tidak valid'),
-        password: z.string().min(6, 'Password minimal 6 karakter'),
-        password_confirmation: z.string().min(6, 'Konfirmasi password minimal 6 karakter'),
+        email: z.email('Format email tidak valid'),
+        password: z.string().min(8, 'Password minimal 8 karakter'),
+        password_confirmation: z.string().min(8, 'Konfirmasi password minimal 8 karakter'),
     })
     .refine((data) => data.password === data.password_confirmation, {
         message: 'Password tidak cocok',
@@ -74,4 +78,16 @@ export interface AuthResponseWrapper {
     data: AuthResponse;
     message: string;
     status: number;
+}
+
+/**
+ * Google Login Response
+ * Response dari endpoint get google login url
+ */
+export interface GoogleLoginResponse {
+    success: boolean;
+    message: string;
+    data: {
+        auth_url: string;
+    };
 }
