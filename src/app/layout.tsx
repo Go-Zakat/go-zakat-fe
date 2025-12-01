@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
-import {Outfit} from "next/font/google";
+import { Outfit } from "next/font/google";
 import "./globals.css";
 import React from "react";
+import { ThemeProvider } from "@/src/shared/components/ThemeProvider";
 
 const outfit = Outfit({
-    subsets: ["latin"],
-    variable: "--font-outfit",
+  subsets: ["latin"],
+  variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
@@ -19,13 +20,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-    <head>
+    <html lang="en" suppressHydrationWarning>
+      <head>
         <title>Move…</title>
-        <link rel="icon" href="/icons/Mosque.svg" type="image/png" sizes="22x22"  />
-    </head>
-    <body className={`${outfit.variable} antialiased`}>
-        {children}
+        <link rel="icon" href="/icons/Mosque.svg" type="image/png" sizes="22x22" />
+      </head>
+      <body className={`${outfit.variable} antialiased`}>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

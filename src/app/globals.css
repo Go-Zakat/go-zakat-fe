@@ -1,9 +1,22 @@
 @import "tailwindcss";
 
+*::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button:start:decrement,
+*::-webkit-scrollbar-button:end:increment,
+*::-webkit-scrollbar-button:single-button,
+*::-webkit-scrollbar-button:vertical:increment,
+*::-webkit-scrollbar-button:vertical:decrement {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
 :root {
-    --background: #efefef;
-    --foreground: #212121;
-    scroll-behavior: smooth;
+  --background: #efefef;
+  --foreground: #212121;
+  scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
 }
 
 @theme inline {
@@ -15,4 +28,40 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Outfit, Helvetica, sans-serif;
+}
+
+.scrollbar-modern {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+    -webkit-overflow-scrolling: touch;
+}
+
+.scrollbar-modern::-webkit-scrollbar {
+    width: 6px;
+}
+
+.scrollbar-modern::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-modern::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 9999px;
+}
+
+.scrollbar-modern::-webkit-scrollbar-button,
+.scrollbar-modern::-webkit-scrollbar-button:start:decrement,
+.scrollbar-modern::-webkit-scrollbar-button:end:increment,
+.scrollbar-modern::-webkit-scrollbar-button:single-button {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.scrollbar-modern:hover {
+    scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
+}
+
+.scrollbar-modern:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(148, 163, 184, 0.8);
 }
