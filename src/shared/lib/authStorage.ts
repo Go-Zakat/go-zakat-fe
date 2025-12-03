@@ -1,9 +1,16 @@
 import Cookies from 'js-cookie';
 import { STORAGE_KEYS } from '../config/constants';
 
+export interface StoredUser {
+    name: string;
+    email: string;
+    role: string;
+    avatar?: string | null;
+}
+
 /**
  * Auth Storage
- * Utility untuk mengelola authentication tokens
+ * Utility untuk mengelola authentication tokens dan user data
  * Tokens disimpan di localStorage DAN cookies (agar bisa diakses oleh middleware)
  */
 export const authStorage = {
@@ -65,8 +72,32 @@ export const authStorage = {
     },
 
     /**
-     * Clear Tokens
-     * Menghapus semua tokens dari localStorage dan cookies
+     * Get User
+     * Mengambil data user dari localStorage
+     */
+    getUser: (): StoredUser | null => {
+        if (typeof window === 'undefined') return null;
+        const userStr = localStorage.getItem(STORAGE_KEYS.USER);
+        if (!userStr) return null;
+        try {
+            return JSON.parse(userStr);
+        } catch {
+            return null;
+        }
+    },
+
+    /**
+     * Set User
+     * Menyimpan data user ke localStorage
+     */
+    setUser: (user: StoredUser): void => {
+        if (typeof window === 'undefined') return;
+        localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
+    },
+
+    /**
+     * Clear Tokens & User
+     * Menghapus semua tokens dan data user dari localStorage dan cookies
      * Biasanya dipanggil saat logout atau token expired
      */
     clearTokens: (): void => {
@@ -75,6 +106,7 @@ export const authStorage = {
         // Hapus dari localStorage
         localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
         localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+        localStorage.removeItem(STORAGE_KEYS.USER);
 
         // Hapus dari cookies
         Cookies.remove(STORAGE_KEYS.ACCESS_TOKEN);

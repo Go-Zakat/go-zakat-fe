@@ -1,13 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { Eye, EyeOff } from 'lucide-react';
 import { registerSchema, RegisterRequest } from '../../domain/auth.types';
 import { useRegister } from '../../application/useRegister';
 import { useGoogleLogin } from '../../application/useGoogleLogin';
+import { Input } from '@/src/shared/ui/components/Input';
+import { Button } from '@/src/shared/ui/components/Button';
+import { Card } from '@/src/shared/ui/components/Card';
+import { Divider } from '@/src/shared/ui/components/Divider';
 
 /**
  * RegisterForm Component
@@ -16,8 +18,6 @@ import { useGoogleLogin } from '../../application/useGoogleLogin';
 export const RegisterForm = () => {
     const { register: registerUser, isLoading, error } = useRegister();
     const { loginWithGoogle, isLoading: isGoogleLoading } = useGoogleLogin();
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const {
         register,
@@ -33,7 +33,7 @@ export const RegisterForm = () => {
     };
 
     return (
-        <div className="w-full max-w-md p-8 space-y-6 bg-white rounded-lg shadow-md">
+        <Card>
             {/* Header */}
             <div className="text-center">
                 <h1 className="text-3xl font-bold text-gray-900">Daftar</h1>
@@ -52,153 +52,67 @@ export const RegisterForm = () => {
             {/* Form */}
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
                 {/* Name */}
-                <div>
-                    <label
-                        htmlFor="name"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                        Nama Lengkap
-                    </label>
-                    <input
-                        id="name"
-                        type="text"
-                        {...register('name')}
-                        className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ${errors.name ? 'border-red-500' : 'border-gray-300'
-                            }`}
-                        placeholder="John Doe"
-                        disabled={isLoading}
-                    />
-                    {errors.name && (
-                        <p className="mt-1 text-xs text-red-500">{errors.name.message}</p>
-                    )}
-                </div>
+                <Input
+                    label="Nama Lengkap"
+                    registration={register('name')}
+                    error={errors.name}
+                    type="text"
+                    placeholder="John Doe"
+                    disabled={isLoading}
+                />
 
                 {/* Email */}
-                <div>
-                    <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                        Email
-                    </label>
-                    <input
-                        id="email"
-                        type="email"
-                        {...register('email')}
-                        className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition ${errors.email ? 'border-red-500' : 'border-gray-300'
-                            }`}
-                        placeholder="nama@example.com"
-                        disabled={isLoading}
-                    />
-                    {errors.email && (
-                        <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>
-                    )}
-                </div>
+                <Input
+                    label="Email"
+                    registration={register('email')}
+                    error={errors.email}
+                    type="email"
+                    placeholder="nama@example.com"
+                    disabled={isLoading}
+                />
 
                 {/* Password */}
-                <div>
-                    <label
-                        htmlFor="password"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                        Password
-                    </label>
-                    <div className="relative">
-                        <input
-                            id="password"
-                            type={showPassword ? 'text' : 'password'}
-                            {...register('password')}
-                            className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition pr-10 ${errors.password ? 'border-red-500' : 'border-gray-300'
-                                }`}
-                            placeholder="••••••••"
-                            disabled={isLoading}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="cursor-pointer absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
-                            tabIndex={-1}
-                        >
-                            {showPassword ? (
-                                <EyeOff className="h-5 w-5" />
-                            ) : (
-                                <Eye className="h-5 w-5" />
-                            )}
-                        </button>
-                    </div>
-                    {errors.password && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.password.message}
-                        </p>
-                    )}
-                </div>
+                <Input
+                    label="Password"
+                    registration={register('password')}
+                    error={errors.password}
+                    type="password"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                />
 
                 {/* Password Confirmation */}
-                <div>
-                    <label
-                        htmlFor="password_confirmation"
-                        className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                        Konfirmasi Password
-                    </label>
-                    <div className="relative">
-                        <input
-                            id="password_confirmation"
-                            type={showConfirmPassword ? 'text' : 'password'}
-                            {...register('password_confirmation')}
-                            className={`w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition pr-10 ${errors.password_confirmation
-                                ? 'border-red-500'
-                                : 'border-gray-300'
-                                }`}
-                            placeholder="••••••••"
-                            disabled={isLoading}
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                            className="cursor-pointer absolute inset-y-0 right-0 px-3 flex items-center text-gray-500 hover:text-gray-700 focus:outline-none"
-                            tabIndex={-1}
-                        >
-                            {showConfirmPassword ? (
-                                <EyeOff className="h-5 w-5" />
-                            ) : (
-                                <Eye className="h-5 w-5" />
-                            )}
-                        </button>
-                    </div>
-                    {errors.password_confirmation && (
-                        <p className="mt-1 text-xs text-red-500">
-                            {errors.password_confirmation.message}
-                        </p>
-                    )}
-                </div>
+                <Input
+                    label="Konfirmasi Password"
+                    registration={register('password_confirmation')}
+                    error={errors.password_confirmation}
+                    type="password"
+                    placeholder="••••••••"
+                    disabled={isLoading}
+                />
 
                 {/* Submit Button */}
-                <button
+                <Button
                     type="submit"
-                    disabled={isLoading}
-                    className="cursor-pointer w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                    isLoading={isLoading}
+                    fullWidth
+                    variant="primary"
                 >
-                    {isLoading ? 'Memproses...' : 'Daftar'}
-                </button>
+                    Daftar
+                </Button>
             </form>
 
             {/* Divider */}
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-gray-300"></div>
-                </div>
-                <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">Atau</span>
-                </div>
-            </div>
+            <Divider text="Atau" />
 
             {/* Google Login Button */}
-            <button
+            <Button
                 type="button"
                 onClick={loginWithGoogle}
-                disabled={isGoogleLoading || isLoading}
-                className="w-full flex items-center justify-center gap-3 py-2.5 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-md cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                isLoading={isGoogleLoading}
+                disabled={isLoading}
+                fullWidth
+                variant="outline"
             >
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                     <path
@@ -218,8 +132,8 @@ export const RegisterForm = () => {
                         d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                     />
                 </svg>
-                {isGoogleLoading ? 'Memproses...' : 'Masuk dengan Google'}
-            </button>
+                Masuk dengan Google
+            </Button>
 
             {/* Login Link */}
             <p className="text-center text-sm text-gray-600">
@@ -231,6 +145,6 @@ export const RegisterForm = () => {
                     Masuk di sini
                 </Link>
             </p>
-        </div>
+        </Card>
     );
 };

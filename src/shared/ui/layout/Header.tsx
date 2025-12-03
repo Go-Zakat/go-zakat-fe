@@ -1,0 +1,116 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { Menu, User, LogOut, ChevronDown } from 'lucide-react';
+import { useLogout } from '@/src/modules/auth/application/useLogout';
+import { useAuth } from '@/src/modules/auth/application/useAuth';
+import Link from 'next/link';
+import { motion, AnimatePresence } from 'framer-motion';
+
+interface HeaderProps {
+    onMobileMenuClick: () => void;
+    onToggleSidebar: () => void;
+    isSidebarCollapsed: boolean;
+}
+
+export function Header({
+    onMobileMenuClick,
+    onToggleSidebar,
+    isSidebarCollapsed,
+}: HeaderProps) {
+    const { logout } = useLogout();
+    const { user } = useAuth();
+    const [isProfileOpen, setIsProfileOpen] = useState(false);
+    const profileRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        function handleClickOutside(event: MouseEvent) {
+            if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+                setIsProfileOpen(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
+    return (
+        <header className="sticky top-0 z-20 w-full backdrop-blur-md px-6 py-4">
+            <div className="flex items-center justify-between">
+                {/* Left: Mobile Toggle & Sidebar Toggle */}
+                <div className="flex items-center gap-2">
+                    {/* Mobile: buka sidebar (off-canvas) */}
+                    <button
+                        onClick={onMobileMenuClick}
+                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 lg:hidden"
+                        aria-label="Buka menu"
+                    >
+                        <Menu size={20} />
+                    </button>
+
+                    {/* Desktop: collapse / expand sidebar */}
+                    <button
+                        onClick={onToggleSidebar}
+                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 hidden lg:inline-flex"
+                        aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Minimize sidebar'}
+                    >
+                        <Menu size={20} className="hover:cursor-pointer" />
+                    </button>
+                </div>
+
+                {/* Right: Actions & Profile */}
+                <div className="flex items-center gap-4 ">
+                    <div className="relative" ref={profileRef}>
+                        <button
+                            onClick={() => setIsProfileOpen(!isProfileOpen)}
+                            className="flex items-center gap-3 hover:bg-blue-600/10 rounded-full p-1 pr-3 transition-colors hover:cursor-pointer"
+                        >
+                            <div className="w-8 h-8 rounded-full bg-blue-600/80 flex items-center justify-center text-white">
+                                <User size={18} />
+                            </div>
+                            <span className="text-sm font-medium text-gray-700 hidden sm:block">
+                                {user?.name || 'User'}
+                            </span>
+                            <ChevronDown size={16} className="text-gray-400 hidden sm:block" />
+                        </button>
+
+                        <AnimatePresence>
+                            {isProfileOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-20"
+                                >
+                                    <div className="px-4 py-2 border-b border-gray-50 mb-1">
+                                        <p className="text-sm font-semibold text-gray-900">{user?.name || 'User'}</p>
+                                        <p className="text-xs text-gray-500">{user?.email || 'user@example.com'}</p>
+                                    </div>
+
+                                    <Link
+                                        href="/profile"
+                                        className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                                    >
+                                        <User size={16} />
+                                        Profile
+                                    </Link>
+
+                                    <button
+                                        onClick={logout}
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left hover:cursor-pointer"
+                                    >
+                                        <LogOut size={16} />
+                                        Logout
+                                    </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            </div>
+        </header>
+    );
+}

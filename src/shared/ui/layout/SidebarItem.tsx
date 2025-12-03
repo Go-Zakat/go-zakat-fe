@@ -9,9 +9,10 @@ interface SidebarItemProps {
     icon: LucideIcon;
     label: string;
     href: string;
+    isCollapsed?: boolean;
 }
 
-export function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
+export function SidebarItem({ icon: Icon, label, href, isCollapsed }: SidebarItemProps) {
     const pathname = usePathname();
     const isActive = pathname === href || pathname.startsWith(`${href}/`);
 
@@ -19,10 +20,11 @@ export function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
         <Link
             href={href}
             className={clsx(
-                'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative overflow-hidden',
+                'flex items-center rounded-xl transition-all duration-200 group relative overflow-hidden px-4 py-3',
+                isCollapsed ? 'justify-center' : 'gap-3',
                 isActive
-                    ? 'bg-blue-600 text-white'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                    ? 'bg-blue-600/80 text-white'
+                    : 'text-gray-600 hover:bg-blue-600/10 hover:text-gray-900'
             )}
         >
             <Icon
@@ -33,9 +35,12 @@ export function SidebarItem({ icon: Icon, label, href }: SidebarItemProps) {
                 )}
             />
 
-            <span className="font-medium text-sm">
-                {label}
-            </span>
+            {/* Sembunyikan label kalau sidebar collapsed */}
+            {!isCollapsed && (
+                <span className="font-medium text-sm">
+                    {label}
+                </span>
+            )}
         </Link>
     );
 }

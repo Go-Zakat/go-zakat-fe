@@ -27,11 +27,19 @@ export const useLogin = () => {
         try {
             // Panggil API login
             const response = await authApi.login(data);
-            const { access_token, refresh_token } = response.data;
+            const { access_token, refresh_token, user } = response.data;
 
             // Simpan tokens
             authStorage.setAccessToken(access_token);
             authStorage.setRefreshToken(refresh_token);
+
+            // Simpan user data
+            authStorage.setUser({
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                avatar: user.avatar,
+            });
 
             // Redirect ke dashboard
             router.push('/dashboard');
