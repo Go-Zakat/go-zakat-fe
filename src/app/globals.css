@@ -13,7 +13,7 @@
 
 :root {
   --background: #fffff;
-  --foreground: #212121;
+  --foreground: #2A3547;
   scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: rgba(148, 163, 184, 0.8) transparent;

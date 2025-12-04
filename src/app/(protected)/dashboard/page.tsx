@@ -31,7 +31,7 @@ function DashboardContent() {
             }
 
             // Reload halaman untuk memastikan Header membaca data user yang baru
-            // Menggunakan window.location.href agar Header component re-mount dan useAuth re-run
+            // Menggunakan window.location.href agar Header component re-mount dan useAsnaf re-run
             window.location.href = '/dashboard';
         }
     }, [searchParams, router]);

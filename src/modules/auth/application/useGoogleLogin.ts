@@ -18,7 +18,7 @@ export const useGoogleLogin = () => {
         setIsLoading(true);
 
         try {
-            // Fetch auth URL dari backend menggunakan authApi
+            // Fetch auth URL dari backend menggunakan asnafApi
             const response = await authApi.getGoogleLoginUrl();
 
             if (response.success && response.data?.auth_url) {

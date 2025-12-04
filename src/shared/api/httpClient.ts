@@ -1,181 +1,92 @@
+// src/shared/api/httpClient.ts
 import axios from 'axios';
 import { env } from '../config/env';
 import { STORAGE_KEYS } from '../config/constants';
 
-/**
- * Helper function untuk get access token dari cookies (server-side compatible)
- * Di client side, token akan diambil dari localStorage
- */
+/** Helper to get access token */
 const getAccessToken = (): string | null => {
-    if (typeof window === 'undefined') {
-        // Server-side: tidak bisa akses localStorage
-        return null;
-    }
-
-    // Client-side: ambil dari localStorage
+    if (typeof window === 'undefined') return null;
     return localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 };
 
-/**
- * HTTP Client
- * Instance Axios yang sudah dikonfigurasi dengan base URL dan interceptors
- */
 export const httpClient = axios.create({
     baseURL: env.NEXT_PUBLIC_API_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    timeout: 30000, // 30 detik timeout
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 30000,
 });
 
-// ============================================================
-// REQUEST INTERCEPTOR
-// Inject token ke setiap request
-// ============================================================
+// Attach token to each request
 httpClient.interceptors.request.use(
     (config) => {
         const token = getAccessToken();
-
-        // Jika ada token, tambahkan ke header Authorization
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
-
+        if (token) config.headers.Authorization = `Bearer ${token}`;
         return config;
     },
-    (error) => {
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
 
-// ============================================================
-// RESPONSE INTERCEPTOR
-// Handle error responses dan auto refresh token
-// ============================================================
-
-// Flag untuk mencegah multiple refresh token requests bersamaan
-let isRefreshing = false;
-let failedQueue: Array<{
-    resolve: (value?: unknown) => void;
-    reject: (reason?: unknown) => void;
-}> = [];
-
-/**
- * Process Queue
- * Memproses semua request yang tertunda setelah refresh token selesai
- */
-const processQueue = (error: unknown, token: string | null = null) => {
-    failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
-    });
-
-    failedQueue = [];
-};
+// Shared promise to avoid duplicate refreshes
+let refreshPromise: Promise<string> | null = null;
 
 httpClient.interceptors.response.use(
-    (response) => {
-        // Response sukses, langsung return
-        return response;
-    },
+    (response) => response,
     async (error) => {
         const originalRequest = error.config;
+        if (!originalRequest) return Promise.reject(error);
 
-        // Jika error 401 (Unauthorized) dan belum pernah retry
+        // Handle 401 errors
         if (error.response?.status === 401 && !originalRequest._retry) {
-            // Jika request yang gagal adalah refresh token itu sendiri, langsung logout
+            // If refresh endpoint itself fails, logout
             if (originalRequest.url?.includes('/auth/refresh')) {
                 if (typeof window !== 'undefined') {
-                    // Import authStorage untuk clear tokens
                     const { authStorage } = await import('../lib/authStorage');
                     authStorage.clearTokens();
-
-                    // Redirect ke login
-                    if (!window.location.pathname.includes('/login')) {
-                        window.location.href = '/login';
-                    }
+                    if (!window.location.pathname.includes('/login')) window.location.href = '/login';
                 }
                 return Promise.reject(error);
             }
 
-            // Jika sedang refresh, tambahkan request ke queue
-            if (isRefreshing) {
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                })
-                    .then((token) => {
-                        originalRequest.headers.Authorization = `Bearer ${token}`;
-                        return httpClient(originalRequest);
+            originalRequest._retry = true;
+
+            if (!refreshPromise) {
+                const { authStorage } = await import('../lib/authStorage');
+                const refreshToken = authStorage.getRefreshToken();
+                if (!refreshToken) {
+                    authStorage.clearTokens();
+                    if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                        window.location.href = '/login';
+                    }
+                    return Promise.reject(error);
+                }
+                refreshPromise = axios
+                    .post(`${env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh`, { refresh_token: refreshToken })
+                    .then(async (res) => {
+                        const { access_token, refresh_token: newRefresh } = res.data.data;
+                        const { authStorage } = await import('../lib/authStorage');
+                        authStorage.setTokens({ accessToken: access_token, refreshToken: newRefresh });
+                        return access_token;
                     })
-                    .catch((err) => {
-                        return Promise.reject(err);
+                    .catch((refreshError) => {
+                        const { authStorage } = await import('../lib/authStorage');
+                        authStorage.clearTokens();
+                        if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {
+                            window.location.href = '/login';
+                        }
+                        throw refreshError;
+                    })
+                    .finally(() => {
+                        refreshPromise = null;
                     });
             }
 
-            originalRequest._retry = true;
-            isRefreshing = true;
-
-            // Coba refresh token
             try {
-                if (typeof window === 'undefined') {
-                    throw new Error('Cannot refresh token on server side');
-                }
-
-                // Ambil refresh token dari localStorage
-                const refreshToken = localStorage.getItem(STORAGE_KEYS.REFRESH_TOKEN);
-
-                if (!refreshToken) {
-                    throw new Error('No refresh token available');
-                }
-
-                // Request refresh token ke backend
-                const response = await axios.post(
-                    `${env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh`,
-                    { refresh_token: refreshToken }
-                );
-
-                const { access_token, refresh_token: newRefreshToken } =
-                    response.data.data;
-
-                // Simpan token baru
-                const { authStorage } = await import('../lib/authStorage');
-                authStorage.setAccessToken(access_token);
-                if (newRefreshToken) {
-                    authStorage.setRefreshToken(newRefreshToken);
-                }
-
-                // Update header untuk original request
-                originalRequest.headers.Authorization = `Bearer ${access_token}`;
-
-                // Process queue dengan token baru
-                processQueue(null, access_token);
-
-                // Retry original request dengan token baru
+                const newAccess = await refreshPromise;
+                originalRequest.headers.Authorization = `Bearer ${newAccess}`;
                 return httpClient(originalRequest);
-            } catch (refreshError) {
-                // Refresh token gagal, clear tokens dan redirect
-                processQueue(refreshError, null);
-
-                if (typeof window !== 'undefined') {
-                    const { authStorage } = await import('../lib/authStorage');
-                    authStorage.clearTokens();
-
-                    // Redirect ke login jika tidak sedang di halaman login
-                    if (!window.location.pathname.includes('/login')) {
-                        window.location.href = '/login';
-                    }
-                }
-
-                return Promise.reject(refreshError);
-            } finally {
-                isRefreshing = false;
+            } catch (e) {
+                return Promise.reject(e);
             }
         }
-
-        // Return error untuk di-handle oleh caller
         return Promise.reject(error);
     }
 );

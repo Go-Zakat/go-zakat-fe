@@ -14,10 +14,10 @@ interface HeaderProps {
 }
 
 export function Header({
-    onMobileMenuClick,
-    onToggleSidebar,
-    isSidebarCollapsed,
-}: HeaderProps) {
+                           onMobileMenuClick,
+                           onToggleSidebar,
+                           isSidebarCollapsed,
+                       }: HeaderProps) {
     const { logout } = useLogout();
     const { user } = useAuth();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -65,7 +65,7 @@ export function Header({
                     <div className="relative" ref={profileRef}>
                         <button
                             onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="flex items-center gap-3 hover:bg-blue-600/10 rounded-full p-1 pr-3 transition-colors hover:cursor-pointer"
+                            className="flex items-center gap-3 hover:bg-blue-600/10 rounded-full sm:p-1 sm:pr-3 transition-colors hover:cursor-pointer"
                         >
                             <div className="w-8 h-8 rounded-full bg-blue-600/80 flex items-center justify-center text-white">
                                 <User size={18} />

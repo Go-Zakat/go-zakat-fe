@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { authStorage, StoredUser } from '@/src/shared/lib/authStorage';
 
 /**
- * useAuth Hook
+ * useAsnaf Hook
  * Hook untuk mengakses data user yang sedang login
  */
 export const useAuth = () => {

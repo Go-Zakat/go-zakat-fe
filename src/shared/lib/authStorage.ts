@@ -71,6 +71,16 @@ export const authStorage = {
         });
     },
 
+    // New helper to set both tokens atomically
+    setTokens: ({ accessToken, refreshToken }: { accessToken: string; refreshToken?: string }) => {
+        // Update access token
+        authStorage.setAccessToken(accessToken);
+        // Update refresh token if provided
+        if (refreshToken) {
+            authStorage.setRefreshToken(refreshToken);
+        }
+    },
+
     /**
      * Get User
      * Mengambil data user dari localStorage
