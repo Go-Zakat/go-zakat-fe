@@ -20,7 +20,7 @@ export function SidebarItem({ icon: Icon, label, href, isCollapsed }: SidebarIte
         <Link
             href={href}
             className={clsx(
-                'flex items-center rounded-xl transition-all duration-200 group relative overflow-hidden px-4 py-3',
+                'flex items-center rounded-lg transition-all duration-200 group relative overflow-hidden px-4 py-3',
                 isCollapsed ? 'justify-center' : 'gap-3',
                 isActive
                     ? 'bg-blue-600/80 text-white'
@@ -30,7 +30,7 @@ export function SidebarItem({ icon: Icon, label, href, isCollapsed }: SidebarIte
             <Icon
                 size={20}
                 className={clsx(
-                    'flex-shrink-0 transition-colors',
+                    'shrink-0 transition-colors',
                     isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700'
                 )}
             />

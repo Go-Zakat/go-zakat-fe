@@ -35,7 +35,7 @@ const StatCard = ({ title, value, icon: Icon, color, progress }: StatCardProps) 
     const style = colorStyles[color];
 
     return (
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+        <div className="p-6 rounded-lg border border-gray-200">
             <div className="flex justify-between items-start mb-4">
                 <div>
                     <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
@@ -59,7 +59,7 @@ const StatCard = ({ title, value, icon: Icon, color, progress }: StatCardProps) 
 
 export const AsnafStats = () => {
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <StatCard
                 title="Total Asnaf"
                 value="8"

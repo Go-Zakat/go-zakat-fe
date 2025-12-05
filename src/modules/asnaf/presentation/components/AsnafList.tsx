@@ -14,15 +14,17 @@ import {
     ChevronRight,
     MoreHorizontal
 } from 'lucide-react';
-import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/src/shared/ui/components/Button';
 import { clsx } from 'clsx';
 
 export const AsnafList = () => {
+    const router = useRouter();
     const { getAsnafList, items, meta, isLoading } = useAsnafList();
     const [activeTab, setActiveTab] = useState('all');
 
     useEffect(() => {
-        getAsnafList({ page: 1, limit: 10 });
+        getAsnafList({ page: 1, per_page: 10 });
     }, []);
 
     const tabs = [
@@ -32,7 +34,7 @@ export const AsnafList = () => {
     ];
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div className="bg-white rounded-lg border border-gray-200 overflow-hidden">
             {/* Tabs */}
             <div className="border-b border-gray-100 px-6 pt-6">
                 <div className="flex items-center gap-6 overflow-x-auto no-scrollbar">
@@ -41,7 +43,7 @@ export const AsnafList = () => {
                             key={tab.id}
                             onClick={() => setActiveTab(tab.id)}
                             className={clsx(
-                                'pb-4 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2',
+                                'pb-4 text-sm font-medium transition-colors relative whitespace-nowrap flex items-center gap-2 cursor-pointer',
                                 activeTab === tab.id
                                     ? 'text-blue-600'
                                     : 'text-gray-500 hover:text-gray-700'
@@ -85,13 +87,14 @@ export const AsnafList = () => {
                     </div>
                 </div>
 
-                <Link
-                    href="/asnaf/new"
-                    className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors w-full lg:w-auto justify-center"
+                <Button
+                    onClick={() => router.push('/asnaf/create')}
+                    className="w-full lg:w-auto"
+                    size="md"
                 >
                     <Plus size={18} />
                     Tambah Asnaf
-                </Link>
+                </Button>
             </div>
 
             {/* Table */}
@@ -100,7 +103,7 @@ export const AsnafList = () => {
                     <thead>
                         <tr className="bg-gray-50/50 border-y border-gray-100">
                             <th className="px-6 py-4 text-left">
-                                <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer" />
                             </th>
                             <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Asnaf</th>
                             <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Deskripsi</th>
@@ -126,7 +129,7 @@ export const AsnafList = () => {
                             items.map((item) => (
                                 <tr key={item.id} className="hover:bg-gray-50/50 transition-colors group">
                                     <td className="px-6 py-4">
-                                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                                        <input type="checkbox" className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer" />
                                     </td>
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -153,15 +156,15 @@ export const AsnafList = () => {
                                     </td>
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <button className="p-1.5 hover:bg-blue-50 text-blue-600 rounded-md transition-colors" title="Edit">
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 text-blue-600" title="Edit">
                                                 <Edit size={16} />
-                                            </button>
-                                            <button className="p-1.5 hover:bg-gray-100 text-gray-600 rounded-md transition-colors" title="Detail">
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-gray-100 text-gray-600" title="Detail">
                                                 <Eye size={16} />
-                                            </button>
-                                            <button className="p-1.5 hover:bg-red-50 text-red-600 rounded-md transition-colors" title="Hapus">
+                                            </Button>
+                                            <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-red-50 text-red-600" title="Hapus">
                                                 <Trash2 size={16} />
-                                            </button>
+                                            </Button>
                                         </div>
                                     </td>
                                 </tr>
@@ -175,7 +178,7 @@ export const AsnafList = () => {
             <div className="px-6 py-4 border-t border-gray-100 flex items-center justify-between">
                 <div className="flex items-center gap-2 text-sm text-gray-500">
                     <span>Rows per page:</span>
-                    <select className="border border-gray-200 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select className="border border-gray-200 rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer">
                         <option>10</option>
                         <option>20</option>
                         <option>50</option>
@@ -185,12 +188,12 @@ export const AsnafList = () => {
                 <div className="flex items-center gap-4 text-sm text-gray-500">
                     <span>1-5 of {meta?.total || 0}</span>
                     <div className="flex items-center gap-1">
-                        <button className="p-1 hover:bg-gray-100 rounded disabled:opacity-50" disabled>
+                        <Button variant="outline" size="icon" className="h-8 w-8" disabled>
                             <ChevronLeft size={18} />
-                        </button>
-                        <button className="p-1 hover:bg-gray-100 rounded disabled:opacity-50" disabled>
+                        </Button>
+                        <Button variant="outline" size="icon" className="h-8 w-8" disabled>
                             <ChevronRight size={18} />
-                        </button>
+                        </Button>
                     </div>
                 </div>
             </div>

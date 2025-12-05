@@ -44,7 +44,7 @@ export const RegisterForm = () => {
 
             {/* Error Message */}
             {error && (
-                <div className="p-4 text-sm text-red-700 bg-red-50 rounded-md border border-red-200">
+                <div className="p-4 text-sm text-red-700 bg-red-50 rounded-lg border border-red-200">
                     {error}
                 </div>
             )}

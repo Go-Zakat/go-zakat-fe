@@ -39,7 +39,7 @@ function DashboardContent() {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="text-center max-w-md w-full">
-                <div className="bg-white rounded-lg shadow-md p-8 space-y-6">
+                <div className="bg-white rounded-lg border border-gray-200 p-8 space-y-6">
                     <div>
                         <h1 className="text-4xl font-bold text-gray-900 mb-2">
                             Dashboard

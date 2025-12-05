@@ -105,7 +105,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             onClick={onMobileClose}
                             className="ml-auto lg:hidden text-slate-600 hover:text-slate-900 cursor-pointer"
                         >
-                            <X size={20}/>
+                            <X size={20} />
                         </button>
                     </div>
 
@@ -213,7 +213,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: 20 }}
                                     transition={{ delay: 0.1 }}
-                                    className="bg-blue-600/10 rounded-xl p-4 relative overflow-hidden"
+                                    className="bg-blue-600/10 rounded-lg p-4 relative overflow-hidden"
                                 >
                                     <div className="relative z-10">
                                         <h5 className="font-semibold mb-1 truncate">

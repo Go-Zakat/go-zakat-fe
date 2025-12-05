@@ -1,4 +1,3 @@
-// src/shared/api/httpClient.ts
 import axios from 'axios';
 import { env } from '../config/env';
 import { STORAGE_KEYS } from '../config/constants';
@@ -66,7 +65,7 @@ httpClient.interceptors.response.use(
                         authStorage.setTokens({ accessToken: access_token, refreshToken: newRefresh });
                         return access_token;
                     })
-                    .catch((refreshError) => {
+                    .catch(async (refreshError) => {
                         const { authStorage } = await import('../lib/authStorage');
                         authStorage.clearTokens();
                         if (typeof window !== 'undefined' && !window.location.pathname.includes('/login')) {

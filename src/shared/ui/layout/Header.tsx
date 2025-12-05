@@ -14,10 +14,10 @@ interface HeaderProps {
 }
 
 export function Header({
-                           onMobileMenuClick,
-                           onToggleSidebar,
-                           isSidebarCollapsed,
-                       }: HeaderProps) {
+    onMobileMenuClick,
+    onToggleSidebar,
+    isSidebarCollapsed,
+}: HeaderProps) {
     const { logout } = useLogout();
     const { user } = useAuth();
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -37,14 +37,14 @@ export function Header({
     }, []);
 
     return (
-        <header className="sticky top-0 z-20 w-full backdrop-blur-md px-6 py-4">
+        <header className="sticky top-0 z-20 w-full bg-white px-6 py-4">
             <div className="flex items-center justify-between">
                 {/* Left: Mobile Toggle & Sidebar Toggle */}
                 <div className="flex items-center gap-2">
                     {/* Mobile: buka sidebar (off-canvas) */}
                     <button
                         onClick={onMobileMenuClick}
-                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 lg:hidden"
+                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 lg:hidden cursor-pointer"
                         aria-label="Buka menu"
                     >
                         <Menu size={20} />
@@ -53,7 +53,7 @@ export function Header({
                     {/* Desktop: collapse / expand sidebar */}
                     <button
                         onClick={onToggleSidebar}
-                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 hidden lg:inline-flex"
+                        className="p-2 hover:bg-gray-100 rounded-full text-gray-600 hidden lg:inline-flex cursor-pointer"
                         aria-label={isSidebarCollapsed ? 'Expand sidebar' : 'Minimize sidebar'}
                     >
                         <Menu size={20} className="hover:cursor-pointer" />
@@ -65,7 +65,7 @@ export function Header({
                     <div className="relative" ref={profileRef}>
                         <button
                             onClick={() => setIsProfileOpen(!isProfileOpen)}
-                            className="flex items-center gap-3 hover:bg-blue-600/10 rounded-full sm:p-1 sm:pr-3 transition-colors hover:cursor-pointer"
+                            className="flex items-center gap-3 hover:bg-blue-600/10 rounded-full sm:p-1 sm:pr-3 transition-colors cursor-pointer"
                         >
                             <div className="w-8 h-8 rounded-full bg-blue-600/80 flex items-center justify-center text-white">
                                 <User size={18} />
@@ -83,7 +83,7 @@ export function Header({
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -10 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-20"
+                                    className="absolute right-0 mt-2 w-56 bg-white rounded-lg border border-gray-200 py-2 z-20"
                                 >
                                     <div className="px-4 py-2 border-b border-gray-50 mb-1">
                                         <p className="text-sm font-semibold text-gray-900">{user?.name || 'User'}</p>
@@ -100,7 +100,7 @@ export function Header({
 
                                     <button
                                         onClick={logout}
-                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left hover:cursor-pointer"
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors text-left cursor-pointer"
                                     >
                                         <LogOut size={16} />
                                         Logout
