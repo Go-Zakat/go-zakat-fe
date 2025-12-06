@@ -10,7 +10,7 @@ export const Divider = ({ text }: DividerProps) => {
             </div>
             {text && (
                 <div className="relative flex justify-center text-sm">
-                    <span className="px-2 bg-white text-gray-500">{text}</span>
+                    <span className="px-2 bg-white dark:bg-dark-paper text-gray-600 dark:text-gray-400">{text}</span>
                 </div>
             )}
         </div>

@@ -20,18 +20,18 @@ export function SidebarItem({ icon: Icon, label, href, isCollapsed }: SidebarIte
         <Link
             href={href}
             className={clsx(
-                'flex items-center rounded-lg transition-all duration-200 group relative overflow-hidden px-4 py-3',
+                'flex items-center rounded-lg group relative overflow-hidden px-4 py-3',
                 isCollapsed ? 'justify-center' : 'gap-3',
                 isActive
-                    ? 'bg-blue-600/80 text-white'
-                    : 'text-gray-600 hover:bg-blue-600/10 hover:text-gray-900'
+                    ? 'bg-primary-blue text-white'
+                    : 'text-gray-600 dark:text-text-secondary hover:bg-blue-600/10 dark:hover:bg-primary-blue/10 hover:text-gray-900 dark:hover:text-text-primary'
             )}
         >
             <Icon
                 size={20}
                 className={clsx(
-                    'shrink-0 transition-colors',
-                    isActive ? 'text-white' : 'text-gray-500 group-hover:text-gray-700'
+                    'shrink-0',
+                    isActive ? 'text-white' : 'text-gray-500 dark:text-text-secondary group-hover:text-gray-700 dark:group-hover:text-text-primary'
                 )}
             />
 

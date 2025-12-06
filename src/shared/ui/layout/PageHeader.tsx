@@ -25,16 +25,16 @@ export const PageHeader = ({ title, breadcrumbs, backUrl, children }: PageHeader
                     {backUrl && (
                         <Link
                             href={backUrl}
-                            className="p-2 rounded-full hover:bg-blue-600/10 transition-colors cursor-pointer"
+                            className="p-2 rounded-full hover:bg-blue-600/10 dark:hover:bg-blue-400/10 transition-colors cursor-pointer"
                         >
-                            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
+                            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300" />
                         </Link>
                     )}
                     <div>
-                        <h5 className="font-medium mb-1 truncate text-sm sm:text-base md:text-lg lg:text-xl">
+                        <h5 className="font-medium mb-1 truncate text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 dark:text-white">
                             {title}
                         </h5>
-                        <p className="truncate text-[11px] sm:text-xs md:text-sm text-gray-600 flex items-center gap-1">
+                        <p className="truncate text-[11px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
                             {breadcrumbs.map((item, index) => (
                                 <span key={index} className="flex items-center">
                                     {index > 0 && <span className="px-1">●</span>}

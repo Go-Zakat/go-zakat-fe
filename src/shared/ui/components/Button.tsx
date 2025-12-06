@@ -22,8 +22,8 @@ export const Button = ({
 
     const variants = {
         primary: 'bg-blue-600/80 hover:bg-blue-700/80 text-white focus:ring-blue-500',
-        outline: 'bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 focus:ring-blue-500',
-        ghost: 'bg-transparent hover:bg-gray-100 text-gray-700 focus:ring-gray-500',
+        outline: 'bg-white dark:bg-dark-paper border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 focus:ring-blue-500',
+        ghost: 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-200 focus:ring-gray-500',
     };
 
     const sizes = {

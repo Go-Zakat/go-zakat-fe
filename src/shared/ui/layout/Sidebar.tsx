@@ -63,7 +63,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                 variants={sidebarVariants}
                 transition={{ duration: 0.3, ease: 'easeInOut' }}
                 className={clsx(
-                    'fixed inset-y-0 left-0 z-40 h-screen overflow-visible bg-white border-r border-gray-200',
+                    'fixed inset-y-0 left-0 z-40 h-screen overflow-visible bg-white dark:bg-dark-paper border-r border-gray-200 dark:border-dark-border',
                     'lg:static lg:inset-auto', // Reset fixed positioning on desktop
                     'transform transition-transform duration-300 lg:transition-none', // ⬅️ tambahin ini
                     isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0' // Handle mobile slide-in

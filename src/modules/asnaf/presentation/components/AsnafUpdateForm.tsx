@@ -5,9 +5,13 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import Link from 'next/link';
 import { Textarea } from '@/src/shared/ui/components/Textarea';
-import { useAsnafCreateController } from "@/src/modules/asnaf/presentation/hooks/useAsnafCreateController";
+import { useAsnafUpdateController } from '@/src/modules/asnaf/presentation/hooks/useAsnafUpdateController';
 
-export const AsnafCreateForm = () => {
+interface AsnafUpdateFormProps {
+    id: string;
+}
+
+export const AsnafUpdateForm = ({ id }: AsnafUpdateFormProps) => {
     const {
         register,
         handleSubmit,
@@ -15,7 +19,7 @@ export const AsnafCreateForm = () => {
         isLoading,
         error,
         onSubmit
-    } = useAsnafCreateController();
+    } = useAsnafUpdateController(id);
 
     return (
         <Card className="p-6">
@@ -49,7 +53,7 @@ export const AsnafCreateForm = () => {
                         </Button>
                     </Link>
                     <Button type="submit" isLoading={isLoading}>
-                        Simpan Asnaf
+                        Simpan Perubahan
                     </Button>
                 </div>
             </form>

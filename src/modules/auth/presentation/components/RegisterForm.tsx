@@ -33,11 +33,11 @@ export const RegisterForm = () => {
     };
 
     return (
-        <Card>
+        <Card className="max-w-md">
             {/* Header */}
             <div className="text-center">
-                <h1 className="text-3xl font-bold text-gray-900">Daftar</h1>
-                <p className="mt-2 text-sm text-gray-600">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Daftar</h1>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     Buat akun baru untuk mulai menggunakan aplikasi
                 </p>
             </div>
@@ -59,6 +59,7 @@ export const RegisterForm = () => {
                     type="text"
                     placeholder="John Doe"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Email */}
@@ -69,6 +70,7 @@ export const RegisterForm = () => {
                     type="email"
                     placeholder="nama@example.com"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Password */}
@@ -79,6 +81,7 @@ export const RegisterForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Password Confirmation */}
@@ -89,6 +92,7 @@ export const RegisterForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Submit Button */}
@@ -136,11 +140,11 @@ export const RegisterForm = () => {
             </Button>
 
             {/* Login Link */}
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                 Sudah punya akun?{' '}
                 <Link
                     href="/login"
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-blue-600 dark:text-primary-blue hover:text-blue-700 font-medium"
                 >
                     Masuk di sini
                 </Link>

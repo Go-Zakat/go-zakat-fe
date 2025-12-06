@@ -39,12 +39,12 @@ function DashboardContent() {
     return (
         <div className="min-h-screen flex items-center justify-center p-4">
             <div className="text-center max-w-md w-full">
-                <div className="bg-white rounded-lg border border-gray-200 p-8 space-y-6">
+                <div className="bg-white dark:bg-dark-paper rounded-lg border border-gray-200 dark:border-dark-border p-8 space-y-6">
                     <div>
-                        <h1 className="text-4xl font-bold text-gray-900 mb-2">
+                        <h1 className="text-4xl font-bold text-gray-900 dark:text-text-primary mb-2">
                             Dashboard
                         </h1>
-                        <p className="text-gray-600">
+                        <p className="text-gray-600 dark:text-text-secondary">
                             Selamat datang! Login berhasil.
                         </p>
                     </div>

@@ -35,18 +35,18 @@ const StatCard = ({ title, value, icon: Icon, color, progress }: StatCardProps) 
     const style = colorStyles[color];
 
     return (
-        <div className="p-6 rounded-lg border border-gray-200">
+        <div className="p-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-dark-paper">
             <div className="flex justify-between items-start mb-4">
                 <div>
-                    <h3 className="text-2xl font-bold text-gray-900 mb-1">{value}</h3>
-                    <p className="text-sm text-gray-500">{title}</p>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1">{value}</h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">{title}</p>
                 </div>
                 <div className={`p-3 rounded-lg ${style.bg} ${style.text}`}>
                     <Icon size={20} />
                 </div>
             </div>
             {progress !== undefined && (
-                <div className="w-full bg-gray-100 rounded-full h-1.5">
+                <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
                     <div
                         className={`h-1.5 rounded-full ${style.bar}`}
                         style={{ width: `${progress}%` }}

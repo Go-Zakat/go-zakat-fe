@@ -33,11 +33,11 @@ export const LoginForm = () => {
     };
 
     return (
-        <Card>
+        <Card className="max-w-md">
             {/* Header */}
             <div className="text-center">
-                <h1 className="text-3xl font-bold text-gray-900">Masuk</h1>
-                <p className="mt-2 text-sm text-gray-600">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Masuk</h1>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
                     Masuk ke akun Anda untuk melanjutkan
                 </p>
             </div>
@@ -59,6 +59,7 @@ export const LoginForm = () => {
                     type="email"
                     placeholder="nama@example.com"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Password */}
@@ -69,6 +70,7 @@ export const LoginForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
+                    
                 />
 
                 {/* Submit Button */}
@@ -83,7 +85,7 @@ export const LoginForm = () => {
             </form>
 
             {/* Divider */}
-            <Divider text="Atau" />
+            <Divider text="Atau"  />
 
             {/* Google Login Button */}
             <Button
@@ -116,11 +118,11 @@ export const LoginForm = () => {
             </Button>
 
             {/* Register Link */}
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-gray-600 dark:text-gray-400">
                 Belum punya akun?{' '}
                 <Link
                     href="/register"
-                    className="text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-blue-600 dark:text-primary-blue hover:text-blue-700 font-medium"
                 >
                     Daftar di sini
                 </Link>

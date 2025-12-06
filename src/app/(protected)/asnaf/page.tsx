@@ -1,7 +1,6 @@
 'use client';
 
 import { Suspense } from 'react';
-import { AsnafStats } from '@/src/modules/asnaf/presentation/components/AsnafStats';
 import { AsnafList } from '@/src/modules/asnaf/presentation/components/AsnafList';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
 
@@ -16,7 +15,6 @@ function AsnafContent() {
                 ]}
             />
 
-            <AsnafStats />
             <AsnafList />
         </div>
     );

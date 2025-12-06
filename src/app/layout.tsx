@@ -25,7 +25,7 @@ export default function RootLayout({
         <title>Move…</title>
         <link rel="icon" href="/icons/Mosque.svg" type="image/png" sizes="22x22" />
       </head>
-      <body className={`${outfit.variable} antialiased`}>
+      <body className={`${outfit.variable} antialiased `}>
         <ThemeProvider>
           {children}
         </ThemeProvider>
