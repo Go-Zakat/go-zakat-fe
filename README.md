@@ -42,26 +42,26 @@ Project ini menggunakan arsitektur **Clean Architecture** yang modular:
 ```
 src/
 ├── app/                    # Next.js App Router pages
-│   ├── (public)/          # Public routes (Login, Register)
-│   ├── (protected)/       # Protected routes (Dashboard, Asnaf)
-│   └── layout.tsx         # Root layout
-├── modules/               # Feature modules
-│   └── feature/           # Feature module
-│       ├── application/   # Business Logic Hook
-│       ├── domain/        # Types, Interfaces & Zod Schemas
-│       ├── infrastructure/# API Services
-│       └── presentation/  # UI Layer
-│           ├── components/# Presentational Components (View)
-│           └── hooks/     # Controllers (ViewModel/Controller Logic)
-├── shared/                # Shared utilities & components
-│   ├── api/               # HTTP client & Axios Interceptors
-│   ├── config/            # Environment & Constants
-│   ├── hooks/             # Shared Hooks (useDebounce)
-│   ├── lib/               # Helper libraries (authStorage)
-│   └── ui/                # Reusable UI Components
-│       ├── components/    # Atomic Components (Button, Input, Card, Modal, Tooltip)
-│       └── layout/        # Layout Components (Sidebar, PageHeader)
-└── proxy.ts               # Middleware for route protection
+│   ├── (public)/           # Public routes (Login, Register)
+│   ├── (protected)/        # Protected routes (Dashboard, Asnaf)
+│   └── layout.tsx          # Root layout
+├── modules/                # Feature modules
+│   └── feature/            # Feature module
+│       ├── application/    # Business Logic Hook
+│       ├── domain/         # Types, Interfaces & Zod Schemas
+│       ├── infrastructure/ # API Services
+│       └── presentation/   # UI Layer
+│           ├── components/ # Presentational Components (View)
+│           └── hooks/      # Controllers (ViewModel/Controller Logic)
+├── shared/                 # Shared utilities & components
+│   ├── api/                # HTTP client & Axios Interceptors
+│   ├── config/             # Environment & Constants
+│   ├── hooks/              # Shared Hooks (useDebounce)
+│   ├── lib/                # Helper libraries (authStorage)
+│   └── ui/                 # Reusable UI Components
+│       ├── components/     # Atomic Components (Button, Input, Card, Modal, Tooltip)
+│       └── layout/         # Layout Components (Sidebar, PageHeader)
+└── proxy.ts                # Middleware for route protection
 ```
 
 ### Pola Desain (Design Pattern)
@@ -80,7 +80,7 @@ Kami memisahkan **Logic** dan **View** menggunakan pola Controller/ViewModel pad
 - Backend API yang sudah berjalan (Go Zakat Backend)
 - ```bash
    git clone <https://github.com/Go-Zakat/go-zakat-be.git>
-   cd go-zakat-fe
+   cd go-zakat-be
    ```
 
 ### Instalasi

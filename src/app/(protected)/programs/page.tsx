@@ -1,29 +1,29 @@
 'use client';
 
 import { Suspense } from 'react';
-import { MuzakkiCreateForm } from '@/src/modules/muzakki/presentation/components/MuzakkiCreateForm';
+import { ProgramList } from '@/src/modules/program/presentation/components/ProgramList';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
 
-function CreateMuzakkiContent() {
+function ProgramContent() {
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Tambah Muzakki"
+                title="Daftar Program"
                 breadcrumbs={[
                     { label: 'Master Data' },
-                    { label: 'Tambah Muzakki' }
+                    { label: 'Daftar Program' }
                 ]}
             />
 
-            <MuzakkiCreateForm />
+            <ProgramList />
         </div>
     );
 }
 
-export default function CreateMuzakkiPage() {
+export default function ProgramPage() {
     return (
         <Suspense fallback={<div>Loading...</div>}>
-            <CreateMuzakkiContent />
+            <ProgramContent />
         </Suspense>
     );
 }

@@ -1,0 +1,36 @@
+'use client';
+
+import { useState } from 'react';
+import { programApi } from '../infrastructure/program.api';
+import { extractErrorMessage } from '@/src/shared/api/errorHandler';
+
+/**
+ * DELETE /api/v1/programs/{id}
+ */
+export const useProgramDelete = () => {
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
+    const deleteProgram = async (id: string): Promise<boolean> => {
+        if (!id) return false;
+
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            await programApi.delete(id);
+            return true;
+        } catch (err) {
+            setError(extractErrorMessage(err));
+            return false;
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    return {
+        deleteProgram,
+        isLoading,
+        error,
+    };
+};
