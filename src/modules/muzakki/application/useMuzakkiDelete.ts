@@ -1,36 +1,35 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { asnafApi } from '../infrastructure/asnaf.api';
-import { AsnafRequest } from '../domain/asnaf.types';
+import { muzakkiApi } from '../infrastructure/muzakki.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
 /**
- * PUT /api/v1/asnaf/{id}
+ * DELETE /api/v1/muzakki/{id}
  */
-export const useAsnafUpdate = () => {
-    const router = useRouter();
+export const useMuzakkiDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const updateAsnaf = async (id: string, payload: AsnafRequest) => {
-        if (!id) return;
+    const deleteMuzakki = async (id: string): Promise<boolean> => {
+        if (!id) return false;
+
         setIsLoading(true);
         setError(null);
 
         try {
-            await asnafApi.update(id, payload);
-            router.push('/asnaf');
+            await muzakkiApi.delete(id);
+            return true;
         } catch (err) {
             setError(extractErrorMessage(err));
+            return false;
         } finally {
             setIsLoading(false);
         }
     };
 
     return {
-        updateAsnaf,
+        deleteMuzakki,
         isLoading,
         error,
     };

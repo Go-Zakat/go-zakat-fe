@@ -78,12 +78,16 @@ Kami memisahkan **Logic** dan **View** menggunakan pola Controller/ViewModel pad
 - Node.js (v18 atau lebih baru)
 - npm atau yarn
 - Backend API yang sudah berjalan (Go Zakat Backend)
+- ```bash
+   git clone <https://github.com/Go-Zakat/go-zakat-be.git>
+   cd go-zakat-fe
+   ```
 
 ### Instalasi
 
 1. Clone repository ini:
    ```bash
-   git clone <repository-url>
+   git clone <https://github.com/Go-Zakat/go-zakat-fe.git>
    cd go-zakat-fe
    ```
 
@@ -107,13 +111,6 @@ Kami memisahkan **Logic** dan **View** menggunakan pola Controller/ViewModel pad
    ```
 
 5. Buka browser dan akses [http://localhost:3000](http://localhost:3000).
-
-## 📝 Konvensi Kode
-
-- **Bahasa**: Komentar kode menggunakan Bahasa Indonesia.
-- **Import**: Menggunakan absolute path alias `@/src/...`.
-- **Naming**: PascalCase untuk Component, camelCase untuk fungsi/variabel.
-- **Architecture**: Ikuti struktur Clean Architecture yang telah ditetapkan.
 
 ## 🤝 Kontribusi
 

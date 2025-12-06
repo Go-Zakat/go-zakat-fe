@@ -1,5 +1,3 @@
-'use client';
-
 import {
     Eye,
     Edit,
@@ -14,10 +12,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Input } from '@/src/shared/ui/components/Input';
 import { Modal } from '@/src/shared/ui/components/Modal';
-import { useAsnafListController } from '@/src/modules/asnaf/presentation/hooks/useAsnafListController';
+import { useMuzakkiListController } from '@/src/modules/muzakki/presentation/hooks/useMuzakkiListController';
 import { Tooltip } from '@/src/shared/ui/components/Tooltip';
 
-export const AsnafList = () => {
+export const MuzakkiList = () => {
     const router = useRouter();
 
     const {
@@ -35,7 +33,7 @@ export const AsnafList = () => {
         handleOpenDeleteModal,
         handleCloseDeleteModal,
         handleConfirmDelete
-    } = useAsnafListController();
+    } = useMuzakkiListController();
 
     return (
         <>
@@ -47,7 +45,7 @@ export const AsnafList = () => {
                             <div className="flex flex-row gap-3 w-auto">
                                 <div className="w-64">
                                     <Input
-                                        placeholder="Cari Asnaf..."
+                                        placeholder="Cari Muzakki..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                         startIcon={<Search size={18} />}
@@ -57,12 +55,12 @@ export const AsnafList = () => {
                             </div>
 
                             <Button
-                                onClick={() => router.push('/asnaf/create')}
+                                onClick={() => router.push('/muzakki/create')}
                                 className="w-auto"
                                 size="md"
                             >
                                 <Plus size={18} />
-                                Tambah Asnaf
+                                Tambah Muzakki
                             </Button>
                         </div>
 
@@ -74,23 +72,24 @@ export const AsnafList = () => {
                                         <th className="px-6 py-4 text-left w-12">
                                             <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
                                         </th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider">Nama Asnaf</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-full">Deskripsi</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[200px]">Tanggal Dibuat</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-[70%]">Nama Muzakki</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-[10%]">Alamat</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[10%]">No. Telepon</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[10%]">Tanggal Dibuat</th>
                                         <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[120px]">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
                                     {isLoading ? (
                                         <tr>
-                                            <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
+                                            <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
                                                 Memuat data...
                                             </td>
                                         </tr>
                                     ) : items.length === 0 ? (
                                         <tr>
-                                            <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
-                                                Belum ada data asnaf
+                                            <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
+                                                Belum ada data muzakki
                                             </td>
                                         </tr>
                                     ) : (
@@ -101,24 +100,27 @@ export const AsnafList = () => {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold">
+                                                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold shrink-0">
                                                             {item.name.substring(0, 2).toUpperCase()}
                                                         </div>
                                                         <span className="font-medium text-gray-900 dark:text-text-primary">{item.name}</span>
                                                     </div>
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary max-w-md truncate">
-                                                    {item.description ? (
-                                                        <Tooltip content={<p>{item.description}</p>}>
+                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary max-w-xs truncate">
+                                                    {item.address ? (
+                                                        <Tooltip content={<p>{item.address}</p>}>
                                                             <span className="cursor-help border-b border-dashed border-gray-300 dark:border-gray-600">
-                                                                {item.description}
+                                                                {item.address}
                                                             </span>
                                                         </Tooltip>
                                                     ) : (
                                                         '-'
                                                     )}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-gray-500 dark:text-text-secondary">
+                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary whitespace-nowrap">
+                                                    {item.phoneNumber}
+                                                </td>
+                                                <td className="px-6 py-4 text-sm text-gray-500 dark:text-text-secondary whitespace-nowrap">
                                                     {/* Mobile Date (Short) */}
                                                     <span className="lg:hidden">
                                                         {new Date(item.createdAt).toLocaleDateString('id-ID', {
@@ -138,13 +140,13 @@ export const AsnafList = () => {
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/asnaf/${item.id}/edit`)}>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/muzakki/${item.id}/edit`)}>
                                                             <Edit size={16} />
                                                         </Button>
                                                         <Button variant="ghost" size="icon"
                                                             className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
                                                             title="Detail"
-                                                            onClick={() => router.push(`/asnaf/${item.id}`)}
+                                                            onClick={() => router.push(`/muzakki/${item.id}`)}
                                                         >
                                                             <Eye size={16} />
                                                         </Button>
@@ -219,13 +221,13 @@ export const AsnafList = () => {
             <Modal
                 isOpen={isDeleteModalOpen}
                 onClose={handleCloseDeleteModal}
-                title="Hapus Asnaf"
+                title="Hapus Muzakki"
             >
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-amber-500 dark:text-amber-400 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
                         <AlertTriangle className="h-6 w-6 shrink-0" />
                         <p className="text-sm">
-                            Apakah Anda yakin ingin menghapus data asnaf ini? Data yang dihapus tidak dapat dikembalikan.
+                            Apakah Anda yakin ingin menghapus data muzakki ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
 

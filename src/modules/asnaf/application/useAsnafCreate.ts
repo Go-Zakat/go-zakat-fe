@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { asnafApi } from '../infrastructure/asnaf.api';
-import { CreateAsnafRequest } from '../domain/asnaf.types';
+import { AsnafRequest } from "..//domain/asnaf.types";
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
 /**
@@ -14,7 +14,7 @@ export const useAsnafCreate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createAsnaf = async (payload: CreateAsnafRequest) => {
+    const createAsnaf = async (payload: AsnafRequest) => {
         setIsLoading(true);
         setError(null);
 

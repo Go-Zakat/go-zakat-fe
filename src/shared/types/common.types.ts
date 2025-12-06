@@ -82,9 +82,8 @@ export interface Mustahiq {
 export interface Muzakki {
     id: string;
     name: string;
-    address?: string | null;
-    phoneNumber?: string | null;
-    email?: string | null;
+    address: string;
+    phoneNumber: string;
     notes?: string | null;
     createdAt: string;
     updatedAt: string;

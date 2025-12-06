@@ -3,7 +3,8 @@ import { ENDPOINTS } from '@/src/shared/api/endpoints';
 import {
     AsnafListResponseWrapper,
     AsnafResponseWrapper,
-    AsnafDeleteResponseWrapper, AsnafRequest,
+    AsnafDeleteResponseWrapper,
+    AsnafRequest,
 } from '../domain/asnaf.types';
 
 /**

@@ -7,11 +7,12 @@ import {
     HandHeart,
     Wallet,
     FileText,
-    Menu,
     Receipt,
     Send,
     X,
-    Ellipsis, NotebookText
+    Ellipsis,
+    NotebookText,
+    HeartHandshake
 } from 'lucide-react';
 import { clsx } from 'clsx';
 import { SidebarItem } from './SidebarItem';
@@ -153,7 +154,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             >
                                 {isViewCollapsed ? <Ellipsis size={14} /> : 'MASTER DATA'}
                             </div>
-                            <SidebarItem icon={Users} label="Asnaf" href="/asnaf" isCollapsed={isViewCollapsed} />
+                            <SidebarItem icon={HeartHandshake} label="Asnaf" href="/asnaf" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={HandHeart} label="Mustahiq" href="/mustahiq" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={Wallet} label="Muzakki" href="/muzakki" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={NotebookText} label="Programs" href="/programs" isCollapsed={isViewCollapsed} />

@@ -1,27 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { asnafApi } from '../infrastructure/asnaf.api';
-import { AsnafRequest } from '../domain/asnaf.types';
+import { muzakkiApi } from '../infrastructure/muzakki.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
+import { Muzakki } from "@/src/shared/types/common.types";
 
 /**
- * PUT /api/v1/asnaf/{id}
+ * GET /api/v1/muzakki/{id}
  */
-export const useAsnafUpdate = () => {
-    const router = useRouter();
+export const useMuzakkiDetail = () => {
+    const [data, setData] = useState<Muzakki | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const updateAsnaf = async (id: string, payload: AsnafRequest) => {
+    const getMuzakkiById = async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
 
         try {
-            await asnafApi.update(id, payload);
-            router.push('/asnaf');
+            const res = await muzakkiApi.getById(id);
+            setData(res.data);
         } catch (err) {
             setError(extractErrorMessage(err));
         } finally {
@@ -30,7 +29,8 @@ export const useAsnafUpdate = () => {
     };
 
     return {
-        updateAsnaf,
+        getMuzakkiById,
+        data,
         isLoading,
         error,
     };

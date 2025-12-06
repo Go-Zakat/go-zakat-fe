@@ -4,7 +4,7 @@ import { z } from 'zod';
 const envSchema = z.object({
     NEXT_PUBLIC_API_BASE_URL: z
         .url()
-        .default('http://localhost:8080'),
+        .default('http://localhost:8080/'),
 });
 
 // Ambil environment variables dari process.env
