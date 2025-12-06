@@ -4,31 +4,21 @@
 // ============================================================
 
 /**
- * Pagination Request
- * Parameter untuk request list dengan pagination
- */
-export interface PaginationRequest {
-    page?: number;
-    per_page?: number;
-    q?: string; // Search query
-}
-
-/**
  * Pagination Meta
  * Metadata pagination dari response
  */
 export interface PaginationMeta {
-    current_page: number;
+    page: number;
     per_page: number;
     total: number;
-    total_pages: number;
+    total_page: number;
 }
 
 /**
- * Paginated Response
- * Generic type untuk response list dengan pagination
+ * Paginated Response Data
+ * Generic type untuk field 'data' pada response list
  */
-export interface PaginatedResponse<T> {
-    data: T[];
+export interface PaginatedData<T> {
+    items: T[];
     meta: PaginationMeta;
 }

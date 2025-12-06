@@ -41,9 +41,9 @@ export const AsnafList = () => {
         <>
             <div className="bg-white dark:bg-dark-paper rounded-lg border border-gray-200 dark:border-dark-border overflow-hidden">
                 {/* Action Bar */}
-                <div className="p-6 flex flex-col lg:flex-row gap-4 justify-between items-start lg:items-center">
-                    <div className="flex flex-col sm:flex-row gap-3 w-full lg:w-auto">
-                        <div className="w-full sm:w-64">
+                <div className="p-6 flex flex-row gap-4 justify-between">
+                    <div className="flex flex-col sm:flex-row gap-3 w-auto">
+                        <div className="w-64">
                             <Input
                                 placeholder="Cari Asnaf..."
                                 value={search}
@@ -56,7 +56,7 @@ export const AsnafList = () => {
 
                     <Button
                         onClick={() => router.push('/asnaf/create')}
-                        className="w-full lg:w-auto"
+                        className="w-auto"
                         size="md"
                     >
                         <Plus size={18} />
@@ -66,7 +66,7 @@ export const AsnafList = () => {
 
                 {/* Table */}
                 <div className="overflow-x-auto">
-                    <table className="w-full">
+                    <table className="w-full min-w-[800px]">
                         <thead>
                             <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
                                 <th className="px-6 py-4 text-left w-12">

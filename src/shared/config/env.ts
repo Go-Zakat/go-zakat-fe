@@ -2,14 +2,14 @@ import { z } from 'zod';
 
 // Schema untuk validasi environment variables (Zod v4 style)
 const envSchema = z.object({
-    NEXT_PUBLIC_API_URL: z
+    NEXT_PUBLIC_API_BASE_URL: z
         .url()
         .default('http://localhost:8080'),
 });
 
 // Ambil environment variables dari process.env
 const processEnv = {
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_API_BASE_URL: process.env.NEXT_PUBLIC_API_BASE_URL,
 };
 
 // Parse dan validasi environment variables

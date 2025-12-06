@@ -8,147 +8,171 @@ import {
 } from '../config/constants';
 
 // ============================================================
-// BASE TYPES - Types dasar yang sering digunakan
+// BASE TYPES
 // ============================================================
 
 /**
- * Base Entity
- * Properties yang ada di semua entity database
+ * Base Entity (Camel Case)
+ * Untuk entitas master: Asnaf, Mustahiq, Muzakki, Program
  */
-export interface BaseEntity {
+export interface BaseEntityCamel {
     id: string;
-    created_at: string;
-    updated_at: string;
-    deleted_at?: string | null;
+    createdAt: string;
+    updatedAt: string;
 }
 
 /**
- * User Type
- * Representasi user dalam sistem
+ * Base Entity (Snake Case)
+ * Untuk entitas transaksi: Contribution, Distribution, dan User
  */
-export interface User extends BaseEntity {
+export interface BaseEntitySnake {
+    id: string;
+    created_at: string;
+    updated_at: string;
+}
+
+// ============================================================
+// MASTER DATA TYPES
+// ============================================================
+
+/**
+ * User Type (dto.UserResponse)
+ */
+export interface User {
+    id: string;
     name: string;
     email: string;
     role: Role;
     avatar?: string | null;
     is_active: boolean;
+    created_at: string;
+    updated_at: string;
 }
 
 /**
- * Asnaf Type
- * Golongan penerima zakat (8 golongan)
+ * Asnaf Type (dto.AsnafResponse)
  */
-export interface Asnaf extends BaseEntity {
-    name: string; // Fakir, Miskin, Amil, Mualaf, dll
-    description?: string | null;
-}
-
-/**
- * Mustahiq Type
- * Data penerima zakat/bantuan
- */
-export interface Mustahiq extends BaseEntity {
-    full_name: string;
-    address: string;
-    phone?: string | null;
-    asnaf_id: string;
-    asnaf?: Asnaf; // Relasi ke asnaf
-    status: MustahiqStatus;
-    notes?: string | null;
-}
-
-/**
- * Muzakki Type
- * Data pembayar zakat/donatur
- */
-export interface Muzakki extends BaseEntity {
-    full_name: string;
-    address?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    notes?: string | null;
-}
-
-/**
- * Program Type
- * Program penyaluran dana
- */
-export interface Program extends BaseEntity {
+export interface Asnaf {
+    id: string;
     name: string;
     description?: string | null;
-    start_date?: string | null;
-    end_date?: string | null;
-    is_active: boolean;
+    createdAt: string;
+    updatedAt: string;
+}
+
+/**
+ * Mustahiq Type (dto.MustahiqResponse)
+ */
+export interface Mustahiq {
+    id: string;
+    name: string;
+    address: string;
+    phoneNumber: string;
+    asnafID: string;
+    asnaf?: Asnaf;
+    status: MustahiqStatus;
+    description?: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+/**
+ * Muzakki Type (dto.MuzakkiResponse)
+ */
+export interface Muzakki {
+    id: string;
+    name: string;
+    address?: string | null;
+    phoneNumber?: string | null;
+    email?: string | null;
+    notes?: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+/**
+ * Program Type (dto.ProgramResponse)
+ */
+export interface Program {
+    id: string;
+    name: string;
+    description?: string | null;
+    type: string;
+    active: boolean;
+    createdAt: string;
+    updatedAt: string;
 }
 
 // ============================================================
-// TRANSACTION TYPES - Types untuk transaksi
+// TRANSACTION TYPES
 // ============================================================
 
 /**
- * Donation Receipt Item
- * Item dalam bukti penerimaan donasi
+ * Donation Receipt Item (dto.DonationReceiptItemResponse)
  */
 export interface DonationReceiptItem {
     id: string;
-    donation_receipt_id: string;
+    amount: number;
     fund_type: FundType;
     zakat_type?: ZakatType | null;
     person_count?: number | null;
-    amount: number;
     rice_kg?: number | null;
     notes?: string | null;
 }
 
 /**
- * Donation Receipt
- * Bukti penerimaan donasi dari muzakki
+ * Donation Receipt (dto.DonationReceiptResponse)
  */
-export interface DonationReceipt extends BaseEntity {
-    muzakki_id: string;
-    muzakki?: Muzakki;
+export interface DonationReceipt {
+    id: string;
     receipt_number: string;
     receipt_date: string;
     payment_method: PaymentMethod;
     total_amount: number;
     notes?: string | null;
+    muzakki_id?: string;
+    muzakki?: { id: string; full_name: string };
+    created_by_user?: { id: string; full_name: string };
     items?: DonationReceiptItem[];
+    created_at: string;
+    updated_at: string;
 }
 
 /**
- * Distribution Item
- * Item dalam penyaluran dana ke mustahiq
+ * Distribution Item (dto.DistributionItemResponse)
  */
 export interface DistributionItem {
     id: string;
-    distribution_id: string;
-    mustahiq_id: string;
-    mustahiq?: Mustahiq;
     amount: number;
     notes?: string | null;
+    mustahiq_id: string;
+    mustahiq_name: string;
+    asnaf_name: string;
+    address?: string;
 }
 
 /**
- * Distribution
- * Data penyaluran dana ke mustahiq
+ * Distribution (dto.DistributionResponse)
  */
-export interface Distribution extends BaseEntity {
+export interface Distribution {
+    id: string;
     distribution_date: string;
-    program_id?: string | null;
-    program?: Program;
-    source_fund_type: FundType;
+    source_fund_type: string;
     total_amount: number;
     notes?: string | null;
+    program?: { id: string; name: string };
+    created_by_user?: { id: string; full_name: string };
     items?: DistributionItem[];
+    created_at: string;
+    updated_at: string;
 }
 
 // ============================================================
-// REPORT TYPES - Types untuk laporan
+// REPORT TYPES
 // ============================================================
 
 /**
  * Income Summary Item
- * Item dalam laporan pemasukan
  */
 export interface IncomeSummaryItem {
     fund_type: FundType;
@@ -160,7 +184,6 @@ export interface IncomeSummaryItem {
 
 /**
  * Distribution Summary Item
- * Item dalam laporan penyaluran
  */
 export interface DistributionSummaryItem {
     fund_type: FundType;
@@ -172,7 +195,6 @@ export interface DistributionSummaryItem {
 
 /**
  * Fund Balance
- * Saldo dana per jenis
  */
 export interface FundBalance {
     fund_type: FundType;
@@ -184,7 +206,6 @@ export interface FundBalance {
 
 /**
  * Mustahiq History Item
- * Riwayat penerimaan bantuan oleh mustahiq
  */
 export interface MustahiqHistoryItem {
     distribution_date: string;

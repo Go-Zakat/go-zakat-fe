@@ -31,10 +31,10 @@ export const PageHeader = ({ title, breadcrumbs, backUrl, children }: PageHeader
                         </Link>
                     )}
                     <div>
-                        <h5 className="font-medium mb-1 truncate text-sm sm:text-base md:text-lg lg:text-xl text-gray-900 dark:text-white">
+                        <h5 className="font-medium mb-1 truncate text-lg lg:text-xl text-gray-900 dark:text-white">
                             {title}
                         </h5>
-                        <p className="truncate text-[11px] sm:text-xs md:text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
+                        <p className="truncate text-sm text-gray-600 dark:text-gray-400 flex items-center gap-1">
                             {breadcrumbs.map((item, index) => (
                                 <span key={index} className="flex items-center">
                                     {index > 0 && <span className="px-1">●</span>}

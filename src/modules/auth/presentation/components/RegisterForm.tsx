@@ -50,7 +50,6 @@ export const RegisterForm = () => {
                     type="text"
                     placeholder="John Doe"
                     disabled={isLoading}
-
                 />
 
                 {/* Email */}

@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { asnafApi } from '../infrastructure/asnaf.api';
-import { Asnaf } from '../domain/asnaf.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
+import { Asnaf } from "@/src/shared/types/common.types";
 
 /**
  * GET /api/v1/asnaf/{id}

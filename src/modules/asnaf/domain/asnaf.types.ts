@@ -1,4 +1,10 @@
 import { z } from 'zod';
+import { Asnaf } from '@/src/shared/types/common.types';
+import {
+    ApiListResponse,
+    ApiSuccessResponse,
+    ApiEmptySuccessResponse,
+} from '@/src/shared/types/api.types';
 
 // ============================================================
 // ASNAF TYPES
@@ -32,17 +38,13 @@ export type AsnafFormValues = z.infer<typeof asnafSchema>;
 /**
  * Create Asnaf Request
  * Body untuk POST /api/v1/asnaf
- */
-export interface CreateAsnafRequest {
-    name: string;
-    description?: string;
-}
-
-/**
+ *
+ * Dan
+ *
  * Update Asnaf Request
  * Body untuk PUT /api/v1/asnaf/{id}
  */
-export interface UpdateAsnafRequest {
+export interface AsnafRequest {
     name: string;
     description?: string;
 }
@@ -52,62 +54,19 @@ export interface UpdateAsnafRequest {
 // ============================================================
 
 /**
- * Asnaf Type
- * Data Asnaf dari API
- *
- * Sesuai dto.AsnafResponse di swagger:
- * - id: string
- * - name: string
- * - description?: string
- * - createdAt: string
- * - updatedAt: string
- */
-export interface Asnaf {
-    id: string;
-    name: string;
-    description?: string | null;
-    createdAt: string;
-    updatedAt: string;
-}
-
-/**
- * Meta Pagination
- * Sesuai dto.MetaResponse
- */
-export interface MetaResponse {
-    page: number;
-    per_page: number;
-    total: number;
-    total_page: number;
-}
-
-/**
- * Asnaf List Data
- * Bentuk data di wrapper list (items + meta)
- */
-export interface AsnafListData {
-    items: Asnaf[];
-    meta: MetaResponse;
-}
-
-/**
  * Asnaf List Response Wrapper
  * Wrapper untuk GET /api/v1/asnaf
- * (swagger: dto.AsnafListResponseWrapper)
  */
-export interface AsnafListResponseWrapper {
-    data: AsnafListData;
-    message: string;
-    success: boolean;
-}
+export type AsnafListResponseWrapper = ApiListResponse<Asnaf>;
 
 /**
- * Asnaf Detail Response Wrapper
- * Wrapper untuk GET /api/v1/asnaf/{id}
- * (swagger: dto.AsnafResponseWrapper)
+ * Asnaf Detail/Create/Update Response Wrapper
+ * Wrapper untuk GET/POST/PUT /api/v1/asnaf/{id}
  */
-export interface AsnafResponseWrapper {
-    data: Asnaf;
-    message: string;
-    success: boolean;
-}
+export type AsnafResponseWrapper = ApiSuccessResponse<Asnaf>;
+
+/**
+ * Asnaf Delete Response Wrapper
+ * Wrapper untuk DELETE /api/v1/asnaf/{id}
+ */
+export type AsnafDeleteResponseWrapper = ApiEmptySuccessResponse;

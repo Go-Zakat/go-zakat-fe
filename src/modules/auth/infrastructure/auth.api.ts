@@ -1,6 +1,11 @@
 import { httpClient } from '@/src/shared/api/httpClient';
 import { ENDPOINTS } from '@/src/shared/api/endpoints';
-import { LoginRequest, RegisterRequest, AuthResponseWrapper, GoogleLoginResponse } from '../domain/auth.types';
+import {
+    LoginRequest,
+    RegisterRequest,
+    AuthResponseWrapper,
+    GoogleLoginResponse,
+} from '../domain/auth.types';
 
 /**
  * Auth API
@@ -10,6 +15,7 @@ export const authApi = {
     /**
      * Login
      * Login dengan email dan password
+     * POST /api/v1/auth/login
      */
     login: async (data: LoginRequest): Promise<AuthResponseWrapper> => {
         const response = await httpClient.post<AuthResponseWrapper>(
@@ -22,6 +28,7 @@ export const authApi = {
     /**
      * Register
      * Register user baru
+     * POST /api/v1/auth/register
      */
     register: async (data: RegisterRequest): Promise<AuthResponseWrapper> => {
         const response = await httpClient.post<AuthResponseWrapper>(
@@ -32,23 +39,11 @@ export const authApi = {
     },
 
     /**
-     * Get Me
-     * Mendapatkan data user yang sedang login
-     */
-    getMe: async (): Promise<AuthResponseWrapper> => {
-        const response = await httpClient.get<AuthResponseWrapper>(
-            ENDPOINTS.AUTH.ME
-        );
-        return response.data;
-    },
-
-    /**
      * Get Google Login URL
      * Mendapatkan URL untuk login dengan Google
+     * GET /api/v1/auth/google/url
      */
     getGoogleLoginUrl: async (): Promise<GoogleLoginResponse> => {
-        // Menggunakan fetch karena response structure berbeda dengan standard wrapper
-        // atau kita bisa sesuaikan type generic-nya jika httpClient support
         const response = await httpClient.get<GoogleLoginResponse>(
             ENDPOINTS.AUTH.GOOGLE_LOGIN
         );

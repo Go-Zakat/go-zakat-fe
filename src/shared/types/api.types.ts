@@ -3,14 +3,16 @@
 // Wrapper untuk semua response dari API
 // ============================================================
 
+import { PaginationMeta } from './pagination.types';
+
 /**
  * Success Response Wrapper
- * Digunakan untuk response yang berhasil dengan data
+ * Digunakan untuk response yang berhasil dengan data single
  */
 export interface ApiSuccessResponse<T> {
     data: T;
     message: string;
-    status: number;
+    success: boolean;
 }
 
 /**
@@ -19,7 +21,7 @@ export interface ApiSuccessResponse<T> {
  */
 export interface ApiErrorResponse {
     message: string;
-    status: number;
+    success: boolean; // false
     errors?: Record<string, string[]>; // Untuk validation errors
 }
 
@@ -28,15 +30,12 @@ export interface ApiErrorResponse {
  * Digunakan untuk response list dengan pagination
  */
 export interface ApiListResponse<T> {
-    data: T[];
-    message: string;
-    status: number;
-    meta: {
-        current_page: number;
-        per_page: number;
-        total: number;
-        total_pages: number;
+    data: {
+        items: T[];
+        meta: PaginationMeta;
     };
+    message: string;
+    success: boolean;
 }
 
 /**
@@ -45,5 +44,5 @@ export interface ApiListResponse<T> {
  */
 export interface ApiEmptySuccessResponse {
     message: string;
-    status: number;
+    success: boolean;
 }

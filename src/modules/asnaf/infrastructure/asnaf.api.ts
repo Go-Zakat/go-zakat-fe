@@ -1,10 +1,9 @@
 import { httpClient } from '@/src/shared/api/httpClient';
 import { ENDPOINTS } from '@/src/shared/api/endpoints';
 import {
-    CreateAsnafRequest,
-    UpdateAsnafRequest,
     AsnafListResponseWrapper,
     AsnafResponseWrapper,
+    AsnafDeleteResponseWrapper, AsnafRequest,
 } from '../domain/asnaf.types';
 
 /**
@@ -14,15 +13,6 @@ export interface GetAsnafListParams {
     q?: string;        // search by name
     page?: number;     // default 1
     per_page?: number; // default 10
-}
-
-/**
- * Response success sederhana (untuk delete)
- * sesuai dto.ResponseSuccess di swagger
- */
-export interface AsnafDeleteResponse {
-    success: boolean;
-    message: string;
 }
 
 /**
@@ -38,7 +28,7 @@ export const asnafApi = {
         params?: GetAsnafListParams
     ): Promise<AsnafListResponseWrapper> => {
         const response = await httpClient.get<AsnafListResponseWrapper>(
-            ENDPOINTS.ASNAF.LIST, // misal: '/api/v1/asnaf'
+            ENDPOINTS.ASNAF.LIST,
             { params }
         );
         return response.data;
@@ -50,7 +40,7 @@ export const asnafApi = {
      */
     getById: async (id: string): Promise<AsnafResponseWrapper> => {
         const response = await httpClient.get<AsnafResponseWrapper>(
-            ENDPOINTS.ASNAF.DETAIL(id) // misal: `/api/v1/asnaf/${id}`
+            ENDPOINTS.ASNAF.DETAIL(id)
         );
         return response.data;
     },
@@ -59,7 +49,7 @@ export const asnafApi = {
      * Create Asnaf
      * POST /api/v1/asnaf
      */
-    create: async (data: CreateAsnafRequest): Promise<AsnafResponseWrapper> => {
+    create: async (data: AsnafRequest): Promise<AsnafResponseWrapper> => {
         const response = await httpClient.post<AsnafResponseWrapper>(
             ENDPOINTS.ASNAF.LIST,
             data
@@ -73,7 +63,7 @@ export const asnafApi = {
      */
     update: async (
         id: string,
-        data: UpdateAsnafRequest
+        data: AsnafRequest
     ): Promise<AsnafResponseWrapper> => {
         const response = await httpClient.put<AsnafResponseWrapper>(
             ENDPOINTS.ASNAF.DETAIL(id),
@@ -86,8 +76,8 @@ export const asnafApi = {
      * Delete Asnaf
      * DELETE /api/v1/asnaf/{id}
      */
-    delete: async (id: string): Promise<AsnafDeleteResponse> => {
-        const response = await httpClient.delete<AsnafDeleteResponse>(
+    delete: async (id: string): Promise<AsnafDeleteResponseWrapper> => {
+        const response = await httpClient.delete<AsnafDeleteResponseWrapper>(
             ENDPOINTS.ASNAF.DETAIL(id)
         );
         return response.data;

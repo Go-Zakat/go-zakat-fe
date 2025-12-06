@@ -1,13 +1,11 @@
 import { z } from 'zod';
+import { ApiSuccessResponse } from '@/src/shared/types/api.types';
+import { User } from '@/src/shared/types/common.types';
 
 // ============================================================
 // LOGIN TYPES
 // ============================================================
 
-/**
- * Login Schema
- * Validasi untuk form login
- */
 /**
  * Login Schema
  * Validasi untuk form login
@@ -46,21 +44,6 @@ export type RegisterRequest = z.infer<typeof registerSchema>;
 // ============================================================
 
 /**
- * User Type
- * Data user yang login
- */
-export interface User {
-    id: string;
-    name: string;
-    email: string;
-    role: string;
-    avatar?: string | null;
-    is_active: boolean;
-    created_at: string;
-    updated_at: string;
-}
-
-/**
  * Auth Response
  * Response dari login/register
  */
@@ -74,20 +57,12 @@ export interface AuthResponse {
  * Auth Response Wrapper
  * Wrapper untuk response dari API
  */
-export interface AuthResponseWrapper {
-    data: AuthResponse;
-    message: string;
-    status: number;
-}
+export type AuthResponseWrapper = ApiSuccessResponse<AuthResponse>;
 
 /**
  * Google Login Response
  * Response dari endpoint get google login url
  */
-export interface GoogleLoginResponse {
-    success: boolean;
-    message: string;
-    data: {
-        auth_url: string;
-    };
-}
+export type GoogleLoginResponse = ApiSuccessResponse<{
+    auth_url: string;
+}>;

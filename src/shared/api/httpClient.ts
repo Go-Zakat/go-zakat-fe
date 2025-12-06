@@ -9,7 +9,7 @@ const getAccessToken = (): string | null => {
 };
 
 export const httpClient = axios.create({
-    baseURL: env.NEXT_PUBLIC_API_URL,
+    baseURL: env.NEXT_PUBLIC_API_BASE_URL,
     headers: { 'Content-Type': 'application/json' },
     timeout: 30000,
 });
@@ -58,7 +58,7 @@ httpClient.interceptors.response.use(
                     return Promise.reject(error);
                 }
                 refreshPromise = axios
-                    .post(`${env.NEXT_PUBLIC_API_URL}/api/v1/auth/refresh`, { refresh_token: refreshToken })
+                    .post(`${env.NEXT_PUBLIC_API_BASE_URL}/api/v1/auth/refresh`, { refresh_token: refreshToken })
                     .then(async (res) => {
                         const { access_token, refresh_token: newRefresh } = res.data.data;
                         const { authStorage } = await import('../lib/authStorage');
