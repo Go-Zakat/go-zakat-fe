@@ -1,36 +1,27 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { loginSchema, LoginRequest } from '../../domain/auth.types';
-import { useLogin } from '../../application/useLogin';
-import { useGoogleLogin } from '../../application/useGoogleLogin';
 import { Input } from '@/src/shared/ui/components/Input';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { Divider } from '@/src/shared/ui/components/Divider';
+import { useLoginController } from '../hooks/useLoginController';
 
 /**
  * LoginForm Component
  * Form untuk login dengan email dan password
  */
 export const LoginForm = () => {
-    const { login, isLoading, error } = useLogin();
-    const { loginWithGoogle, isLoading: isGoogleLoading } = useGoogleLogin();
-
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm<LoginRequest>({
-        resolver: zodResolver(loginSchema),
-        mode: 'onChange',
-    });
-
-    const onSubmit = (data: LoginRequest) => {
-        login(data);
-    };
+        errors,
+        isLoading,
+        isGoogleLoading,
+        error,
+        onSubmit,
+        loginWithGoogle,
+    } = useLoginController();
 
     return (
         <Card className="max-w-md">
@@ -59,7 +50,7 @@ export const LoginForm = () => {
                     type="email"
                     placeholder="nama@example.com"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Password */}
@@ -70,7 +61,7 @@ export const LoginForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Submit Button */}
@@ -85,7 +76,7 @@ export const LoginForm = () => {
             </form>
 
             {/* Divider */}
-            <Divider text="Atau"  />
+            <Divider text="Atau" />
 
             {/* Google Login Button */}
             <Button

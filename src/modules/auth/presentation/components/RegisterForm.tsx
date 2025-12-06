@@ -1,36 +1,27 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { registerSchema, RegisterRequest } from '../../domain/auth.types';
-import { useRegister } from '../../application/useRegister';
-import { useGoogleLogin } from '../../application/useGoogleLogin';
 import { Input } from '@/src/shared/ui/components/Input';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { Divider } from '@/src/shared/ui/components/Divider';
+import { useRegisterController } from '../hooks/useRegisterController';
 
 /**
  * RegisterForm Component
  * Form untuk register user baru
  */
 export const RegisterForm = () => {
-    const { register: registerUser, isLoading, error } = useRegister();
-    const { loginWithGoogle, isLoading: isGoogleLoading } = useGoogleLogin();
-
     const {
         register,
         handleSubmit,
-        formState: { errors },
-    } = useForm<RegisterRequest>({
-        resolver: zodResolver(registerSchema),
-        mode: 'onChange',
-    });
-
-    const onSubmit = (data: RegisterRequest) => {
-        registerUser(data);
-    };
+        errors,
+        isLoading,
+        isGoogleLoading,
+        error,
+        onSubmit,
+        loginWithGoogle,
+    } = useRegisterController();
 
     return (
         <Card className="max-w-md">
@@ -59,7 +50,7 @@ export const RegisterForm = () => {
                     type="text"
                     placeholder="John Doe"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Email */}
@@ -70,7 +61,7 @@ export const RegisterForm = () => {
                     type="email"
                     placeholder="nama@example.com"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Password */}
@@ -81,7 +72,7 @@ export const RegisterForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Password Confirmation */}
@@ -92,7 +83,7 @@ export const RegisterForm = () => {
                     type="password"
                     placeholder="••••••••"
                     disabled={isLoading}
-                    
+
                 />
 
                 {/* Submit Button */}

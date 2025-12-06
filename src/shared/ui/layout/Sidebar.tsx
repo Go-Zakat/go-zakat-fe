@@ -103,7 +103,10 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
 
                         <button
                             onClick={onMobileClose}
-                            className="ml-auto lg:hidden text-slate-600 hover:text-slate-900 cursor-pointer"
+                            className={clsx(
+                                'ml-auto lg:hidden text-slate-600 hover:text-slate-900 cursor-pointer',
+                                isViewCollapsed && 'hidden'
+                            )}
                         >
                             <X size={20} />
                         </button>

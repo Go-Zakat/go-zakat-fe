@@ -7,8 +7,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface TooltipProps {
     children: ReactNode;
     content: ReactNode;
-    className?: string; // Class for the trigger wrapper
-    contentClassName?: string; // Class for the tooltip content
+    className?: string;
+    contentClassName?: string;
 }
 
 export const Tooltip = ({
