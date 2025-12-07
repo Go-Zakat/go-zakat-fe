@@ -1,8 +1,3 @@
-// ============================================================
-// PAGINATION TYPES
-// Types untuk pagination request dan response
-// ============================================================
-
 /**
  * Pagination Meta
  * Metadata pagination dari response

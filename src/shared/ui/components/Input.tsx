@@ -44,7 +44,7 @@ export const Input = ({
                     id={registration?.name || props.id}
                     type={inputType}
                     {...(registration || {})}
-                    className={`w-full py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-dark-paper text-gray-900 dark:text-white ${error ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
+                    className={`w-full py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-dark-paper text-gray-900 dark:text-white disabled:bg-gray-100 disabled:text-gray-500 disabled:cursor-not-allowed dark:disabled:bg-gray-800 dark:disabled:text-gray-400 ${error ? 'border-red-500' : 'border-gray-300 dark:border-gray-700'
                         } ${startIcon ? 'pl-10' : 'px-4'} ${isPassword ? 'pr-10' : 'pr-4'}`}
                     {...props}
                 />

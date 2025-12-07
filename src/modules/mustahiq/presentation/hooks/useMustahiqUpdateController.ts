@@ -7,8 +7,7 @@ import { useRouter } from 'next/navigation';
 import { mustahiqSchema, MustahiqFormValues } from '../../domain/mustahiq.types';
 import { useMustahiqUpdate } from '../../application/useMustahiqUpdate';
 import { useMustahiqDetail } from '../../application/useMustahiqDetail';
-import { useAsnafList } from '@/src/modules/asnaf/application/useAsnafList'; // Import Asnaf List hook
-import { MUSTAHIQ_STATUS } from '@/src/shared/config/constants';
+import { useAsnafList } from '@/src/modules/asnaf/application/useAsnafList';
 
 export const useMustahiqUpdateController = (id: string) => {
     const router = useRouter();

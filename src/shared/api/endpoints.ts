@@ -1,8 +1,3 @@
-// ============================================================
-// API ENDPOINTS
-// Semua endpoint API dari Swagger, diorganisir per feature
-// ============================================================
-
 export const ENDPOINTS = {
     // ================== AUTH ==================
     AUTH: {

@@ -1,6 +1,5 @@
 import {
     Role,
-    Status,
     MustahiqStatus,
     FundType,
     ZakatType,
@@ -130,6 +129,7 @@ export interface DonationReceipt {
     total_amount: number;
     notes?: string | null;
     muzakki_id?: string;
+    muzakki_name?: string;
     muzakki?: { id: string; full_name: string };
     created_by_user?: { id: string; full_name: string };
     items?: DonationReceiptItem[];

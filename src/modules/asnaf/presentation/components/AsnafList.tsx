@@ -119,16 +119,7 @@ export const AsnafList = () => {
                                                     )}
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-gray-500 dark:text-text-secondary">
-                                                    {/* Mobile Date (Short) */}
-                                                    <span className="lg:hidden">
-                                                        {new Date(item.createdAt).toLocaleDateString('id-ID', {
-                                                            day: 'numeric',
-                                                            month: 'numeric',
-                                                            year: 'numeric'
-                                                        })}
-                                                    </span>
-                                                    {/* Desktop Date (Long) */}
-                                                    <span className="hidden lg:block">
+                                                    <span>
                                                         {new Date(item.createdAt).toLocaleDateString('id-ID', {
                                                             day: 'numeric',
                                                             month: 'long',
