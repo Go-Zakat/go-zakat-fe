@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
-import { MustahiqUpdateForm } from '@/src/modules/mustahiq/presentation/components/MustahiqUpdateForm';
+import { MustahiqDetailView } from '@/src/modules/mustahiq/presentation/components/MustahiqDetailView';
 
 interface PageProps {
     params: Promise<{
@@ -10,20 +10,20 @@ interface PageProps {
     }>;
 }
 
-export default function MustahiqEditPage({ params }: PageProps) {
+export default function MustahiqDetailPage({ params }: PageProps) {
     const { id } = use(params);
 
     return (
         <div className="space-y-6">
             <PageHeader
-                title="Edit Mustahiq"
+                title="Detail Mustahiq"
                 breadcrumbs={[
                     { label: 'Master Data' },
-                    { label: 'Edit Mustahiq' }
+                    { label: 'Detail Mustahiq' },
                 ]}
             />
 
-            <MustahiqUpdateForm id={id} />
+            <MustahiqDetailView id={id} />
         </div>
     );
 }

@@ -1,26 +1,26 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { programApi } from '../infrastructure/program.api';
-import { ProgramRequest } from "../domain/program.types";
+import { mustahiqApi } from '../infrastructure/mustahiq.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
+import { Mustahiq } from "@/src/shared/types/common.types";
 
 /**
- * POST /api/v1/programs
+ * GET /api/v1/mustahiq/{id}
  */
-export const useProgramCreate = () => {
-    const router = useRouter();
+export const useMustahiqDetail = () => {
+    const [data, setData] = useState<Mustahiq | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createProgram = async (payload: ProgramRequest) => {
+    const getMustahiqById = async (id: string) => {
+        if (!id) return;
         setIsLoading(true);
         setError(null);
 
         try {
-            await programApi.create(payload);
-            router.push('/program');
+            const res = await mustahiqApi.getById(id);
+            setData(res.data);
         } catch (err) {
             setError(extractErrorMessage(err));
         } finally {
@@ -29,7 +29,8 @@ export const useProgramCreate = () => {
     };
 
     return {
-        createProgram,
+        getMustahiqById,
+        data,
         isLoading,
         error,
     };

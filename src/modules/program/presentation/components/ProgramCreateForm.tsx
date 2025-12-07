@@ -62,7 +62,7 @@ export const ProgramCreateForm = () => {
                 )}
 
                 <div className="flex items-center justify-end gap-3 pt-4">
-                    <Link href="/programs">
+                    <Link href="/program">
                         <Button variant="outline" type="button" disabled={isLoading}>
                             Batal
                         </Button>

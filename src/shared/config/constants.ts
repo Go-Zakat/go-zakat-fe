@@ -59,7 +59,7 @@ export type Status = (typeof STATUS)[keyof typeof STATUS];
 export const MUSTAHIQ_STATUS = {
     ACTIVE: 'active',
     INACTIVE: 'inactive',
-    GRADUATED: 'graduated', // Sudah tidak membutuhkan bantuan
+    PENDING: 'pending',
 } as const;
 
 export type MustahiqStatus =

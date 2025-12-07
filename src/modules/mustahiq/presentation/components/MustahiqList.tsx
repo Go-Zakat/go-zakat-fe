@@ -15,9 +15,10 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Input } from '@/src/shared/ui/components/Input';
 import { Select } from '@/src/shared/ui/components/Select';
 import { Modal } from '@/src/shared/ui/components/Modal';
-import { useProgramListController } from '@/src/modules/program/presentation/hooks/useProgramListController';
+import { useMustahiqListController } from '@/src/modules/mustahiq/presentation/hooks/useMustahiqListController';
+import { MUSTAHIQ_STATUS } from '@/src/shared/config/constants';
 
-export const ProgramList = () => {
+export const MustahiqList = () => {
     const router = useRouter();
 
     const {
@@ -26,21 +27,61 @@ export const ProgramList = () => {
         isLoading,
         isDeleting,
         search,
-        typeFilter,
-        activeFilter,
-        availableTypes,
         page,
         perPage,
         isDeleteModalOpen,
+        statusFilter,
+        asnafFilter,
+        asnafList,
         setSearch,
-        setTypeFilter,
-        setActiveFilter,
+        setStatusFilter,
+        setAsnafFilter,
         handlePageChange,
         handlePerPageChange,
         handleOpenDeleteModal,
         handleCloseDeleteModal,
         handleConfirmDelete
-    } = useProgramListController();
+    } = useMustahiqListController();
+
+    const statusOptions = [
+        { value: '', label: 'Semua Status' },
+        { value: MUSTAHIQ_STATUS.ACTIVE, label: 'Aktif' },
+        { value: MUSTAHIQ_STATUS.INACTIVE, label: 'Tidak Aktif' },
+        { value: MUSTAHIQ_STATUS.PENDING, label: 'Pending' },
+    ];
+
+    const asnafOptions = [
+        { value: '', label: 'Semua Asnaf' },
+        ...asnafList.map(asnaf => ({
+            value: asnaf.id,
+            label: asnaf.name
+        }))
+    ];
+
+    const getStatusBadgeClass = (status: string) => {
+        switch (status) {
+            case MUSTAHIQ_STATUS.ACTIVE:
+                return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+            case MUSTAHIQ_STATUS.INACTIVE:
+                return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+            case MUSTAHIQ_STATUS.PENDING:
+                return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+            case MUSTAHIQ_STATUS.GRADUATED:
+                return 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400';
+            default:
+                return 'bg-gray-100 text-gray-800 dark:bg-gray-800/30 dark:text-gray-400';
+        }
+    };
+
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case MUSTAHIQ_STATUS.ACTIVE: return 'Active';
+            case MUSTAHIQ_STATUS.INACTIVE: return 'Inactive';
+            case MUSTAHIQ_STATUS.PENDING: return 'Pending';
+            case MUSTAHIQ_STATUS.GRADUATED: return 'Graduated';
+            default: return status;
+        }
+    }
 
     return (
         <>
@@ -52,48 +93,38 @@ export const ProgramList = () => {
                             <div className="flex flex-row gap-3 w-auto">
                                 <div className="w-64">
                                     <Input
-                                        placeholder="Cari Program..."
+                                        placeholder="Cari Mustahiq..."
                                         value={search}
                                         onChange={(e) => setSearch(e.target.value)}
                                         startIcon={<Search size={18} />}
                                         className="w-full"
                                     />
                                 </div>
-                                <div className="w-40">
+                                <div className="w-48">
                                     <Select
-                                        value={typeFilter}
-                                        onChange={(e) => setTypeFilter(e.target.value)}
-                                        options={[
-                                            { value: '', label: 'Semua Tipe' },
-                                            ...availableTypes.map(type => ({
-                                                value: type,
-                                                label: type
-                                            }))
-                                        ]}
+                                        value={statusFilter}
+                                        onChange={(e) => setStatusFilter(e.target.value)}
+                                        options={statusOptions}
                                         className="w-full"
                                     />
                                 </div>
-                                <div className="w-40">
+                                <div className="w-48">
                                     <Select
-                                        value={activeFilter}
-                                        onChange={(e) => setActiveFilter(e.target.value)}
-                                        options={[
-                                            { value: '', label: 'Semua Status' },
-                                            { value: 'true', label: 'Aktif' },
-                                            { value: 'false', label: 'Tidak Aktif' }
-                                        ]}
+                                        value={asnafFilter}
+                                        onChange={(e) => setAsnafFilter(e.target.value)}
+                                        options={asnafOptions}
                                         className="w-full"
                                     />
                                 </div>
                             </div>
 
                             <Button
-                                onClick={() => router.push('/program/create')}
+                                onClick={() => router.push('/mustahiq/create')}
                                 className="w-auto"
                                 size="md"
                             >
                                 <Plus size={18} />
-                                Tambah Program
+                                Tambah Mustahiq
                             </Button>
                         </div>
 
@@ -105,9 +136,9 @@ export const ProgramList = () => {
                                         <th className="px-6 py-4 text-left w-12">
                                             <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
                                         </th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider min-w-[200px]">Nama Program</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Tipe</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[150px]">Status</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider min-w-[200px]">Nama Mustahiq</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Asnaf</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Status</th>
                                         <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[200px]">Tanggal Dibuat</th>
                                         <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap w-[120px]">Aksi</th>
                                     </tr>
@@ -122,7 +153,7 @@ export const ProgramList = () => {
                                     ) : items.length === 0 ? (
                                         <tr>
                                             <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
-                                                Belum ada data program
+                                                Belum ada data mustahiq
                                             </td>
                                         </tr>
                                     ) : (
@@ -133,23 +164,19 @@ export const ProgramList = () => {
                                                 </td>
                                                 <td className="px-6 py-4">
                                                     <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold shrink-0">
+                                                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold">
                                                             {item.name.substring(0, 2).toUpperCase()}
                                                         </div>
                                                         <span className="font-medium text-gray-900 dark:text-text-primary">{item.name}</span>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary">
-                                                    <span className="px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-dark-border text-gray-700 dark:text-gray-300">
-                                                        {item.type}
-                                                    </span>
+                                                    {item.asnaf?.name || '-'}
                                                 </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.active
-                                                        ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
-                                                        : 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400'
-                                                        }`}>
-                                                        {item.active ? 'Aktif' : 'Tidak Aktif'}
+                                                <td className="px-6 py-4 text-sm">
+                                                    {/* Updated Badge using helper function */}
+                                                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusBadgeClass(item.status)}`}>
+                                                        {getStatusLabel(item.status)}
                                                     </span>
                                                 </td>
                                                 <td className="px-6 py-4 text-sm text-gray-500 dark:text-text-secondary">
@@ -172,13 +199,13 @@ export const ProgramList = () => {
                                                 </td>
                                                 <td className="px-6 py-4 text-right">
                                                     <div className="flex items-center justify-end gap-2">
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/program/${item.id}/edit`)}>
+                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/mustahiq/${item.id}/edit`)}>
                                                             <Edit size={16} />
                                                         </Button>
                                                         <Button variant="ghost" size="icon"
                                                             className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
                                                             title="Detail"
-                                                            onClick={() => router.push(`/program/${item.id}`)}
+                                                            onClick={() => router.push(`/mustahiq/${item.id}`)}
                                                         >
                                                             <Eye size={16} />
                                                         </Button>
@@ -253,13 +280,13 @@ export const ProgramList = () => {
             <Modal
                 isOpen={isDeleteModalOpen}
                 onClose={handleCloseDeleteModal}
-                title="Hapus Program"
+                title="Hapus Mustahiq"
             >
                 <div className="space-y-4">
                     <div className="flex items-center gap-3 text-amber-500 dark:text-amber-400 p-3 bg-amber-50 dark:bg-amber-900/20 rounded-lg">
                         <AlertTriangle className="h-6 w-6 shrink-0" />
                         <p className="text-sm">
-                            Apakah Anda yakin ingin menghapus program ini? Data yang dihapus tidak dapat dikembalikan.
+                            Apakah Anda yakin ingin menghapus data mustahiq ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
 

@@ -50,7 +50,7 @@ export const ProgramDetailView = ({ id }: ProgramDetailViewProps) => {
                             <p className="text-sm text-gray-500 dark:text-gray-400">ID: {program.id}</p>
                         </div>
                     </div>
-                    <Link href={`/programs/${program.id}/edit`} className="w-full sm:w-auto">
+                    <Link href={`/program/${program.id}/edit`} className="w-full sm:w-auto">
                         <Button className="w-full">
                             <Edit className="w-4 h-4 mr-2" />
                             Edit

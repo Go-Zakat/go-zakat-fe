@@ -157,7 +157,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             <SidebarItem icon={HeartHandshake} label="Asnaf" href="/asnaf" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={HandHeart} label="Mustahiq" href="/mustahiq" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={Wallet} label="Muzakki" href="/muzakki" isCollapsed={isViewCollapsed} />
-                            <SidebarItem icon={NotebookText} label="Programs" href="/programs" isCollapsed={isViewCollapsed} />
+                            <SidebarItem icon={NotebookText} label="Program" href="/program" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={Users} label="Users" href="/users" isCollapsed={isViewCollapsed} />
                         </div>
 

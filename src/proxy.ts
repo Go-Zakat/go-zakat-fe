@@ -7,7 +7,7 @@ const protectedRoutes = [
     '/asnaf',
     '/mustahiq',
     '/muzakki',
-    '/programs',
+    '/program',
     '/donation-receipts',
     '/distributions',
     '/reports',

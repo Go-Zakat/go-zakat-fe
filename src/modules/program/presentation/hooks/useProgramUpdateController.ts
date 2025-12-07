@@ -42,7 +42,7 @@ export const useProgramUpdateController = (id: string) => {
     const onSubmit = async (data: ProgramFormValues) => {
         try {
             await updateProgram(id, data);
-            router.push('/programs');
+            router.push('/program');
         } catch (error) {
             console.error('Failed to update program:', error);
         }
