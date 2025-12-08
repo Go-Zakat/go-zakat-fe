@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { donationReceiptsApi } from '../infrastructure/donationReceipts.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -11,7 +11,7 @@ export const useDonationReceiptDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteDonationReceipt = async (id: string) => {
+    const deleteDonationReceipt = useCallback(async (id: string) => {
         setIsLoading(true);
         setError(null);
 
@@ -24,7 +24,7 @@ export const useDonationReceiptDelete = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         deleteDonationReceipt,

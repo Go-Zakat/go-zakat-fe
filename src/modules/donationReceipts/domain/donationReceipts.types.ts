@@ -9,18 +9,16 @@ import { DonationReceipt } from "@/src/shared/types/common.types";
 
 
 // ============================================================
-// MUSTAHIQ TYPES
+// DONATION RECEIPT TYPES
 // ============================================================
 
 /**
  * Donation Receipt Item Schema
  */
 export const donationReceiptItemSchema = z.object({
-    fund_type: z.enum([FUND_TYPES.ZAKAT, FUND_TYPES.INFAQ, FUND_TYPES.SADAQAH], {
-        required_error: 'Jenis dana wajib dipilih',
-    }),
+    fund_type: z.enum([FUND_TYPES.ZAKAT, FUND_TYPES.INFAQ, FUND_TYPES.SADAQAH]),
     amount: z.coerce
-        .number({ invalid_type_error: 'Jumlah harus berupa angka' })
+        .number()
         .min(1000, 'Jumlah minimal Rp 1.000'),
     zakat_type: z
         .enum([ZAKAT_TYPES.FITRAH, ZAKAT_TYPES.MAAL])
@@ -38,16 +36,14 @@ export const donationReceiptItemSchema = z.object({
         .nullable(),
     notes: z.string().optional(),
 }).refine((data) => {
-    // Validasi Zakat Type jika Fund Type adalah Zakat
     return !(data.fund_type === FUND_TYPES.ZAKAT && !data.zakat_type);
 }, {
     message: 'Tipe zakat wajib dipilih jika jenis dana adalah Zakat',
     path: ['zakat_type'],
 }).refine((data) => {
-    // Validasi Person Count jika Zakat Fitrah
     if (data.fund_type === FUND_TYPES.ZAKAT && data.zakat_type === ZAKAT_TYPES.FITRAH) {
         if (!data.person_count && !data.rice_kg) {
-            return false; // Salah satu harus diisi (uang atau beras asumsinya dikonversi, tapi form biasanya butuh person_count)
+            return false;
         }
     }
     return true;
@@ -67,21 +63,27 @@ export const donationReceiptSchema = z.object({
         PAYMENT_METHODS.BANK_TRANSFER,
         PAYMENT_METHODS.E_WALLET,
         PAYMENT_METHODS.QRIS,
-    ], {
-        required_error: 'Metode pembayaran wajib dipilih',
-    }),
+    ]),
     muzakki_id: z.string().min(1, 'Muzakki wajib dipilih'),
     notes: z.string().optional(),
     items: z.array(donationReceiptItemSchema).min(1, 'Minimal harus ada 1 item donasi'),
 });
 
 export type DonationReceiptFormValues = z.infer<typeof donationReceiptSchema>;
-export type DonationReceiptItemFormValues = z.infer<typeof donationReceiptItemSchema>;
 
 // ============================================================
 // API REQUEST TYPES
 // ============================================================
 
+/**
+ * Create Donation Receipt Request
+ * Body untuk POST /api/v1/donation-receipts
+ *
+ * Dan
+ *
+ * Update Donation Receipt Request
+ * Body untuk PUT /api/v1/donation-receipts/{id}
+ */
 export interface DonationReceiptItemRequest {
     amount: number;
     fund_type: string;
@@ -104,6 +106,20 @@ export interface DonationReceiptRequest {
 // API RESPONSE TYPES
 // ============================================================
 
+/**
+ * Donation Receipt List Response
+ * Wrapper untuk GET /api/v1/donation-receipts
+ */
 export type DonationReceiptListResponseWrapper = ApiListResponse<DonationReceipt>;
+
+/**
+ * Donation Receipt Detail/Create/Update Response
+ * Wrapper untuk GET /api/v1/donation-receipts/{id}
+ */
 export type DonationReceiptResponseWrapper = ApiSuccessResponse<DonationReceipt>;
+
+/**
+ * Donation Receipt Delete Response
+ * Wrapper untuk DELETE /api/v1/donation-receipts/{id}
+ */
 export type DonationReceiptDeleteResponseWrapper = ApiEmptySuccessResponse;

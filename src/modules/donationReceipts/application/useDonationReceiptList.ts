@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { donationReceiptsApi, GetDonationReceiptListParams } from '../infrastructure/donationReceipts.api';
 import { PaginatedData } from '@/src/shared/types/pagination.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,7 @@ export const useDonationReceiptList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getDonationReceiptList = async (params?: GetDonationReceiptListParams) => {
+    const getDonationReceiptList = useCallback(async (params?: GetDonationReceiptListParams) => {
         setIsLoading(true);
         setError(null);
 
@@ -30,7 +30,7 @@ export const useDonationReceiptList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getDonationReceiptList,

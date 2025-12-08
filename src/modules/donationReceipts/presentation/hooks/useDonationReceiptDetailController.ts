@@ -4,14 +4,13 @@ import { useEffect } from 'react';
 import { useDonationReceiptDetail } from '../../application/useDonationReceiptDetail';
 
 export const useDonationReceiptDetailController = (id: string) => {
-    // Hook Detail
     const { getDonationReceiptById, data: donationReceipt, isLoading, error } = useDonationReceiptDetail();
 
     useEffect(() => {
         if (id) {
-            getDonationReceiptById(id);
+            void getDonationReceiptById(id);
         }
-    }, [id]);
+    }, [id, getDonationReceiptById]);
 
     return {
         donationReceipt,

@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { donationReceiptSchema, DonationReceiptFormValues } from '../../domain/donationReceipts.types';
+import { donationReceiptSchema, DonationReceiptFormValues, DonationReceiptRequest } from '../../domain/donationReceipts.types';
 import { useDonationReceiptUpdate } from '../../application/useDonationReceiptUpdate';
 import { useDonationReceiptDetail } from '../../application/useDonationReceiptDetail';
 import { useMuzakkiList } from '@/src/modules/muzakki/application/useMuzakkiList';
@@ -12,15 +12,14 @@ export const useDonationReceiptUpdateController = (id: string) => {
     const { updateDonationReceipt, isLoading: isUpdating, error: updateError } = useDonationReceiptUpdate();
     const { getDonationReceiptById, data: donationReceipt, isLoading: isFetching, error: fetchError } = useDonationReceiptDetail();
 
-    // Fetch Muzakki List
     const { getMuzakkiList, items: muzakkiList, isLoading: isMuzakkiLoading } = useMuzakkiList();
 
     useEffect(() => {
-        getMuzakkiList({ per_page: 100 });
+        void getMuzakkiList({ per_page: 100 });
         if (id) {
-            getDonationReceiptById(id);
+            void getDonationReceiptById(id);
         }
-    }, [id]);
+    }, [id, getMuzakkiList, getDonationReceiptById]);
 
     const {
         register,
@@ -31,7 +30,7 @@ export const useDonationReceiptUpdateController = (id: string) => {
         setValue,
         reset
     } = useForm<DonationReceiptFormValues>({
-        resolver: zodResolver(donationReceiptSchema),
+        resolver: zodResolver(donationReceiptSchema) as unknown as Resolver<DonationReceiptFormValues>,
         defaultValues: {
             items: []
         }
@@ -42,19 +41,18 @@ export const useDonationReceiptUpdateController = (id: string) => {
         name: "items"
     });
 
-    // Populate form with existing data
     useEffect(() => {
         if (donationReceipt) {
             reset({
                 receipt_number: donationReceipt.receipt_number,
                 receipt_date: donationReceipt.receipt_date ? new Date(donationReceipt.receipt_date).toISOString().split('T')[0] : '',
-                payment_method: donationReceipt.payment_method as any,
+                payment_method: donationReceipt.payment_method as DonationReceiptFormValues['payment_method'],
                 muzakki_id: donationReceipt.muzakki_id || donationReceipt.muzakki?.id || '',
                 notes: donationReceipt.notes || '',
                 items: donationReceipt.items?.map(item => ({
                     amount: item.amount,
-                    fund_type: item.fund_type as any,
-                    zakat_type: item.zakat_type as any,
+                    fund_type: item.fund_type as DonationReceiptFormValues['items'][number]['fund_type'],
+                    zakat_type: item.zakat_type as DonationReceiptFormValues['items'][number]['zakat_type'],
                     person_count: item.person_count || undefined,
                     rice_kg: item.rice_kg || undefined,
                     notes: item.notes || ''
@@ -64,7 +62,12 @@ export const useDonationReceiptUpdateController = (id: string) => {
     }, [donationReceipt, reset]);
 
     const onSubmit = (data: DonationReceiptFormValues) => {
-        updateDonationReceipt(id, data as any);
+        const requestData = data as unknown as DonationReceiptRequest;
+
+        updateDonationReceipt(id, requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal update:", err);
+            });
     };
 
     return {

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { donationReceiptsApi } from '../infrastructure/donationReceipts.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,7 @@ export const useDonationReceiptCreate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createDonationReceipt = async (payload: DonationReceiptRequest) => {
+    const createDonationReceipt = useCallback(async (payload: DonationReceiptRequest) => {
         setIsLoading(true);
         setError(null);
 
@@ -23,10 +23,11 @@ export const useDonationReceiptCreate = () => {
             router.push('/donation-receipts');
         } catch (err) {
             setError(extractErrorMessage(err));
+            throw err;
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [router]);
 
     return {
         createDonationReceipt,
