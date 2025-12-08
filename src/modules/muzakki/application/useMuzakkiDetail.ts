@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { muzakkiApi } from '../infrastructure/muzakki.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 import { Muzakki } from "@/src/shared/types/common.types";
@@ -13,7 +13,8 @@ export const useMuzakkiDetail = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMuzakkiById = async (id: string) => {
+    // Bungkus dengan useCallback
+    const getMuzakkiById = useCallback(async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -26,7 +27,7 @@ export const useMuzakkiDetail = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getMuzakkiById,

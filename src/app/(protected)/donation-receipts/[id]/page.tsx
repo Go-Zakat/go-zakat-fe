@@ -2,7 +2,7 @@
 
 import { use } from 'react';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
-import { DonationReceiptDetailView } from '@/src/modules/donationReceipts/presentation/components/DonationReceiptDetailView';
+import { DonationReceiptDetailView } from '@/src/modules/donation-receipts/presentation/components/DonationReceiptDetailView';
 
 interface PageProps {
     params: Promise<{

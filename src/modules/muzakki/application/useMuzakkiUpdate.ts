@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { muzakkiApi } from '../infrastructure/muzakki.api';
 import { MuzakkiRequest } from '../domain/muzakki.types';
@@ -14,7 +14,8 @@ export const useMuzakkiUpdate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const updateMuzakki = async (id: string, payload: MuzakkiRequest) => {
+    // Bungkus useCallback + throw err
+    const updateMuzakki = useCallback(async (id: string, payload: MuzakkiRequest) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -24,10 +25,11 @@ export const useMuzakkiUpdate = () => {
             router.push('/muzakki');
         } catch (err) {
             setError(extractErrorMessage(err));
+            throw err; // Lempar error ke controller
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [router]);
 
     return {
         updateMuzakki,

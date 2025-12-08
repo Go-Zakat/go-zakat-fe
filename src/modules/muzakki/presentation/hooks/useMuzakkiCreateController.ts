@@ -1,8 +1,8 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { muzakkiSchema, MuzakkiFormValues } from '../../domain/muzakki.types';
+import { muzakkiSchema, MuzakkiFormValues, MuzakkiRequest } from '../../domain/muzakki.types';
 import { useMuzakkiCreate } from '../../application/useMuzakkiCreate';
 
 export const useMuzakkiCreateController = () => {
@@ -13,11 +13,18 @@ export const useMuzakkiCreateController = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<MuzakkiFormValues>({
-        resolver: zodResolver(muzakkiSchema),
+        // Casting Resolver
+        resolver: zodResolver(muzakkiSchema) as unknown as Resolver<MuzakkiFormValues>,
     });
 
-    const onSubmit = (data: MuzakkiFormValues) => {
-        createMuzakki(data);
+    const onSubmit: SubmitHandler<MuzakkiFormValues> = (data) => {
+        const requestData = data as unknown as MuzakkiRequest;
+
+        // Handle Promise catch
+        createMuzakki(requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal create muzakki:", err);
+            });
     };
 
     return {

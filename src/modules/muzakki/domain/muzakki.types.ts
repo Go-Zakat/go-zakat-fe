@@ -7,7 +7,7 @@ import {
 } from '@/src/shared/types/api.types';
 
 // ============================================================
-// MUZAKKI TYPES
+// MUZAKKI SCHEMA & FORM VALUES
 // ============================================================
 
 /**
@@ -19,18 +19,26 @@ export const muzakkiSchema = z.object({
         .string()
         .min(1, 'Nama muzakki wajib diisi')
         .max(100, 'Nama muzakki maksimal 100 karakter'),
+
     phoneNumber: z
         .string()
         .min(1, 'Nomor telepon wajib diisi')
-        .max(20, 'Nomor telepon maksimal 20 karakter'),
+        .max(20, 'Nomor telepon maksimal 20 karakter'), // Added max validation
+
     address: z
         .string()
-        .min(1, 'Alamat wajib diisi'),
-    notes: z.string().optional().or(z.literal('')),
+        .min(1, 'Alamat wajib diisi')
+        .max(255, 'Alamat maksimal 255 karakter'), // Added max validation
+
+    notes: z
+        .string()
+        .max(255, 'Catatan maksimal 255 karakter')
+        .optional()
+        .or(z.literal('')), // Handle string kosong
 });
 
 /**
- * Nilai form Muzakki (create / update)
+ * Tipe data untuk Form Values (Inferred from Zod)
  */
 export type MuzakkiFormValues = z.infer<typeof muzakkiSchema>;
 
@@ -39,13 +47,8 @@ export type MuzakkiFormValues = z.infer<typeof muzakkiSchema>;
 // ============================================================
 
 /**
- * Create Muzakki Request
- * Body untuk POST /api/v1/muzakki
- *
- * Dan
- *
- * Update Muzakki Request
- * Body untuk PUT /api/v1/muzakki/{id}
+ * Create/Update Muzakki Request
+ * Payload untuk endpoint POST dan PUT
  */
 export interface MuzakkiRequest {
     name: string;
@@ -60,18 +63,18 @@ export interface MuzakkiRequest {
 
 /**
  * Muzakki List Response Wrapper
- * Wrapper untuk GET /api/v1/muzakki
+ * GET /api/v1/muzakki
  */
 export type MuzakkiListResponseWrapper = ApiListResponse<Muzakki>;
 
 /**
  * Muzakki Detail/Create/Update Response Wrapper
- * Wrapper untuk GET/POST/PUT /api/v1/muzakki/{id}
+ * GET/POST/PUT /api/v1/muzakki/{id}
  */
 export type MuzakkiResponseWrapper = ApiSuccessResponse<Muzakki>;
 
 /**
  * Muzakki Delete Response Wrapper
- * Wrapper untuk DELETE /api/v1/muzakki/{id}
+ * DELETE /api/v1/muzakki/{id}
  */
 export type MuzakkiDeleteResponseWrapper = ApiEmptySuccessResponse;

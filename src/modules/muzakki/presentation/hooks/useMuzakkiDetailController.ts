@@ -8,9 +8,10 @@ export const useMuzakkiDetailController = (id: string) => {
 
     useEffect(() => {
         if (id) {
-            getMuzakkiById(id);
+            // Void & Dependency
+            void getMuzakkiById(id);
         }
-    }, [id]);
+    }, [id, getMuzakkiById]);
 
     return {
         muzakki,

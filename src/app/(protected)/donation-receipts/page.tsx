@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { DonationReceiptList } from '@/src/modules/donationReceipts/presentation/components/DonationReceiptList';
+import { DonationReceiptList } from '@/src/modules/donation-receipts/presentation/components/DonationReceiptList';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
 
 function DonationReceiptContent() {

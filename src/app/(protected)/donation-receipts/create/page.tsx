@@ -1,7 +1,7 @@
 'use client';
 
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
-import { DonationReceiptCreateForm } from '@/src/modules/donationReceipts/presentation/components/DonationReceiptCreateForm';
+import { DonationReceiptCreateForm } from '@/src/modules/donation-receipts/presentation/components/DonationReceiptCreateForm';
 
 export default function DonationReceiptCreatePage() {
     return (

@@ -4,7 +4,7 @@ import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { donationReceiptsApi } from '../infrastructure/donationReceipts.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
-import { DonationReceiptRequest } from "@/src/modules/donationReceipts/domain/donationReceipts.types";
+import { DonationReceiptRequest } from "@/src/modules/donation-receipts/domain/donationReceipts.types";
 
 /**
  * POST /api/v1/donation-receipts

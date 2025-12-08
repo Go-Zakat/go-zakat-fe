@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { muzakkiApi, GetMuzakkiListParams } from '../infrastructure/muzakki.api';
 import { PaginatedData } from '@/src/shared/types/pagination.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,8 @@ export const useMuzakkiList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMuzakkiList = async (params?: GetMuzakkiListParams) => {
+    // Bungkus dengan useCallback
+    const getMuzakkiList = useCallback(async (params?: GetMuzakkiListParams) => {
         setIsLoading(true);
         setError(null);
 
@@ -26,7 +27,7 @@ export const useMuzakkiList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getMuzakkiList,

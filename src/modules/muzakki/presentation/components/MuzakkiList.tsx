@@ -1,11 +1,11 @@
+'use client';
+
 import {
     Eye,
     Edit,
     Trash2,
     Search,
     Plus,
-    ChevronLeft,
-    ChevronRight,
     AlertTriangle,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -14,6 +14,8 @@ import { Input } from '@/src/shared/ui/components/Input';
 import { Modal } from '@/src/shared/ui/components/Modal';
 import { useMuzakkiListController } from '@/src/modules/muzakki/presentation/hooks/useMuzakkiListController';
 import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { Pagination } from "@/src/shared/ui/components/Pagination";
+import { Table, Column } from "@/src/shared/ui/components/Table";
 
 export const MuzakkiList = () => {
     const router = useRouter();
@@ -34,6 +36,83 @@ export const MuzakkiList = () => {
         handleCloseDeleteModal,
         handleConfirmDelete
     } = useMuzakkiListController();
+
+    // --- Definisi Kolom ---
+    const columns: Column<typeof items[0]>[] = [
+        {
+            header: 'Nama Muzakki',
+            cell: (item) => (
+                <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold">
+                        {item.name.substring(0, 2).toUpperCase()}
+                    </div>
+                    <span className="font-medium text-gray-900 dark:text-text-primary">{item.name}</span>
+                </div>
+            ),
+            className: "w-[25%]"
+        },
+        {
+            header: 'Alamat',
+            cell: (item) => (
+                <div className="text-sm text-gray-600 dark:text-text-secondary w-full truncate">
+                    {item.address ? (
+                        <Tooltip content={<p className="text-xs">{item.address}</p>}>
+                            <span className="cursor-help border-b border-dashed border-gray-300 dark:border-gray-600">
+                                {item.address}
+                            </span>
+                        </Tooltip>
+                    ) : '-'}
+                </div>
+            ),
+            className: "w-[30%] max-w-0"
+        },
+        {
+            header: 'No. Telepon',
+            accessorKey: 'phoneNumber',
+            className: "w-[15%] whitespace-nowrap text-sm text-gray-600 dark:text-text-secondary"
+        },
+        {
+            header: 'Tanggal Dibuat',
+            cell: (item) => (
+                <span className="text-sm text-gray-500 dark:text-text-secondary">
+                    {new Date(item.createdAt).toLocaleDateString('id-ID', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    })}
+                </span>
+            ),
+            className: "w-[15%] whitespace-nowrap"
+        },
+        {
+            header: 'Aksi',
+            cell: (item) => (
+                <div className="flex items-center justify-center gap-2">
+                    <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/muzakki/${item.id}/edit`)}>
+                        <Edit size={16} />
+                    </Button>
+                    <Button variant="ghost" size="icon"
+                            className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
+                            title="Detail"
+                            onClick={() => router.push(`/muzakki/${item.id}`)}
+                    >
+                        <Eye size={16} />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+                        title="Hapus"
+                        onClick={() => handleOpenDeleteModal(item.id)}
+                    >
+                        <Trash2 size={16} />
+                    </Button>
+                </div>
+            ),
+            className: "w-[15%] text-right",
+            headerClassName: "text-right"
+        }
+    ];
 
     return (
         <>
@@ -64,155 +143,25 @@ export const MuzakkiList = () => {
                             </Button>
                         </div>
 
-                        {/* Table */}
-                        <div className="">
-                            <table className="w-full">
-                                <thead>
-                                    <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
-                                        <th className="px-6 py-4 text-left w-12">
-                                            <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
-                                        </th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider min-w-[300px]">Nama Muzakki</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Alamat</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">No. Telepon</th>
-                                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Tanggal Dibuat</th>
-                                        <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap">Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
-                                    {isLoading ? (
-                                        <tr>
-                                            <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
-                                                Memuat data...
-                                            </td>
-                                        </tr>
-                                    ) : items.length === 0 ? (
-                                        <tr>
-                                            <td colSpan={6} className="px-6 py-8 text-center text-gray-500 dark:text-text-secondary">
-                                                Belum ada data muzakki
-                                            </td>
-                                        </tr>
-                                    ) : (
-                                        items.map((item) => (
-                                            <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
-                                                <td className="px-6 py-4">
-                                                    <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
-                                                </td>
-                                                <td className="px-6 py-4">
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="w-8 h-8 rounded-full bg-blue-100 dark:bg-primary-blue/20 text-blue-600 dark:text-primary-blue flex items-center justify-center text-xs font-bold">
-                                                            {item.name.substring(0, 2).toUpperCase()}
-                                                        </div>
-                                                        <span className="font-medium text-gray-900 dark:text-text-primary">{item.name}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary max-w-xs">
-                                                    {item.address ? (
-                                                        <Tooltip content={<p className="text-xs">{item.address}</p>}>
-                                                            <span className="cursor-help border-b border-dashed border-gray-300 dark:border-gray-600 line-clamp-2 text-left">
-                                                                {item.address}
-                                                            </span>
-                                                        </Tooltip>
-                                                    ) : (
-                                                        '-'
-                                                    )}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary whitespace-nowrap">
-                                                    {item.phoneNumber}
-                                                </td>
-                                                <td className="px-6 py-4 text-sm text-gray-500 dark:text-text-secondary whitespace-nowrap">
-                                                    {/* Mobile Date (Short) */}
-                                                    <span className="lg:hidden">
-                                                        {new Date(item.createdAt).toLocaleDateString('id-ID', {
-                                                            day: 'numeric',
-                                                            month: 'numeric',
-                                                            year: 'numeric'
-                                                        })}
-                                                    </span>
-                                                    {/* Desktop Date (Long) */}
-                                                    <span className="hidden lg:block">
-                                                        {new Date(item.createdAt).toLocaleDateString('id-ID', {
-                                                            day: 'numeric',
-                                                            month: 'long',
-                                                            year: 'numeric'
-                                                        })}
-                                                    </span>
-                                                </td>
-                                                <td className="px-6 py-4 text-right">
-                                                    <div className="flex items-center justify-end gap-2">
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue" title="Edit" onClick={() => router.push(`/muzakki/${item.id}/edit`)}>
-                                                            <Edit size={16} />
-                                                        </Button>
-                                                        <Button variant="ghost" size="icon"
-                                                            className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
-                                                            title="Detail"
-                                                            onClick={() => router.push(`/muzakki/${item.id}`)}
-                                                        >
-                                                            <Eye size={16} />
-                                                        </Button>
-                                                        <Button
-                                                            variant="ghost"
-                                                            size="icon"
-                                                            className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
-                                                            title="Hapus"
-                                                            onClick={() => handleOpenDeleteModal(item.id)}
-                                                        >
-                                                            <Trash2 size={16} />
-                                                        </Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))
-                                    )}
-                                </tbody>
-                            </table>
-                        </div>
+                        {/* Table Component */}
+                        <Table
+                            columns={columns}
+                            data={items}
+                            isLoading={isLoading}
+                            keyExtractor={(item) => item.id}
+                            emptyMessage="Belum ada data muzakki"
+                        />
 
-                        {/* Pagination */}
-                        <div className="px-6 py-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-between">
-                            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-text-secondary">
-                                <span>Rows per page:</span>
-                                <select
-                                    value={perPage}
-                                    onChange={handlePerPageChange}
-                                    className="border border-gray-200 dark:border-dark-border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-blue cursor-pointer bg-white dark:bg-dark-main text-gray-900 dark:text-text-primary"
-                                >
-                                    <option value={10}>10</option>
-                                    <option value={20}>20</option>
-                                    <option value={50}>50</option>
-                                </select>
-                            </div>
-
-                            <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-text-secondary">
-                                <span>
-                                    {(meta?.page || 0) * (meta?.per_page || 0) - (meta?.per_page || 0) + 1}
-                                    -
-                                    {Math.min((meta?.page || 0) * (meta?.per_page || 0), meta?.total || 0)}
-                                    {' '}of{' '}
-                                    {meta?.total || 0}
-                                </span>
-                                <div className="flex items-center gap-1">
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        onClick={() => handlePageChange(page - 1)}
-                                        disabled={page <= 1 || isLoading}
-                                    >
-                                        <ChevronLeft size={18} />
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="icon"
-                                        className="h-8 w-8"
-                                        onClick={() => handlePageChange(page + 1)}
-                                        disabled={page >= (meta?.total_page || 1) || isLoading}
-                                    >
-                                        <ChevronRight size={18} />
-                                    </Button>
-                                </div>
-                            </div>
-                        </div>
+                        {/* Pagination Component */}
+                        <Pagination
+                            page={page}
+                            perPage={perPage}
+                            totalItems={meta?.total || 0}
+                            totalPages={meta?.total_page || 1}
+                            isLoading={isLoading}
+                            onPageChange={handlePageChange}
+                            onPerPageChange={handlePerPageChange}
+                        />
                     </div>
                 </div>
             </div>

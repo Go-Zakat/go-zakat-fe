@@ -25,12 +25,13 @@ export const useMuzakkiListController = () => {
 
     // Effect untuk memanggil API saat search/pagination berubah
     useEffect(() => {
-        getMuzakkiList({
+        // Gunakan void dan masukkan getMuzakkiList ke dependency
+        void getMuzakkiList({
             q: debouncedSearch,
             page,
             per_page: perPage
         });
-    }, [debouncedSearch, page, perPage]);
+    }, [debouncedSearch, page, perPage, getMuzakkiList]);
 
     // Fungsi untuk mengubah halaman
     const handlePageChange = (newPage: number) => {
@@ -39,9 +40,9 @@ export const useMuzakkiListController = () => {
         }
     };
 
-    // Fungsi untuk mengubah jumlah baris per halaman
-    const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setPerPage(Number(e.target.value));
+    // Ubah parameter jadi number (Clean Code)
+    const handlePerPageChange = (newPerPage: number) => {
+        setPerPage(newPerPage);
         setPage(1);
     };
 
@@ -65,7 +66,7 @@ export const useMuzakkiListController = () => {
         if (success) {
             handleCloseDeleteModal();
             // Refresh data setelah berhasil menghapus
-            getMuzakkiList({
+            void getMuzakkiList({
                 q: debouncedSearch,
                 page,
                 per_page: perPage

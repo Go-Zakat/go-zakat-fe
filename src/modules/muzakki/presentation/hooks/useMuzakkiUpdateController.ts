@@ -1,15 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { muzakkiSchema, MuzakkiFormValues } from '../../domain/muzakki.types';
+import { muzakkiSchema, MuzakkiFormValues, MuzakkiRequest } from '../../domain/muzakki.types';
 import { useMuzakkiUpdate } from '../../application/useMuzakkiUpdate';
 import { useMuzakkiDetail } from '../../application/useMuzakkiDetail';
 
 export const useMuzakkiUpdateController = (id: string) => {
-    const router = useRouter();
     const { updateMuzakki, isLoading: isUpdating, error: updateError } = useMuzakkiUpdate();
     const { data: muzakki, isLoading: isLoadingDetail, error: detailError, getMuzakkiById } = useMuzakkiDetail();
 
@@ -19,14 +17,16 @@ export const useMuzakkiUpdateController = (id: string) => {
         reset,
         formState: { errors },
     } = useForm<MuzakkiFormValues>({
-        resolver: zodResolver(muzakkiSchema),
+        // Casting Resolver
+        resolver: zodResolver(muzakkiSchema) as unknown as Resolver<MuzakkiFormValues>,
     });
 
     useEffect(() => {
         if (id) {
-            getMuzakkiById(id);
+            // Void & Dependency
+            void getMuzakkiById(id);
         }
-    }, [id]);
+    }, [id, getMuzakkiById]);
 
     useEffect(() => {
         if (muzakki) {
@@ -39,13 +39,14 @@ export const useMuzakkiUpdateController = (id: string) => {
         }
     }, [muzakki, reset]);
 
-    const onSubmit = async (data: MuzakkiFormValues) => {
-        try {
-            await updateMuzakki(id, data);
-            router.push('/muzakki');
-        } catch (error) {
-            console.error('Failed to update muzakki:', error);
-        }
+    const onSubmit: SubmitHandler<MuzakkiFormValues> = (data) => {
+        const requestData = data as unknown as MuzakkiRequest;
+
+        // Handle Promise catch
+        updateMuzakki(id, requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal update muzakki:", err);
+            });
     };
 
     return {

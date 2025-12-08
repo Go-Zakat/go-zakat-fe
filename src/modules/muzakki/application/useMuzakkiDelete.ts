@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { muzakkiApi } from '../infrastructure/muzakki.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -11,7 +11,8 @@ export const useMuzakkiDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteMuzakki = async (id: string): Promise<boolean> => {
+    // Bungkus dengan useCallback
+    const deleteMuzakki = useCallback(async (id: string): Promise<boolean> => {
         if (!id) return false;
 
         setIsLoading(true);
@@ -26,7 +27,7 @@ export const useMuzakkiDelete = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         deleteMuzakki,

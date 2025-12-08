@@ -21,13 +21,7 @@ export interface GetMuzakkiListParams {
  * Semua API calls untuk master data Muzakki
  */
 export const muzakkiApi = {
-    /**
-     * Get List Muzakki
-     * GET /api/v1/muzakki
-     */
-    getList: async (
-        params?: GetMuzakkiListParams
-    ): Promise<MuzakkiListResponseWrapper> => {
+    getList: async (params?: GetMuzakkiListParams): Promise<MuzakkiListResponseWrapper> => {
         const response = await httpClient.get<MuzakkiListResponseWrapper>(
             ENDPOINTS.MUZAKKI.LIST,
             { params }
@@ -35,10 +29,6 @@ export const muzakkiApi = {
         return response.data;
     },
 
-    /**
-     * Get Detail Muzakki
-     * GET /api/v1/muzakki/{id}
-     */
     getById: async (id: string): Promise<MuzakkiResponseWrapper> => {
         const response = await httpClient.get<MuzakkiResponseWrapper>(
             ENDPOINTS.MUZAKKI.DETAIL(id)
@@ -46,40 +36,25 @@ export const muzakkiApi = {
         return response.data;
     },
 
-    /**
-     * Create Muzakki
-     * POST /api/v1/muzakki
-     */
     create: async (data: MuzakkiRequest): Promise<MuzakkiResponseWrapper> => {
         const response = await httpClient.post<MuzakkiResponseWrapper>(
-            ENDPOINTS.MUZAKKI.LIST,
+            ENDPOINTS.MUZAKKI.CREATE,
             data
         );
         return response.data;
     },
 
-    /**
-     * Update Muzakki
-     * PUT /api/v1/muzakki/{id}
-     */
-    update: async (
-        id: string,
-        data: MuzakkiRequest
-    ): Promise<MuzakkiResponseWrapper> => {
+    update: async (id: string, data: MuzakkiRequest): Promise<MuzakkiResponseWrapper> => {
         const response = await httpClient.put<MuzakkiResponseWrapper>(
-            ENDPOINTS.MUZAKKI.DETAIL(id),
+            ENDPOINTS.MUZAKKI.UPDATE(id),
             data
         );
         return response.data;
     },
 
-    /**
-     * Delete Muzakki
-     * DELETE /api/v1/muzakki/{id}
-     */
     delete: async (id: string): Promise<MuzakkiDeleteResponseWrapper> => {
         const response = await httpClient.delete<MuzakkiDeleteResponseWrapper>(
-            ENDPOINTS.MUZAKKI.DETAIL(id)
+            ENDPOINTS.MUZAKKI.DELETE(id)
         );
         return response.data;
     },
