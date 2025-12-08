@@ -1,9 +1,10 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { asnafSchema, AsnafFormValues } from '../../domain/asnaf.types';
 import { useAsnafCreate } from '../../application/useAsnafCreate';
+import { AsnafRequest } from '../../domain/asnaf.types';
 
 export const useAsnafCreateController = () => {
     const { createAsnaf, isLoading, error } = useAsnafCreate();
@@ -13,11 +14,16 @@ export const useAsnafCreateController = () => {
         handleSubmit,
         formState: { errors },
     } = useForm<AsnafFormValues>({
-        resolver: zodResolver(asnafSchema),
+        resolver: zodResolver(asnafSchema) as unknown as Resolver<AsnafFormValues>,
     });
 
-    const onSubmit = (data: AsnafFormValues) => {
-        createAsnaf(data);
+    const onSubmit: SubmitHandler<AsnafFormValues> = (data) => {
+        const requestData = data as unknown as AsnafRequest;
+
+        createAsnaf(requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal membuat asnaf:", err);
+            });
     };
 
     return {

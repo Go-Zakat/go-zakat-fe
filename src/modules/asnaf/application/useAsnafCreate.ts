@@ -1,9 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { asnafApi } from '../infrastructure/asnaf.api';
-import { AsnafRequest } from "..//domain/asnaf.types";
+import { AsnafRequest } from "../domain/asnaf.types";
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
 /**
@@ -14,7 +14,7 @@ export const useAsnafCreate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createAsnaf = async (payload: AsnafRequest) => {
+    const createAsnaf = useCallback(async (payload: AsnafRequest) => {
         setIsLoading(true);
         setError(null);
 
@@ -23,10 +23,11 @@ export const useAsnafCreate = () => {
             router.push('/asnaf');
         } catch (err) {
             setError(extractErrorMessage(err));
+            throw err;
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [router]);
 
     return {
         createAsnaf,

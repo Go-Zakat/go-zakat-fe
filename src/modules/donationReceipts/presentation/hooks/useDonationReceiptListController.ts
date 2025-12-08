@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useEffect, useState} from 'react';
+import { useEffect, useState} from 'react';
 import { useDonationReceiptList } from '../../application/useDonationReceiptList';
 import { useDonationReceiptDelete } from '../../application/useDonationReceiptDelete';
 import { useDebounce } from '@/src/shared/hooks/useDebounce';
@@ -50,8 +50,8 @@ export const useDonationReceiptListController = () => {
         }
     };
 
-    const handlePerPageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        setPerPage(Number(e.target.value));
+    const handlePerPageChange = (newPerPage: number) => {
+        setPerPage(newPerPage);
         setPage(1);
     };
 

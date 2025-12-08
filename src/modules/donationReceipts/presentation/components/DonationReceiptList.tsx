@@ -6,8 +6,6 @@ import {
     Trash2,
     Search,
     Plus,
-    ChevronLeft,
-    ChevronRight,
     AlertTriangle,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -18,8 +16,9 @@ import { Modal } from '@/src/shared/ui/components/Modal';
 import { DateRangePicker } from '@/src/shared/ui/components/DateRangePicker';
 import { useDonationReceiptListController } from '../hooks/useDonationReceiptListController';
 import { FUND_TYPES, PAYMENT_METHODS } from '@/src/shared/config/constants';
+import {Pagination} from "@/src/shared/ui/components/Pagination";
+import {Column, Table} from "@/src/shared/ui/components/Table";
 
-// Helper untuk format currency
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
         style: 'currency',
@@ -28,26 +27,12 @@ const formatCurrency = (amount: number) => {
     }).format(amount);
 };
 
-// Formatting helper untuk format currency
-const formatRupiah = formatCurrency;
-
-// Helper untuk format date
 const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('id-ID', {
         day: 'numeric',
         month: 'long',
         year: 'numeric',
     });
-};
-
-const formatPaymentMethod = (method: string) => {
-    switch (method) {
-        case PAYMENT_METHODS.CASH: return 'Tunai';
-        case PAYMENT_METHODS.BANK_TRANSFER: return 'Transfer Bank';
-        case PAYMENT_METHODS.E_WALLET: return 'E-Wallet';
-        case PAYMENT_METHODS.QRIS: return 'QRIS';
-        default: return method;
-    }
 };
 
 export const DonationReceiptList = () => {
@@ -78,8 +63,6 @@ export const DonationReceiptList = () => {
         setEndDate,
     } = useDonationReceiptListController();
 
-    const data = items;
-
     const fundTypeOptions = [
         { value: '', label: 'Semua Jenis Dana' },
         { value: FUND_TYPES.ZAKAT, label: 'Zakat' },
@@ -93,6 +76,77 @@ export const DonationReceiptList = () => {
         { value: PAYMENT_METHODS.BANK_TRANSFER, label: 'Transfer Bank' },
         { value: PAYMENT_METHODS.E_WALLET, label: 'E-Wallet' },
         { value: PAYMENT_METHODS.QRIS, label: 'QRIS' },
+    ];
+
+    const columns: Column<typeof items[0]>[] = [
+        {
+            header: 'No. Kwitansi',
+            accessorKey: 'receipt_number',
+            className: 'w-[25%] text-sm font-medium text-gray-900 dark:text-text-primary'
+        },
+        {
+            header: 'Muzakki',
+            cell: (item) => (
+                <span className="text-sm text-gray-900 dark:text-text-primary">
+                    {item.muzakki_name || '-'}
+                </span>
+            ),
+            className: 'w-[25%]'
+        },
+        {
+            header: 'Total Nominal',
+            cell: (item) => (
+                <span className="text-sm font-semibold text-gray-900 dark:text-text-primary">
+                    {formatCurrency(item.total_amount)}
+                </span>
+            ),
+            className: 'w-[25%]'
+        },
+        {
+            header: 'Tanggal',
+            cell: (item) => (
+                <span className="text-sm text-gray-600 dark:text-text-secondary">
+                    {formatDate(item.receipt_date)}
+                </span>
+            ),
+            className: "w-[20%] whitespace-nowrap"
+        },
+        {
+            header: 'Aksi',
+            cell: (item) => (
+                <div className="flex items-center justify-center gap-2">
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue"
+                        onClick={() => router.push(`/donation-receipts/${item.id}/edit`)}
+                        title="Edit"
+                    >
+                        <Edit2 size={16} />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
+                        onClick={() => router.push(`/donation-receipts/${item.id}`)}
+                        title="Detail"
+                    >
+                        <Eye size={16} />
+                    </Button>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+                        onClick={() => { handleOpenDeleteModal(item.id) }}
+                        title="Hapus"
+                    >
+                        <Trash2 size={16} />
+                    </Button>
+                </div>
+            ),
+            headerClassName: 'text-right',
+            className: "w-[10%] text-right"
+        }
     ];
 
     return (
@@ -158,136 +212,25 @@ export const DonationReceiptList = () => {
                         </div>
 
                         {/* Table */}
-                        <table className="w-full text-left">
-                            <thead>
-                                <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
-                                    <th className="px-6 py-4 w-12 text-center">
-                                        <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
-                                    </th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider min-w-[200px] whitespace-nowrap">No. Kwitansi</th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider min-w-[200px]">Muzakki</th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-[200px] whitespace-nowrap">Total Nominal</th>
-                                    <th className="px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-[200px] whitespace-nowrap">Tanggal</th>
-                                    <th className="px-6 py-4 text-right text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider w-[120px] whitespace-nowrap">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100 dark:divide-dark-border bg-white dark:bg-dark-paper">
-                                {isLoading ? (
-                                    <tr>
-                                        <td colSpan={7} className="px-6 py-12 text-center text-gray-500 dark:text-text-secondary">
-                                            Memuat data...
-                                        </td>
-                                    </tr>
-                                ) : data.length === 0 ? (
-                                    <tr>
-                                        <td colSpan={7} className="px-6 py-12 text-center text-gray-500 dark:text-text-secondary">
-                                            Tidak ada data penerimaan
-                                        </td>
-                                    </tr>
-                                ) : (
-                                    data.map((item) => (
-                                        <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
-                                            <td className="px-6 py-4 text-center">
-                                                <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
-                                            </td>
-                                            <td className="px-6 py-4 text-sm font-medium text-gray-900 dark:text-text-primary">
-                                                {item.receipt_number}
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-gray-900 dark:text-text-primary">
-                                                {item.muzakki_name || '-'}
-                                            </td>
-                                            <td className="px-6 py-4 text-sm font-semibold text-gray-900 dark:text-text-primary flex flex-col gap-1">
-                                                {formatRupiah(item.total_amount)}
-                                                <span className="w-fit px-2 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
-                                                    {formatPaymentMethod(item.payment_method)}
-                                                </span>
-                                            </td>
-                                            <td className="px-6 py-4 text-sm text-gray-600 dark:text-text-secondary">
-                                                {formatDate(item.receipt_date)}
-                                            </td>
-                                            <td className="px-6 py-4 text-center">
-                                                <div className="flex items-center justify-center gap-2">
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue"
-                                                        onClick={() => router.push(`/donation-receipts/${item.id}/edit`)}
-                                                        title="Edit"
-                                                    >
-                                                        <Edit2 size={16} />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
-                                                        onClick={() => router.push(`/donation-receipts/${item.id}`)}
-                                                        title="Detail"
-                                                    >
-                                                        <Eye size={16} />
-                                                    </Button>
-                                                    <Button
-                                                        variant="ghost"
-                                                        size="icon"
-                                                        className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
-                                                        onClick={() => { handleOpenDeleteModal(item.id) }}
-                                                        title="Hapus"
-                                                    >
-                                                        <Trash2 size={16} />
-                                                    </Button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    ))
-                                )}
-                            </tbody>
-                        </table>
+                        <Table
+                            columns={columns}
+                            data={items}
+                            isLoading={isLoading}
+                            keyExtractor={(item) => item.id}
+                            emptyMessage="Tidak ada data penerimaan"
+                        />
                     </div>
 
                     {/* Pagination */}
-                    <div className="px-6 py-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-between">
-                        <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-text-secondary">
-                            <span>Rows per page:</span>
-                            <select
-                                value={perPage}
-                                onChange={handlePerPageChange}
-                                className="border border-gray-200 dark:border-dark-border rounded px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-primary-blue cursor-pointer bg-white dark:bg-dark-main text-gray-900 dark:text-text-primary"
-                            >
-                                <option value={10}>10</option>
-                                <option value={20}>20</option>
-                                <option value={50}>50</option>
-                            </select>
-                        </div>
-
-                        <div className="flex items-center gap-4 text-sm text-gray-500 dark:text-text-secondary">
-                            <span>
-                                {(meta?.page || 0) * (meta?.per_page || 0) - (meta?.per_page || 0) + 1}
-                                -
-                                {Math.min((meta?.page || 0) * (meta?.per_page || 0), meta?.total || 0)}
-                                {' '}of{' '}
-                                {meta?.total || 0}
-                            </span>
-                            <div className="flex items-center gap-1">
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handlePageChange(page - 1)}
-                                    disabled={page <= 1 || isLoading}
-                                >
-                                    <ChevronLeft size={18} />
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    className="h-8 w-8"
-                                    onClick={() => handlePageChange(page + 1)}
-                                    disabled={page >= (meta?.total_page || 1) || isLoading}
-                                >
-                                    <ChevronRight size={18} />
-                                </Button>
-                            </div>
-                        </div>
-                    </div>
+                    <Pagination
+                        page={page}
+                        perPage={perPage}
+                        totalItems={meta?.total || 0}
+                        totalPages={meta?.total_page || 1}
+                        isLoading={isLoading}
+                        onPageChange={handlePageChange}
+                        onPerPageChange={handlePerPageChange}
+                    />
                 </div>
             </div>
 

@@ -7,7 +7,7 @@ import {
 } from '@/src/shared/types/api.types';
 
 // ============================================================
-// ASNAF TYPES
+// ASNAF SCHEMA & FORM VALUES
 // ============================================================
 
 /**
@@ -27,7 +27,7 @@ export const asnafSchema = z.object({
 });
 
 /**
- * Nilai form Asnaf (create / update)
+ * Tipe data untuk Form Values (Inferred from Zod)
  */
 export type AsnafFormValues = z.infer<typeof asnafSchema>;
 
@@ -36,13 +36,8 @@ export type AsnafFormValues = z.infer<typeof asnafSchema>;
 // ============================================================
 
 /**
- * Create Asnaf Request
- * Body untuk POST /api/v1/asnaf
- *
- * Dan
- *
- * Update Asnaf Request
- * Body untuk PUT /api/v1/asnaf/{id}
+ * Create/Update Asnaf Request
+ * Payload untuk endpoint POST dan PUT
  */
 export interface AsnafRequest {
     name: string;
@@ -55,18 +50,18 @@ export interface AsnafRequest {
 
 /**
  * Asnaf List Response Wrapper
- * Wrapper untuk GET /api/v1/asnaf
+ * GET /api/v1/asnaf
  */
 export type AsnafListResponseWrapper = ApiListResponse<Asnaf>;
 
 /**
  * Asnaf Detail/Create/Update Response Wrapper
- * Wrapper untuk GET/POST/PUT /api/v1/asnaf/{id}
+ * GET/POST/PUT /api/v1/asnaf/{id}
  */
 export type AsnafResponseWrapper = ApiSuccessResponse<Asnaf>;
 
 /**
  * Asnaf Delete Response Wrapper
- * Wrapper untuk DELETE /api/v1/asnaf/{id}
+ * DELETE /api/v1/asnaf/{id}
  */
 export type AsnafDeleteResponseWrapper = ApiEmptySuccessResponse;

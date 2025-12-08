@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { asnafApi } from '../infrastructure/asnaf.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 import { Asnaf } from "@/src/shared/types/common.types";
@@ -13,7 +13,7 @@ export const useAsnafDetail = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getAsnafById = async (id: string) => {
+    const getAsnafById = useCallback(async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -26,7 +26,7 @@ export const useAsnafDetail = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getAsnafById,

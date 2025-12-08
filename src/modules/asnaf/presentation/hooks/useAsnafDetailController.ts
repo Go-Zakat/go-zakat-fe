@@ -8,9 +8,9 @@ export const useAsnafDetailController = (id: string) => {
 
     useEffect(() => {
         if (id) {
-            getAsnafById(id);
+            void getAsnafById(id);
         }
-    }, [id]);
+    }, [id, getAsnafById]);
 
     return {
         asnaf,

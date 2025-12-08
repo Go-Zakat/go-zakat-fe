@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { asnafApi, GetAsnafListParams } from '../infrastructure/asnaf.api';
 import { PaginatedData } from '@/src/shared/types/pagination.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,7 @@ export const useAsnafList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getAsnafList = async (params?: GetAsnafListParams) => {
+    const getAsnafList = useCallback(async (params?: GetAsnafListParams) => {
         setIsLoading(true);
         setError(null);
 
@@ -26,7 +26,7 @@ export const useAsnafList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getAsnafList,

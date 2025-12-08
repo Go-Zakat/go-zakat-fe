@@ -1,15 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { asnafSchema, AsnafFormValues } from '../../domain/asnaf.types';
+import { asnafSchema, AsnafFormValues, AsnafRequest } from '../../domain/asnaf.types';
 import { useAsnafUpdate } from '../../application/useAsnafUpdate';
 import { useAsnafDetail } from '../../application/useAsnafDetail';
 
 export const useAsnafUpdateController = (id: string) => {
-    const router = useRouter();
     const { updateAsnaf, isLoading: isUpdating, error: updateError } = useAsnafUpdate();
     const { data: asnaf, isLoading: isLoadingDetail, error: detailError, getAsnafById } = useAsnafDetail();
 
@@ -19,31 +17,31 @@ export const useAsnafUpdateController = (id: string) => {
         reset,
         formState: { errors },
     } = useForm<AsnafFormValues>({
-        resolver: zodResolver(asnafSchema),
+        resolver: zodResolver(asnafSchema) as unknown as Resolver<AsnafFormValues>,
     });
 
     useEffect(() => {
         if (id) {
-            getAsnafById(id);
+            void getAsnafById(id);
         }
-    }, [id]);
+    }, [id, getAsnafById]);
 
     useEffect(() => {
         if (asnaf) {
             reset({
                 name: asnaf.name,
-                description: asnaf.description ?? '', // Handle nullable description
+                description: asnaf.description ?? '',
             });
         }
     }, [asnaf, reset]);
 
-    const onSubmit = async (data: AsnafFormValues) => {
-        try {
-            await updateAsnaf(id, data);
-            router.push('/asnaf');
-        } catch (error) {
-            console.error('Failed to update asnaf:', error);
-        }
+    const onSubmit: SubmitHandler<AsnafFormValues> = (data) => {
+        const requestData = data as unknown as AsnafRequest;
+
+        updateAsnaf(id, requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal update asnaf:", err);
+            });
     };
 
     return {

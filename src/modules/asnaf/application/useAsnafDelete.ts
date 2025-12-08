@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { asnafApi } from '../infrastructure/asnaf.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -11,7 +11,7 @@ export const useAsnafDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteAsnaf = async (id: string): Promise<boolean> => {
+    const deleteAsnaf = useCallback(async (id: string): Promise<boolean> => {
         if (!id) return false;
 
         setIsLoading(true);
@@ -26,7 +26,7 @@ export const useAsnafDelete = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         deleteAsnaf,
