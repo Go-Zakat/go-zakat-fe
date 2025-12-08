@@ -8,9 +8,10 @@ export const useMustahiqDetailController = (id: string) => {
 
     useEffect(() => {
         if (id) {
-            getMustahiqById(id);
+            // Void & Dependency
+            void getMustahiqById(id);
         }
-    }, [id]);
+    }, [id, getMustahiqById]);
 
     return {
         mustahiq,

@@ -8,7 +8,7 @@ import {
 import { MUSTAHIQ_STATUS } from '@/src/shared/config/constants';
 
 // ============================================================
-// MUSTAHIQ TYPES
+// MUSTAHIQ SCHEMA & FORM VALUES
 // ============================================================
 
 /**
@@ -20,20 +20,25 @@ export const mustahiqSchema = z.object({
         .string()
         .min(1, 'Nama mustahiq wajib diisi')
         .max(100, 'Nama mustahiq maksimal 100 karakter'),
+
     address: z
         .string()
         .min(1, 'Alamat wajib diisi')
         .max(255, 'Alamat maksimal 255 karakter'),
+
     phoneNumber: z
         .string()
         .min(1, 'Nomor telepon wajib diisi')
         .max(20, 'Nomor telepon maksimal 20 karakter'),
+
     asnafID: z
         .string()
         .min(1, 'Asnaf wajib dipilih'),
+
     status: z
         .enum([MUSTAHIQ_STATUS.ACTIVE, MUSTAHIQ_STATUS.INACTIVE, MUSTAHIQ_STATUS.PENDING])
         .default(MUSTAHIQ_STATUS.ACTIVE),
+
     description: z
         .string()
         .max(255, 'Deskripsi maksimal 255 karakter')
@@ -42,7 +47,7 @@ export const mustahiqSchema = z.object({
 });
 
 /**
- * Nilai form Mustahiq (create / update)
+ * Tipe data untuk Form Values (Inferred from Zod)
  */
 export type MustahiqFormValues = z.infer<typeof mustahiqSchema>;
 
@@ -51,13 +56,8 @@ export type MustahiqFormValues = z.infer<typeof mustahiqSchema>;
 // ============================================================
 
 /**
- * Create Mustahiq Request
- * Body untuk POST /api/v1/mustahiq
- *
- * Dan
- *
- * Update Mustahiq Request
- * Body untuk PUT /api/v1/mustahiq/{id}
+ * Create/Update Mustahiq Request
+ * Payload untuk endpoint POST dan PUT
  */
 export interface MustahiqRequest {
     name: string;
@@ -74,18 +74,18 @@ export interface MustahiqRequest {
 
 /**
  * Mustahiq List Response Wrapper
- * Wrapper untuk GET /api/v1/mustahiq
+ * GET /api/v1/mustahiq
  */
 export type MustahiqListResponseWrapper = ApiListResponse<Mustahiq>;
 
 /**
  * Mustahiq Detail/Create/Update Response Wrapper
- * Wrapper untuk GET/POST/PUT /api/v1/mustahiq/{id}
+ * GET/POST/PUT /api/v1/mustahiq/{id}
  */
 export type MustahiqResponseWrapper = ApiSuccessResponse<Mustahiq>;
 
 /**
  * Mustahiq Delete Response Wrapper
- * Wrapper untuk DELETE /api/v1/mustahiq/{id}
+ * DELETE /api/v1/mustahiq/{id}
  */
 export type MustahiqDeleteResponseWrapper = ApiEmptySuccessResponse;

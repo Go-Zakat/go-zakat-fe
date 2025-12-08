@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { mustahiqApi, GetMustahiqListParams } from '../infrastructure/mustahiq.api';
 import { PaginatedData } from '@/src/shared/types/pagination.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,7 @@ export const useMustahiqList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMustahiqList = async (params?: GetMustahiqListParams) => {
+    const getMustahiqList = useCallback(async (params?: GetMustahiqListParams) => {
         setIsLoading(true);
         setError(null);
 
@@ -26,7 +26,7 @@ export const useMustahiqList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getMustahiqList,

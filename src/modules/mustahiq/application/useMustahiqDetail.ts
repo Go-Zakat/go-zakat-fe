@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { mustahiqApi } from '../infrastructure/mustahiq.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 import { Mustahiq } from "@/src/shared/types/common.types";
@@ -13,7 +13,7 @@ export const useMustahiqDetail = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMustahiqById = async (id: string) => {
+    const getMustahiqById = useCallback(async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -26,7 +26,7 @@ export const useMustahiqDetail = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getMustahiqById,

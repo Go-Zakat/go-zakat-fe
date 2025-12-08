@@ -1,27 +1,24 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { mustahiqSchema, MustahiqFormValues } from '../../domain/mustahiq.types';
+import { mustahiqSchema, MustahiqFormValues, MustahiqRequest } from '../../domain/mustahiq.types';
 import { useMustahiqUpdate } from '../../application/useMustahiqUpdate';
 import { useMustahiqDetail } from '../../application/useMustahiqDetail';
 import { useAsnafList } from '@/src/modules/asnaf/application/useAsnafList';
 
 export const useMustahiqUpdateController = (id: string) => {
-    const router = useRouter();
     const { updateMustahiq, isLoading: isUpdating, error: updateError } = useMustahiqUpdate();
     const { data: mustahiq, isLoading: isLoadingDetail, error: detailError, getMustahiqById } = useMustahiqDetail();
-    // Fetch Asnaf List for Dropdown
     const { getAsnafList, items: asnafList } = useAsnafList();
 
     useEffect(() => {
-        getAsnafList({ per_page: 100 });
+        void getAsnafList({ per_page: 100 });
         if (id) {
-            getMustahiqById(id);
+            void getMustahiqById(id);
         }
-    }, [id]);
+    }, [id, getAsnafList, getMustahiqById]);
 
     const {
         register,
@@ -29,7 +26,8 @@ export const useMustahiqUpdateController = (id: string) => {
         reset,
         formState: { errors },
     } = useForm<MustahiqFormValues>({
-        resolver: zodResolver(mustahiqSchema),
+        // Casting Resolver
+        resolver: zodResolver(mustahiqSchema) as unknown as Resolver<MustahiqFormValues>,
     });
 
     useEffect(() => {
@@ -38,20 +36,23 @@ export const useMustahiqUpdateController = (id: string) => {
                 name: mustahiq.name,
                 address: mustahiq.address,
                 phoneNumber: mustahiq.phoneNumber,
+                // Handle nested object ID jika backend return object
                 asnafID: mustahiq.asnafID || mustahiq.asnaf?.id || '',
-                status: mustahiq.status,
+                // Casting enum status agar aman
+                status: mustahiq.status as MustahiqFormValues['status'],
                 description: mustahiq.description ?? '',
             });
         }
     }, [mustahiq, reset]);
 
-    const onSubmit = async (data: MustahiqFormValues) => {
-        try {
-            await updateMustahiq(id, data);
-            router.push('/mustahiq');
-        } catch (error) {
-            console.error('Failed to update mustahiq:', error);
-        }
+    const onSubmit: SubmitHandler<MustahiqFormValues> = (data) => {
+        const requestData = data as unknown as MustahiqRequest;
+
+        // Handle Promise catch
+        updateMustahiq(id, requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal update mustahiq:", err);
+            });
     };
 
     return {

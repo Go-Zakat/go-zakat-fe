@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { mustahiqApi } from '../infrastructure/mustahiq.api';
 import { MustahiqRequest } from "../domain/mustahiq.types";
@@ -14,7 +14,7 @@ export const useMustahiqCreate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const createMustahiq = async (payload: MustahiqRequest) => {
+    const createMustahiq = useCallback(async (payload: MustahiqRequest) => {
         setIsLoading(true);
         setError(null);
 
@@ -23,10 +23,11 @@ export const useMustahiqCreate = () => {
             router.push('/mustahiq');
         } catch (err) {
             setError(extractErrorMessage(err));
+            throw err;
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [router]);
 
     return {
         createMustahiq,

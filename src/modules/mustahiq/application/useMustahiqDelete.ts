@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { mustahiqApi } from '../infrastructure/mustahiq.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -11,7 +11,7 @@ export const useMustahiqDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteMustahiq = async (id: string): Promise<boolean> => {
+    const deleteMustahiq = useCallback(async (id: string): Promise<boolean> => {
         if (!id) return false;
 
         setIsLoading(true);
@@ -26,7 +26,7 @@ export const useMustahiqDelete = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         deleteMustahiq,

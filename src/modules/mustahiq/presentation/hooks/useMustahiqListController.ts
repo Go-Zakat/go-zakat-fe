@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useMustahiqList } from '../../application/useMustahiqList';
 import { useMustahiqDelete } from '../../application/useMustahiqDelete';
-import { useAsnafList } from '@/src/modules/asnaf/application/useAsnafList'; // Import Asnaf List
+import { useAsnafList } from '@/src/modules/asnaf/application/useAsnafList';
 import { useDebounce } from '@/src/shared/hooks/useDebounce';
 
 export const useMustahiqListController = () => {
@@ -33,19 +33,19 @@ export const useMustahiqListController = () => {
 
     // Fetch Asnaf List on mount
     useEffect(() => {
-        getAsnafList({ per_page: 100 });
-    }, []);
+        void getAsnafList({ per_page: 100 });
+    }, [getAsnafList]);
 
     // Effect untuk memanggil API saat search/pagination/filters berubah
     useEffect(() => {
-        getMustahiqList({
+        void getMustahiqList({
             q: debouncedSearch,
             page,
             per_page: perPage,
             status: statusFilter || undefined,
             asnafID: asnafFilter || undefined
         });
-    }, [debouncedSearch, page, perPage, statusFilter, asnafFilter]);
+    }, [debouncedSearch, page, perPage, statusFilter, asnafFilter, getMustahiqList]);
 
     // Fungsi untuk mengubah halaman
     const handlePageChange = (newPage: number) => {
@@ -54,9 +54,9 @@ export const useMustahiqListController = () => {
         }
     };
 
-    // Fungsi untuk mengubah jumlah baris per halaman
-    const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setPerPage(Number(e.target.value));
+    // Ubah parameter jadi number (Clean Code)
+    const handlePerPageChange = (newPerPage: number) => {
+        setPerPage(newPerPage);
         setPage(1);
     };
 
@@ -80,7 +80,7 @@ export const useMustahiqListController = () => {
         if (success) {
             handleCloseDeleteModal();
             // Refresh data setelah berhasil menghapus
-            getMustahiqList({
+            void getMustahiqList({
                 q: debouncedSearch,
                 page,
                 per_page: perPage,
