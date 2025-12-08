@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { programApi } from '../infrastructure/program.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 import { Program } from "@/src/shared/types/common.types";
@@ -13,7 +13,8 @@ export const useProgramDetail = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getProgramById = async (id: string) => {
+    // Bungkus dengan useCallback
+    const getProgramById = useCallback(async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -26,7 +27,7 @@ export const useProgramDetail = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getProgramById,

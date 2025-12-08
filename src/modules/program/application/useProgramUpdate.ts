@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { programApi } from '../infrastructure/program.api';
 import { ProgramRequest } from '../domain/program.types';
@@ -14,7 +14,8 @@ export const useProgramUpdate = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const updateProgram = async (id: string, payload: ProgramRequest) => {
+    // Bungkus useCallback + throw err
+    const updateProgram = useCallback(async (id: string, payload: ProgramRequest) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
@@ -24,10 +25,11 @@ export const useProgramUpdate = () => {
             router.push('/program');
         } catch (err) {
             setError(extractErrorMessage(err));
+            throw err; // Lempar error ke controller
         } finally {
             setIsLoading(false);
         }
-    };
+    }, [router]);
 
     return {
         updateProgram,

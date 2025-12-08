@@ -8,9 +8,10 @@ export const useProgramDetailController = (id: string) => {
 
     useEffect(() => {
         if (id) {
-            getProgramById(id);
+            // Void & Dependency
+            void getProgramById(id);
         }
-    }, [id]);
+    }, [id, getProgramById]);
 
     return {
         program,

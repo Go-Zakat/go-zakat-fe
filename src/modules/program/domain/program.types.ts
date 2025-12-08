@@ -7,7 +7,7 @@ import {
 } from '@/src/shared/types/api.types';
 
 // ============================================================
-// PROGRAM TYPES
+// PROGRAM SCHEMA & FORM VALUES
 // ============================================================
 
 /**
@@ -19,21 +19,24 @@ export const programSchema = z.object({
         .string()
         .min(1, 'Nama program wajib diisi')
         .max(100, 'Nama program maksimal 100 karakter'),
+
     description: z
         .string()
         .max(255, 'Deskripsi maksimal 255 karakter')
         .optional()
-        .or(z.literal('')),
+        .or(z.literal('')), // Handle string kosong
+
     type: z
         .string()
         .min(1, 'Tipe program wajib diisi'),
+
     active: z
         .boolean()
         .default(true),
 });
 
 /**
- * Nilai form Program (create / update)
+ * Tipe data untuk Form Values (Inferred from Zod)
  */
 export type ProgramFormValues = z.infer<typeof programSchema>;
 
@@ -42,13 +45,8 @@ export type ProgramFormValues = z.infer<typeof programSchema>;
 // ============================================================
 
 /**
- * Create Program Request
- * Body untuk POST /api/v1/programs
- *
- * Dan
- *
- * Update Program Request
- * Body untuk PUT /api/v1/programs/{id}
+ * Create/Update Program Request
+ * Payload untuk endpoint POST dan PUT
  */
 export interface ProgramRequest {
     name: string;
@@ -63,18 +61,18 @@ export interface ProgramRequest {
 
 /**
  * Program List Response Wrapper
- * Wrapper untuk GET /api/v1/programs
+ * GET /api/v1/programs
  */
 export type ProgramListResponseWrapper = ApiListResponse<Program>;
 
 /**
  * Program Detail/Create/Update Response Wrapper
- * Wrapper untuk GET/POST/PUT /api/v1/programs/{id}
+ * GET/POST/PUT /api/v1/programs/{id}
  */
 export type ProgramResponseWrapper = ApiSuccessResponse<Program>;
 
 /**
  * Program Delete Response Wrapper
- * Wrapper untuk DELETE /api/v1/programs/{id}
+ * DELETE /api/v1/programs/{id}
  */
 export type ProgramDeleteResponseWrapper = ApiEmptySuccessResponse;

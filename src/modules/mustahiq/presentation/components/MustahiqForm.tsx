@@ -34,7 +34,7 @@ export const MustahiqForm = ({
     const statusOptions = [
         { value: MUSTAHIQ_STATUS.ACTIVE, label: 'Aktif' },
         { value: MUSTAHIQ_STATUS.INACTIVE, label: 'Tidak Aktif' },
-        { value: MUSTAHIQ_STATUS.PENDING, label: 'Pending' },
+        { value: MUSTAHIQ_STATUS.PENDING, label: 'Menunggu' },
     ];
 
     const asnafOptions = [

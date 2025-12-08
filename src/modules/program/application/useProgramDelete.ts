@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { programApi } from '../infrastructure/program.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -11,7 +11,8 @@ export const useProgramDelete = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const deleteProgram = async (id: string): Promise<boolean> => {
+    // Bungkus dengan useCallback + return boolean
+    const deleteProgram = useCallback(async (id: string): Promise<boolean> => {
         if (!id) return false;
 
         setIsLoading(true);
@@ -26,7 +27,7 @@ export const useProgramDelete = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         deleteProgram,

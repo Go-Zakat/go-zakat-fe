@@ -1,87 +1,90 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react'; // Tambahkan useRef
 import { useProgramList } from '../../application/useProgramList';
 import { useProgramDelete } from '../../application/useProgramDelete';
 import { useDebounce } from '@/src/shared/hooks/useDebounce';
 
 export const useProgramListController = () => {
-    // Hook untuk mengambil data list program
     const { getProgramList, items, meta, isLoading } = useProgramList();
-    // Hook untuk menghapus program
     const { deleteProgram, isLoading: isDeleting } = useProgramDelete();
 
-    // State untuk keyword pencarian
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500);
 
-    // State untuk filter
     const [typeFilter, setTypeFilter] = useState('');
-    const [activeFilter, setActiveFilter] = useState(''); // 'true', 'false', or ''
+    const [activeFilter, setActiveFilter] = useState('');
+
+    // Gunakan useRef untuk melacak tipe yang unik tanpa memicu render
+    const accumulatedTypesRef = useRef<Set<string>>(new Set());
     const [availableTypes, setAvailableTypes] = useState<string[]>([]);
 
-    // State untuk pagination
     const [page, setPage] = useState(1);
     const [perPage, setPerPage] = useState(10);
 
-    // State untuk modal konfirmasi hapus
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [selectedProgramId, setSelectedProgramId] = useState<string | null>(null);
 
-    // Persist types from items when no type filter is active
+    // Logic Persist Types Menggunakan Ref
     useEffect(() => {
-        if (!typeFilter && items.length > 0) {
-            const types = Array.from(new Set(items.map(item => item.type)));
-            // Merge with existing types
-            setAvailableTypes(prev => Array.from(new Set([...prev, ...types])));
-        }
-    }, [items, typeFilter]);
+        // Hanya jalankan jika ada items
+        if (items.length > 0) {
+            let hasNewType = false;
 
-    // Effect untuk memanggil API saat search/pagination/filter berubah
+            items.forEach(item => {
+                // Cek ke Ref (bukan State)
+                if (item.type && !accumulatedTypesRef.current.has(item.type)) {
+                    accumulatedTypesRef.current.add(item.type);
+                    hasNewType = true;
+                }
+            });
+
+            // Hanya update State (memicu render) jika benar-benar ada tipe baru
+            if (hasNewType) {
+                setAvailableTypes(Array.from(accumulatedTypesRef.current));
+            }
+        }
+    }, [items]);
+
+    // Fetch Data
     useEffect(() => {
-        getProgramList({
+        void getProgramList({
             q: debouncedSearch,
             page,
             per_page: perPage,
             type: typeFilter || undefined,
             active: activeFilter === 'true' ? true : activeFilter === 'false' ? false : undefined
         });
-    }, [debouncedSearch, page, perPage, typeFilter, activeFilter]);
+    }, [debouncedSearch, page, perPage, typeFilter, activeFilter, getProgramList]);
 
-    // Fungsi untuk mengubah halaman
     const handlePageChange = (newPage: number) => {
         if (newPage >= 1 && newPage <= (meta?.total_page || 1)) {
             setPage(newPage);
         }
     };
 
-    // Fungsi untuk mengubah jumlah baris per halaman
-    const handlePerPageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setPerPage(Number(e.target.value));
+    const handlePerPageChange = (newPerPage: number) => {
+        setPerPage(newPerPage);
         setPage(1);
     };
 
-    // Fungsi untuk membuka modal konfirmasi hapus
     const handleOpenDeleteModal = (id: string) => {
         setSelectedProgramId(id);
         setIsDeleteModalOpen(true);
     };
 
-    // Fungsi untuk menutup modal konfirmasi hapus
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedProgramId(null);
     };
 
-    // Fungsi untuk melakukan penghapusan data
     const handleConfirmDelete = async () => {
         if (!selectedProgramId) return;
 
         const success = await deleteProgram(selectedProgramId);
         if (success) {
             handleCloseDeleteModal();
-            // Refresh data setelah berhasil menghapus
-            getProgramList({
+            void getProgramList({
                 q: debouncedSearch,
                 page,
                 per_page: perPage,
@@ -92,7 +95,6 @@ export const useProgramListController = () => {
     };
 
     return {
-        // Data State
         items,
         meta,
         isLoading,
@@ -104,8 +106,6 @@ export const useProgramListController = () => {
         page,
         perPage,
         isDeleteModalOpen,
-
-        // Setters / Handlers
         setSearch,
         setTypeFilter,
         setActiveFilter,

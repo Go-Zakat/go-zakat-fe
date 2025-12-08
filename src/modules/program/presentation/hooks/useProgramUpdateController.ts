@@ -1,15 +1,13 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { useForm, SubmitHandler, Resolver } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
-import { programSchema, ProgramFormValues } from '../../domain/program.types';
+import { programSchema, ProgramFormValues, ProgramRequest } from '../../domain/program.types';
 import { useProgramUpdate } from '../../application/useProgramUpdate';
 import { useProgramDetail } from '../../application/useProgramDetail';
 
 export const useProgramUpdateController = (id: string) => {
-    const router = useRouter();
     const { updateProgram, isLoading: isUpdating, error: updateError } = useProgramUpdate();
     const { data: program, isLoading: isLoadingDetail, error: detailError, getProgramById } = useProgramDetail();
 
@@ -19,14 +17,16 @@ export const useProgramUpdateController = (id: string) => {
         reset,
         formState: { errors },
     } = useForm<ProgramFormValues>({
-        resolver: zodResolver(programSchema),
+        // Casting Resolver
+        resolver: zodResolver(programSchema) as unknown as Resolver<ProgramFormValues>,
     });
 
     useEffect(() => {
         if (id) {
-            getProgramById(id);
+            // Void & Dependency
+            void getProgramById(id);
         }
-    }, [id]);
+    }, [id, getProgramById]);
 
     useEffect(() => {
         if (program) {
@@ -39,13 +39,14 @@ export const useProgramUpdateController = (id: string) => {
         }
     }, [program, reset]);
 
-    const onSubmit = async (data: ProgramFormValues) => {
-        try {
-            await updateProgram(id, data);
-            router.push('/program');
-        } catch (error) {
-            console.error('Failed to update program:', error);
-        }
+    const onSubmit: SubmitHandler<ProgramFormValues> = (data) => {
+        const requestData = data as unknown as ProgramRequest;
+
+        // Handle Promise catch
+        updateProgram(id, requestData)
+            .catch((err: unknown) => {
+                console.error("Gagal update program:", err);
+            });
     };
 
     return {

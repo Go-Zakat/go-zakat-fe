@@ -47,7 +47,7 @@ export const MustahiqList = () => {
         { value: '', label: 'Semua Status' },
         { value: MUSTAHIQ_STATUS.ACTIVE, label: 'Aktif' },
         { value: MUSTAHIQ_STATUS.INACTIVE, label: 'Tidak Aktif' },
-        { value: MUSTAHIQ_STATUS.PENDING, label: 'Pending' },
+        { value: MUSTAHIQ_STATUS.PENDING, label: 'Menunggu' },
     ];
 
     const asnafOptions = [
@@ -73,9 +73,9 @@ export const MustahiqList = () => {
 
     const getStatusLabel = (status: string) => {
         switch (status) {
-            case MUSTAHIQ_STATUS.ACTIVE: return 'Active';
-            case MUSTAHIQ_STATUS.INACTIVE: return 'Inactive';
-            case MUSTAHIQ_STATUS.PENDING: return 'Pending';
+            case MUSTAHIQ_STATUS.ACTIVE: return 'Aktif';
+            case MUSTAHIQ_STATUS.INACTIVE: return 'Tidak Aktif';
+            case MUSTAHIQ_STATUS.PENDING: return 'Menunggu';
             default: return status;
         }
     };

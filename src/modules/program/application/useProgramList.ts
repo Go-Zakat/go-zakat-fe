@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { programApi, GetProgramListParams } from '../infrastructure/program.api';
 import { PaginatedData } from '@/src/shared/types/pagination.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
@@ -14,7 +14,8 @@ export const useProgramList = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getProgramList = async (params?: GetProgramListParams) => {
+    // Bungkus dengan useCallback
+    const getProgramList = useCallback(async (params?: GetProgramListParams) => {
         setIsLoading(true);
         setError(null);
 
@@ -26,7 +27,7 @@ export const useProgramList = () => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     return {
         getProgramList,
