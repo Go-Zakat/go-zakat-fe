@@ -117,7 +117,7 @@ export const DonationReceiptCreateForm = () => {
                                         <button
                                             type="button"
                                             onClick={() => remove(index)}
-                                            className="text-gray-400 hover:text-red-500 transition-colors"
+                                            className="text-gray-400 hover:text-red-500"
                                         >
                                             <Trash2 size={18} />
                                         </button>

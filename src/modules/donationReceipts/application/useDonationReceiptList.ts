@@ -21,8 +21,8 @@ export const useDonationReceiptList = () => {
         try {
             const res = await donationReceiptsApi.getList({
                 ...params,
-                start_date: params?.start_date,
-                end_date: params?.end_date,
+                date_from: params?.date_from,
+                date_to: params?.date_to,
             });
             setData(res.data);
         } catch (err) {

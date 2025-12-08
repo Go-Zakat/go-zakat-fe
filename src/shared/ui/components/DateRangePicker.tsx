@@ -135,7 +135,7 @@ export const DateRangePicker = ({
                     key={dateStr}
                     onClick={() => handleDateClick(dateStr)}
                     className={clsx(
-                        "h-9 w-9 text-sm rounded-full flex items-center justify-center transition-all",
+                        "h-9 w-9 text-sm rounded-full flex items-center justify-center",
                         isStart || isEnd ? "bg-primary-blue text-white hover:bg-blue-600" :
                             isInRange ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-300 rounded-none" :
                                 "hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
@@ -175,7 +175,7 @@ export const DateRangePicker = ({
         <div className={twMerge("relative", className)} ref={containerRef}>
             <div
                 className={clsx(
-                    "flex items-center justify-between gap-2 px-4 py-2 border rounded-lg cursor-pointer transition-all bg-white dark:bg-dark-paper min-h-[42px]",
+                    "flex items-center justify-between gap-2 px-4 py-2 border rounded-lg cursor-pointer bg-white dark:bg-dark-paper min-h-[42px]",
                     // Input.tsx styles: focus:ring-2 focus:ring-blue-500, border-gray-300 dark:border-gray-700
                     isActive || isOpen ? "border-blue-500 ring-1 ring-blue-500" : "border-gray-300 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600"
                 )}
@@ -193,7 +193,7 @@ export const DateRangePicker = ({
                             e.stopPropagation();
                             handleClear();
                         }}
-                        className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-red-500 transition-colors"
+                        className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full text-gray-400 hover:text-red-500 -colors"
                     >
                         <X size={14} />
                     </button>

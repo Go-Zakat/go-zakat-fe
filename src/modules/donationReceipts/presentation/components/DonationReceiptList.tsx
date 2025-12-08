@@ -187,7 +187,7 @@ export const DonationReceiptList = () => {
                                 </tr>
                             ) : (
                                 data.map((item) => (
-                                    <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50 transition-colors">
+                                    <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
                                         <td className="px-6 py-4 text-center">
                                             <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
                                         </td>
