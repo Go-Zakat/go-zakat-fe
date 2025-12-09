@@ -193,7 +193,7 @@ export const DistributionList = () => {
                                     </div>
                                 </div>
                                 <Button
-                                    onClick={() => router.push('/distributions/create')}
+                                    onClick={() => router.push('/distribution/create')}
                                     className="w-auto"
                                     size="md"
                                 >

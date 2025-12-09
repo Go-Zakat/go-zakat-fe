@@ -18,22 +18,11 @@ Project ini menggunakan stack teknologi modern:
 
 ## ✨ Fitur Utama
 
-- **Autentikasi**:
-  - Login & Register dengan Email/Password
-  - Google OAuth Integration
-  - Logout
-  - Token Management (Access & Refresh Token)
-  - Protected Routes (Middleware/Proxy)
-- **Manajemen Asnaf**:
-  - CRUD Asnaf (Create, Read, Update, Delete)
-  - Pencarian Real-time (Debounced)
-  - Pagination
-  - View Detail Asnaf
-- **UI/UX Modern**:
-  - Responsive Design
-  - Dark Mode Support
-  - Interactive Components (Tooltip, Modal, Toast)
-  - Collapsible Sidebar with Animation
+- **Authentication**: Register, Login, Google OAuth2, JWT Refresh Token.
+- **Master Data**: Manajemen Muzakki, Asnaf (8 Golongan), Mustahiq, dan Program Penyaluran.
+- **Transactions**: Pencatatan Penerimaan (Zakat/Infaq/Sadaqah) dan Penyaluran Dana.
+- **Reports**: Laporan Penghimpunan, Penyaluran, dan Saldo Dana (Income, Distribution, Fund Balance).
+- **UI/UX Modern**: Responsive Design, Dark Mode Support, Interactive Components, Collapsible Sidebar with Animation
 
 ## 📂 Struktur Project
 

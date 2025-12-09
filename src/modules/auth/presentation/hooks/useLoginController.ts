@@ -24,7 +24,7 @@ export const useLoginController = () => {
     });
 
     const onSubmit = (data: LoginRequest) => {
-        login(data);
+        void login(data);
     };
 
     return {

@@ -20,16 +20,6 @@ export interface BaseEntityCamel {
     updatedAt: string;
 }
 
-/**
- * Base Entity (Snake Case)
- * Untuk entitas transaksi: Contribution, Distribution, dan User
- */
-export interface BaseEntitySnake {
-    id: string;
-    created_at: string;
-    updated_at: string;
-}
-
 // ============================================================
 // MASTER DATA TYPES
 // ============================================================
@@ -37,33 +27,26 @@ export interface BaseEntitySnake {
 /**
  * User Type (dto.UserResponse)
  */
-export interface User {
-    id: string;
+export interface User extends BaseEntityCamel {
     name: string;
     email: string;
     role: Role;
     avatar?: string | null;
     is_active: boolean;
-    created_at: string;
-    updated_at: string;
 }
 
 /**
  * Asnaf Type (dto.AsnafResponse)
  */
-export interface Asnaf {
-    id: string;
+export interface Asnaf extends BaseEntityCamel {
     name: string;
     description?: string | null;
-    createdAt: string;
-    updatedAt: string;
 }
 
 /**
  * Mustahiq Type (dto.MustahiqResponse)
  */
-export interface Mustahiq {
-    id: string;
+export interface Mustahiq extends BaseEntityCamel {
     name: string;
     address: string;
     phoneNumber: string;
@@ -71,34 +54,26 @@ export interface Mustahiq {
     asnaf?: Asnaf;
     status: MustahiqStatus;
     description?: string | null;
-    createdAt: string;
-    updatedAt: string;
 }
 
 /**
  * Muzakki Type (dto.MuzakkiResponse)
  */
-export interface Muzakki {
-    id: string;
+export interface Muzakki extends BaseEntityCamel {
     name: string;
     address: string;
     phoneNumber: string;
     notes?: string | null;
-    createdAt: string;
-    updatedAt: string;
 }
 
 /**
  * Program Type (dto.ProgramResponse)
  */
-export interface Program {
-    id: string;
+export interface Program extends BaseEntityCamel {
     name: string;
     description?: string | null;
     type: string;
     active: boolean;
-    createdAt: string;
-    updatedAt: string;
 }
 
 // ============================================================
@@ -121,8 +96,7 @@ export interface DonationReceiptItem {
 /**
  * Donation Receipt (dto.DonationReceiptResponse)
  */
-export interface DonationReceipt {
-    id: string;
+export interface DonationReceipt extends BaseEntityCamel {
     receipt_number: string;
     receipt_date: string;
     payment_method: PaymentMethod;
@@ -133,8 +107,6 @@ export interface DonationReceipt {
     muzakki?: { id: string; full_name: string };
     created_by_user?: { id: string; full_name: string };
     items?: DonationReceiptItem[];
-    created_at: string;
-    updated_at: string;
 }
 
 /**
@@ -153,8 +125,7 @@ export interface DistributionItem {
 /**
  * Distribution (dto.DistributionResponse)
  */
-export interface Distribution {
-    id: string;
+export interface Distribution extends BaseEntityCamel {
     distribution_date: string;
     source_fund_type: string;
     total_amount: number;
@@ -163,8 +134,6 @@ export interface Distribution {
     program_name?: string | null;
     created_by_user?: { id: string; full_name: string };
     items?: DistributionItem[];
-    created_at: string;
-    updated_at: string;
 }
 
 // ============================================================
@@ -175,32 +144,31 @@ export interface Distribution {
  * Income Summary Item
  */
 export interface IncomeSummaryItem {
-    fund_type: FundType;
-    zakat_type?: ZakatType | null;
-    total_amount: number;
-    total_rice_kg?: number | null;
-    transaction_count: number;
+    period: string;        // e.g., "2025-12"
+    zakat_fitrah: number;
+    zakat_maal: number;
+    infaq: number;
+    sadaqah: number;
+    total: number;
 }
 
 /**
  * Distribution Summary Item
  */
 export interface DistributionSummaryItem {
-    fund_type: FundType;
     asnaf_name?: string;
     program_name?: string;
-    total_amount: number;
     beneficiary_count: number;
+    total_amount: number;
 }
 
 /**
  * Fund Balance
  */
 export interface FundBalance {
-    fund_type: FundType;
-    zakat_type?: ZakatType | null;
-    total_income: number;
-    total_distribution: number;
+    fund_type: string; // e.g., 'infaq', 'zakat_maal'
+    total_in: number;
+    total_out: number;
     balance: number;
 }
 
@@ -209,8 +177,22 @@ export interface FundBalance {
  */
 export interface MustahiqHistoryItem {
     distribution_date: string;
-    program_name?: string;
-    fund_type: FundType;
+    program_name: string;
+    source_fund_type: string;
     amount: number;
-    notes?: string | null;
+}
+
+/**
+ * Mustahiq History Report Data (Full Response Object)
+ * Struktur data lengkap untuk laporan history mustahiq
+ */
+export interface MustahiqHistoryReport {
+    mustahiq: {
+        id: string;
+        full_name: string;
+        asnaf_name: string;
+        address: string;
+    };
+    history: MustahiqHistoryItem[];
+    total_received: number;
 }

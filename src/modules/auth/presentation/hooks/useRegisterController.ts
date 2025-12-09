@@ -24,7 +24,7 @@ export const useRegisterController = () => {
     });
 
     const onSubmit = (data: RegisterRequest) => {
-        registerUser(data);
+        void registerUser(data);
     };
 
     return {

@@ -1,66 +1,53 @@
 'use client';
 
-import { useEffect, Suspense } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { authStorage } from '@/src/shared/lib/authStorage';
+import { Suspense } from 'react';
+import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
+import { AnimatedContainer } from "@/src/shared/ui/components/AnimatedContainer";
+import { DashboardStatsGrid } from '@/src/modules/report/presentation/components/DashboardStatsGrid';
+import { IncomeTrendChart } from '@/src/modules/report/presentation/components/IncomeTrendChart';
+import { DistributionChart } from '@/src/modules/report/presentation/components/DistributionChart';
+import { useDashboardTokenHandler } from '@/src/modules/auth/presentation/hooks/useDashboardTokenHandler';
 
 function DashboardContent() {
-    const router = useRouter();
-    const searchParams = useSearchParams();
 
-    // Handle Google OAuth callback params
-    useEffect(() => {
-        const accessToken = searchParams.get('access_token');
-        const refreshToken = searchParams.get('refresh_token');
-        const userName = searchParams.get('user_name');
-        const userEmail = searchParams.get('user_email');
-        const userRole = searchParams.get('user_role');
-
-        if (accessToken && refreshToken) {
-            // Simpan tokens
-            authStorage.setAccessToken(accessToken);
-            authStorage.setRefreshToken(refreshToken);
-
-            // Simpan user data jika ada di URL params (dari Google login)
-            if (userName && userEmail && userRole) {
-                authStorage.setUser({
-                    name: decodeURIComponent(userName),
-                    email: decodeURIComponent(userEmail),
-                    role: decodeURIComponent(userRole),
-                });
-            }
-
-            // Reload halaman untuk memastikan Header membaca data user yang baru
-            // Menggunakan window.location.href agar Header component re-mount dan useAsnaf re-run
-            window.location.href = '/dashboard';
-        }
-    }, [searchParams, router]);
+    // Handler Token
+    useDashboardTokenHandler();
 
     return (
-        <div className="min-h-screen flex items-center justify-center p-4">
-            <div className="text-center max-w-md w-full">
-                <div className="bg-white dark:bg-dark-paper rounded-lg border border-gray-200 dark:border-dark-border p-8 space-y-6">
-                    <div>
-                        <h1 className="text-4xl font-bold text-gray-900 dark:text-text-primary mb-2">
-                            Dashboard
-                        </h1>
-                        <p className="text-gray-600 dark:text-text-secondary">
-                            Selamat datang! Login berhasil.
-                        </p>
-                    </div>
+        <AnimatedContainer className="space-y-6">
+            {/* Header Halaman */}
+            <PageHeader
+                title="Dashboard Overview"
+                breadcrumbs={[{ label: 'Dashboard' }]}
+            />
+
+            {/* Bagian 1: Ringkasan Saldo (Kartu Atas) */}
+            <section aria-label="Ringkasan Saldo Dana">
+                <DashboardStatsGrid />
+            </section>
+
+            {/* Bagian 2: Grafik Statistik (Baris Bawah) */}
+            <section
+                className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+                aria-label="Grafik Statistik"
+            >
+                {/* Grafik Tren Pemasukan (Lebar 2/3 pada layar besar) */}
+                <div className="lg:col-span-2">
+                    <IncomeTrendChart />
                 </div>
-            </div>
-        </div>
+
+                {/* Grafik Proporsi Penyaluran (Lebar 1/3 pada layar besar) */}
+                <div className="lg:col-span-1">
+                    <DistributionChart />
+                </div>
+            </section>
+        </AnimatedContainer>
     );
 }
 
-/**
- * Dashboard Page
- * Halaman dashboard utama
- */
 export default function DashboardPage() {
     return (
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<div className="p-6 text-gray-500">Memuat Dashboard...</div>}>
             <DashboardContent />
         </Suspense>
     );
