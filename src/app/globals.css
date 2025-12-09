@@ -15,6 +15,7 @@
 :root {
     --background: #fffff;
     --foreground: #2A3547;
+    --chart-grid-stroke: #E2E8F0;
     scroll-behavior: smooth;
     scrollbar-width: thin;
     scrollbar-color: rgba(148, 163, 184, 0.8) transparent;
@@ -43,6 +44,7 @@ body {
     body {
         background-color: var(--color-dark-main);
         color: var(--color-text-primary);
+        --chart-grid-stroke: #333F55;
     }
 }
 

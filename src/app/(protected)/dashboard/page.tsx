@@ -28,16 +28,16 @@ function DashboardContent() {
 
             {/* Bagian 2: Grafik Statistik (Baris Bawah) */}
             <section
-                className="grid grid-cols-1 lg:grid-cols-3 gap-6"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-6"
                 aria-label="Grafik Statistik"
             >
                 {/* Grafik Tren Pemasukan (Lebar 2/3 pada layar besar) */}
-                <div className="lg:col-span-2">
+                <div className="">
                     <IncomeTrendChart />
                 </div>
 
                 {/* Grafik Proporsi Penyaluran (Lebar 1/3 pada layar besar) */}
-                <div className="lg:col-span-1">
+                <div className="">
                     <DistributionChart />
                 </div>
             </section>

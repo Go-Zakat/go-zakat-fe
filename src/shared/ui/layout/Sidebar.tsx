@@ -6,7 +6,6 @@ import {
     Users,
     HandHeart,
     Wallet,
-    FileText,
     Receipt,
     Send,
     X,
@@ -158,7 +157,6 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             <SidebarItem icon={HandHeart} label="Mustahiq" href="/mustahiq" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={Wallet} label="Muzakki" href="/muzakki" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={NotebookText} label="Program" href="/program" isCollapsed={isViewCollapsed} />
-                            <SidebarItem icon={Users} label="Users" href="/user" isCollapsed={isViewCollapsed} />
                         </div>
 
                         {/* Operasional Group */}
@@ -197,14 +195,9 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                                         : 'justify-start text-slate-400/80'
                                 )}
                             >
-                                {isViewCollapsed ? <Ellipsis size={14} /> : 'Laporan'}
+                                {isViewCollapsed ? <Ellipsis size={14} /> : 'Sumber Daya'}
                             </div>
-                            <SidebarItem
-                                icon={FileText}
-                                label="Laporan"
-                                href="/reports"
-                                isCollapsed={isViewCollapsed}
-                            />
+                            <SidebarItem icon={Users} label="Pengguna" href="/user" isCollapsed={isViewCollapsed} />
                         </div>
                     </div>
 

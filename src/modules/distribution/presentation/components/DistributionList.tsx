@@ -86,7 +86,7 @@ export const DistributionList = () => {
             cell: (item) => (
                 <div className="flex flex-col">
                     <span className="font-medium text-gray-900 dark:text-text-primary">
-                        {item.program?.name || 'Program Umum'}
+                        {item.program_name || 'Program Umum'}
                     </span>
                     <span className="text-xs text-gray-500 dark:text-text-secondary capitalize">
                         {item.source_fund_type?.replace('_', ' ')}
