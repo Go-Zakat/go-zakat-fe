@@ -54,7 +54,7 @@ export const ProgramList = () => {
                     <span className="font-medium text-gray-900 dark:text-text-primary">{item.name}</span>
                 </div>
             ),
-            className: "w-[30%]"
+            className: "w-[50%]"
         },
         {
             header: 'Tipe',

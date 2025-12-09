@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Edit, Calendar, Clock, User, CreditCard, FileText } from 'lucide-react';
+import { Edit, Calendar, CalendarCheck, User, CreditCard, FileText } from 'lucide-react';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useDonationReceiptDetailController } from '../hooks/useDonationReceiptDetailController';
@@ -73,7 +73,7 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
         <div className="space-y-6">
             <Card className="overflow-hidden">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-100 dark:border-dark-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50 dark:bg-dark-main/50">
+                <div className="p-6 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50 dark:bg-dark-main/50">
                     <div>
                         <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">No. Kwitansi</p>
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white">{donationReceipt.receipt_number}</h2>
@@ -98,7 +98,7 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                         <div className="space-y-4">
                             <div className="flex items-center gap-3">
                                 <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
-                                    <Calendar className="w-5 h-5" />
+                                    <CalendarCheck className="w-5 h-5" />
                                 </div>
                                 <div>
                                     <p className="text-xs text-gray-500 dark:text-gray-400">Tanggal Penerimaan</p>
@@ -198,7 +198,9 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                     {/* Meta Info */}
                     <div className="flex flex-col sm:flex-row gap-6 border-t border-gray-100 dark:border-dark-border pt-6">
                         <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                            <Clock className="w-4 h-4 text-gray-400" />
+                            <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+                                <Calendar className="w-4 h-4" />
+                            </div>
                             <div>
                                 <p className="text-xs text-gray-500 dark:text-gray-500">Dibuat Pada</p>
                                 <p className="font-medium">

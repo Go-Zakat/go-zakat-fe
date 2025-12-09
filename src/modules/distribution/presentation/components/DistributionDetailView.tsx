@@ -58,7 +58,7 @@ export const DistributionDetailView = ({ id }: DistributionDetailViewProps) => {
         <div className="space-y-6">
             <Card className="overflow-hidden">
                 {/* Header */}
-                <div className="p-6 border-b border-gray-100 dark:border-dark-border flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50 dark:bg-dark-main/50">
+                <div className="p-6 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-gray-50 dark:bg-dark-main/50">
                     <div>
                         <div className="flex items-center gap-2 mb-1">
                             <Send className="w-4 h-4 text-blue-500" />
