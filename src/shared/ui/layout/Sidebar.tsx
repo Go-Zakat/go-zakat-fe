@@ -158,7 +158,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             <SidebarItem icon={HandHeart} label="Mustahiq" href="/mustahiq" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={Wallet} label="Muzakki" href="/muzakki" isCollapsed={isViewCollapsed} />
                             <SidebarItem icon={NotebookText} label="Program" href="/program" isCollapsed={isViewCollapsed} />
-                            <SidebarItem icon={Users} label="Users" href="/users" isCollapsed={isViewCollapsed} />
+                            <SidebarItem icon={Users} label="Users" href="/user" isCollapsed={isViewCollapsed} />
                         </div>
 
                         {/* Operasional Group */}
@@ -176,13 +176,13 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                             <SidebarItem
                                 icon={Receipt}
                                 label="Penerimaan"
-                                href="/donation-receipts"
+                                href="/donation-receipt"
                                 isCollapsed={isViewCollapsed}
                             />
                             <SidebarItem
                                 icon={Send}
                                 label="Penyaluran"
-                                href="/distributions"
+                                href="/distribution"
                                 isCollapsed={isViewCollapsed}
                             />
                         </div>

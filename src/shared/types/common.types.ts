@@ -160,6 +160,7 @@ export interface Distribution {
     total_amount: number;
     notes?: string | null;
     program?: { id: string; name: string };
+    program_name?: string | null;
     created_by_user?: { id: string; full_name: string };
     items?: DistributionItem[];
     created_at: string;

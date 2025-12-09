@@ -8,10 +8,10 @@ const protectedRoutes = [
     '/mustahiq',
     '/muzakki',
     '/program',
-    '/donation-receipts',
-    '/distributions',
-    '/reports',
-    '/users',
+    '/donation-receipt',
+    '/distribution',
+    '/report',
+    '/user',
 ];
 
 // Daftar route publik (untuk auth seperti login/register)
