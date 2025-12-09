@@ -3,10 +3,11 @@
 import { Suspense } from 'react';
 import { MustahiqCreateForm } from '@/src/modules/mustahiq/presentation/components/MustahiqCreateForm';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
+import {AnimatedContainer} from "@/src/shared/ui/components/AnimatedContainer";
 
 function CreateMustahiqContent() {
     return (
-        <div className="space-y-6">
+        <AnimatedContainer className="space-y-6">
             <PageHeader
                 title="Tambah Mustahiq"
                 breadcrumbs={[
@@ -16,7 +17,7 @@ function CreateMustahiqContent() {
             />
 
             <MustahiqCreateForm />
-        </div>
+        </AnimatedContainer>
     );
 }
 

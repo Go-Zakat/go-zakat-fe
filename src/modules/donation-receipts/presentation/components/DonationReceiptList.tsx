@@ -2,7 +2,7 @@
 
 import {
     Eye,
-    Edit2,
+    Edit,
     Trash2,
     Search,
     Plus,
@@ -122,7 +122,7 @@ export const DonationReceiptList = () => {
                         onClick={() => router.push(`/donation-receipts/${item.id}/edit`)}
                         title="Edit"
                     >
-                        <Edit2 size={16} />
+                        <Edit size={16} />
                     </Button>
                     <Button
                         variant="ghost"

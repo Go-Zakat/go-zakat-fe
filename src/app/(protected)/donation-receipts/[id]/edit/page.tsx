@@ -3,6 +3,7 @@
 import { use } from 'react';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
 import { DonationReceiptUpdateForm } from '@/src/modules/donation-receipts/presentation/components/DonationReceiptUpdateForm';
+import {AnimatedContainer} from "@/src/shared/ui/components/AnimatedContainer";
 
 interface PageProps {
     params: Promise<{
@@ -14,7 +15,7 @@ export default function DonationReceiptEditPage({ params }: PageProps) {
     const { id } = use(params);
 
     return (
-        <div className="space-y-6">
+        <AnimatedContainer className="space-y-6">
             <PageHeader
                 title="Edit Penerimaan Donasi"
                 breadcrumbs={[
@@ -23,6 +24,6 @@ export default function DonationReceiptEditPage({ params }: PageProps) {
                 ]}
             />
             <DonationReceiptUpdateForm id={id} />
-        </div>
+        </AnimatedContainer>
     );
 }

@@ -1,35 +1,35 @@
-import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import type {Metadata} from "next";
+import {Outfit} from "next/font/google";
 import "./globals.css";
 import React from "react";
-import { ThemeProvider } from "@/src/shared/ui/ThemeProvider";
+import {ThemeProvider} from "@/src/shared/ui/ThemeProvider";
 
 const outfit = Outfit({
-  subsets: ["latin"],
-  variable: "--font-outfit",
+    subsets: ["latin"],
+    variable: "--font-outfit",
 });
 
 export const metadata: Metadata = {
-  title: "Go Zakat",
-  description: "Ayo berzakat",
+    title: "Go Zakat",
+    description: "Ayo berzakat",
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <title>Move…</title>
-        <link rel="icon" href="/icons/Mosque.svg" type="image/png" sizes="22x22" />
-      </head>
-      <body className={`${outfit.variable} antialiased `}>
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <title>Move…</title>
+                <link rel="icon" href="/icons/Mosque.svg" type="image/png" sizes="22x22"/>
+            </head>
+            <body className={`${outfit.variable} antialiased `}>
+                <ThemeProvider>
+                    {children}
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }

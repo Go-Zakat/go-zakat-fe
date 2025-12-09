@@ -3,6 +3,7 @@
 import { use } from 'react';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
 import { AsnafUpdateForm } from '@/src/modules/asnaf/presentation/components/AsnafUpdateForm';
+import {AnimatedContainer} from "@/src/shared/ui/components/AnimatedContainer";
 
 interface PageProps {
     params: Promise<{
@@ -14,7 +15,7 @@ export default function AsnafEditPage({ params }: PageProps) {
     const { id } = use(params);
 
     return (
-        <div className="space-y-6">
+        <AnimatedContainer className="space-y-6">
             <PageHeader
                 title="Edit Asnaf"
                 breadcrumbs={[
@@ -24,6 +25,6 @@ export default function AsnafEditPage({ params }: PageProps) {
             />
 
             <AsnafUpdateForm id={id} />
-        </div>
+        </AnimatedContainer>
     );
 }

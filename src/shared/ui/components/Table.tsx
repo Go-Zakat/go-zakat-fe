@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { AnimatePresence, motion } from "framer-motion";
 
 export interface Column<T> {
     header: string;
@@ -18,6 +19,12 @@ interface TableProps<T> {
     keyExtractor: (item: T) => string | number;
 }
 
+const rowVariants = {
+    hidden: { opacity: 0, y: 10 },
+    visible: { opacity: 1, y: 0 },
+    exit: { opacity: 0, x: -10 }
+};
+
 export const Table = <T, >({
     columns,
     data,
@@ -30,7 +37,7 @@ export const Table = <T, >({
             <table className="w-full text-left">
                 <thead>
                 <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
-                    {/* Checkbox Header (Optional / Hardcoded for now based on previous designs) */}
+                    {/* Checkbox Header */}
                     <th className="px-6 py-4 w-12 text-center">
                         <input type="checkbox"
                                className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent"/>
@@ -47,6 +54,7 @@ export const Table = <T, >({
                 </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-dark-border bg-white dark:bg-dark-paper">
+                <AnimatePresence mode='wait'>
                     {isLoading ? (
                         <tr>
                             <td colSpan={columns.length + 1}
@@ -62,8 +70,18 @@ export const Table = <T, >({
                             </td>
                         </tr>
                     ) : (
-                        data.map((item) => (
-                            <tr key={keyExtractor(item)} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
+                        data.map((item, i) => (
+                            <motion.tr
+                                key={keyExtractor(item)}
+                                className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50"
+
+                                variants={rowVariants}
+                                initial="hidden"
+                                animate="visible"
+                                exit="exit"
+                                transition={{ duration: 0.2, delay: i * 0.05 }}
+                                layout
+                            >
                                 {/* Checkbox Cell */}
                                 <td className="px-6 py-4 text-center">
                                     <input type="checkbox"
@@ -75,9 +93,10 @@ export const Table = <T, >({
                                         {col.cell ? col.cell(item) : (col.accessorKey ? String(item[col.accessorKey]) : null)}
                                     </td>
                                 ))}
-                            </tr>
+                            </motion.tr>
                         ))
                     )}
+                </AnimatePresence>
                 </tbody>
             </table>
         </div>

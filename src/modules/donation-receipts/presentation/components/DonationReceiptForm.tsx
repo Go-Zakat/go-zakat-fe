@@ -106,7 +106,7 @@ export const DonationReceiptForm = ({
                             placeholder="Nomor Kwitansi"
                             error={errors.receipt_number}
                             registration={register('receipt_number')}
-                            disabled={!isEditMode}
+                            disabled
                         />
                         <Input
                             type="date"

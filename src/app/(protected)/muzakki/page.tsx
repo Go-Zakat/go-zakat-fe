@@ -3,10 +3,11 @@
 import { Suspense } from 'react';
 import { MuzakkiList } from '@/src/modules/muzakki/presentation/components/MuzakkiList';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
+import {AnimatedContainer} from "@/src/shared/ui/components/AnimatedContainer";
 
 function MuzakkiContent() {
     return (
-        <div className="space-y-6">
+        <AnimatedContainer className="space-y-6">
             <PageHeader
                 title="Daftar Muzakki"
                 breadcrumbs={[
@@ -16,7 +17,7 @@ function MuzakkiContent() {
             />
 
             <MuzakkiList />
-        </div>
+        </AnimatedContainer>
     );
 }
 

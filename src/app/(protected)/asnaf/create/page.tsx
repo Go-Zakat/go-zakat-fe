@@ -3,10 +3,11 @@
 import { Suspense } from 'react';
 import { AsnafCreateForm } from '@/src/modules/asnaf/presentation/components/AsnafCreateForm';
 import { PageHeader } from '@/src/shared/ui/layout/PageHeader';
+import {AnimatedContainer} from "@/src/shared/ui/components/AnimatedContainer";
 
 function CreateAsnafContent() {
     return (
-        <div className="space-y-6">
+        <AnimatedContainer className="space-y-6">
             <PageHeader
                 title="Tambah Asnaf"
                 breadcrumbs={[
@@ -16,7 +17,7 @@ function CreateAsnafContent() {
             />
 
             <AsnafCreateForm />
-        </div>
+        </AnimatedContainer>
     );
 }
 
