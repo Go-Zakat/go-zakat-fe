@@ -55,6 +55,9 @@ export const DistributionForm = ({
 }: DistributionFormProps) => {
 
     const items = watch('items');
+    const programValue = watch('program_id');
+    const sourceFundValue = watch('source_fund_type');
+
     const totalAmount = items?.reduce((sum, item) => sum + (Number(item.amount) || 0), 0) || 0;
 
     // Dropdown Options
@@ -95,12 +98,14 @@ export const DistributionForm = ({
                             options={programOptions}
                             error={errors.program_id}
                             registration={register('program_id')}
+                            value={programValue || ''}
                         />
                         <Select
                             label="Sumber Dana"
                             options={sourceFundOptions}
                             error={errors.source_fund_type}
                             registration={register('source_fund_type')}
+                            value={sourceFundValue || ''}
                         />
                         <div className="hidden md:block"></div> {/* Spacer */}
                     </div>
@@ -145,6 +150,7 @@ export const DistributionForm = ({
                                             options={mustahiqOptions}
                                             error={errors.items?.[index]?.mustahiq_id}
                                             registration={register(`items.${index}.mustahiq_id`)}
+                                            value={items?.[index]?.mustahiq_id || ''}
                                         />
                                     </div>
 

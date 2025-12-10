@@ -46,7 +46,7 @@ export const Pagination = ({
     }, []);
 
     return (
-        <div className="px-6 py-4 border-t border-gray-100 dark:border-dark-border flex flex-col sm:flex-row items-center justify-between gap-4 bg-white dark:bg-dark-paper">
+        <div className="px-6 py-4 border-t border-gray-100 dark:border-dark-border flex items-center justify-between gap-4 bg-white dark:bg-dark-paper">
             {/* Bagian Kiri: Rows Per Page */}
             <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-text-secondary">
                 <span>Rows per page:</span>

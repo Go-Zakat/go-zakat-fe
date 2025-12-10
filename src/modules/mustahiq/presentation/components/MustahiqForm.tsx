@@ -19,6 +19,8 @@ interface MustahiqFormProps {
     error: string | null;
     asnafList: Asnaf[];
     isEditMode?: boolean;
+    asnafValue?: string;
+    statusValue?: string;
 }
 
 export const MustahiqForm = ({
@@ -28,7 +30,9 @@ export const MustahiqForm = ({
     isLoading,
     error,
     asnafList,
-    isEditMode = false
+    isEditMode = false,
+    asnafValue,
+    statusValue
 }: MustahiqFormProps) => {
 
     const statusOptions = [
@@ -80,6 +84,7 @@ export const MustahiqForm = ({
                             options={asnafOptions}
                             error={errors.asnafID}
                             registration={register('asnafID')}
+                            value={asnafValue || ''}
                         />
                     </div>
 
@@ -88,6 +93,7 @@ export const MustahiqForm = ({
                         options={statusOptions}
                         error={errors.status}
                         registration={register('status')}
+                        value={statusValue || ''}
                     />
 
                     <Textarea

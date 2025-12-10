@@ -15,7 +15,9 @@ export const MustahiqUpdateForm = ({ id }: MustahiqUpdateFormProps) => {
         isLoading,
         error,
         onSubmit,
-        asnafList
+        asnafList,
+        asnafValue,
+        statusValue
     } = useMustahiqUpdateController(id);
 
     return (
@@ -27,6 +29,8 @@ export const MustahiqUpdateForm = ({ id }: MustahiqUpdateFormProps) => {
             isLoading={isLoading}
             error={error}
             asnafList={asnafList}
+            asnafValue={asnafValue}
+            statusValue={statusValue}
         />
     );
 };

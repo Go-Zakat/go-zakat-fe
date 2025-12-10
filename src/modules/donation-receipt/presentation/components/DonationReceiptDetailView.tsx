@@ -84,7 +84,7 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                             {formatCurrency(donationReceipt.total_amount)}
                         </h2>
                     </div>
-                    <Link href={`/donation-receipts/${donationReceipt.id}/edit`} className="w-full sm:w-auto">
+                    <Link href={`/donation-receipt/${donationReceipt.id}/edit`} className="w-full sm:w-auto">
                         <Button className="w-full">
                             <Edit className="w-4 h-4 mr-2" />
                             Edit
@@ -151,47 +151,51 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                     <div>
                         <h3 className="text-lg font-semibold text-gray-900 dark:text-text-primary mb-4">Detail Item Donasi</h3>
                         <div className="border border-gray-200 dark:border-dark-border rounded-lg overflow-hidden">
-                            <table className="w-full text-sm text-left">
-                                <thead className="bg-gray-50 dark:bg-dark-main text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-dark-border">
-                                <tr>
-                                    <th className="px-4 py-3">Jenis Dana</th>
-                                    <th className="px-4 py-3">Detail Zakat</th>
-                                    <th className="px-4 py-3">Catatan Item</th>
-                                    <th className="px-4 py-3 text-right">Nominal</th>
-                                </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
-                                {donationReceipt.items?.map((item) => (
-                                    <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
-                                        <td className="px-4 py-3 font-medium capitalize">
-                                            {item.fund_type}
-                                        </td>
-                                        <td className="px-4 py-3">
-                                            {item.fund_type === 'zakat' ? (
-                                                <div className="flex flex-col text-xs space-y-1">
-                                                        <span className="capitalize font-semibold text-gray-700 dark:text-gray-300">
-                                                            {item.zakat_type || '-'}
-                                                        </span>
-                                                    {item.zakat_type === 'fitrah' && (
-                                                        <div className="text-gray-500">
-                                                            {item.person_count && <span>{item.person_count} Jiwa</span>}
-                                                            {item.person_count && item.rice_kg && <span> • </span>}
-                                                            {item.rice_kg && <span>{item.rice_kg} Kg Beras</span>}
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ) : '-'}
-                                        </td>
-                                        <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
-                                            {item.notes || '-'}
-                                        </td>
-                                        <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-text-primary">
-                                            {formatCurrency(item.amount)}
-                                        </td>
-                                    </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                            <div className="overflow-x-auto">
+                                <div className="min-w-[800px]">
+                                    <table className="w-full text-sm text-left">
+                                        <thead className="bg-gray-50 dark:bg-dark-main text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-dark-border">
+                                            <tr>
+                                                <th className="px-4 py-3">Jenis Dana</th>
+                                                <th className="px-4 py-3">Detail Zakat</th>
+                                                <th className="px-4 py-3">Catatan Item</th>
+                                                <th className="px-4 py-3 text-right">Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
+                                            {donationReceipt.items?.map((item) => (
+                                                <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
+                                                    <td className="px-4 py-3 font-medium capitalize">
+                                                        {item.fund_type}
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        {item.fund_type === 'zakat' ? (
+                                                            <div className="flex flex-col text-xs space-y-1">
+                                                                <span className="capitalize font-semibold text-gray-700 dark:text-gray-300">
+                                                                    {item.zakat_type || '-'}
+                                                                </span>
+                                                                {item.zakat_type === 'fitrah' && (
+                                                                    <div className="text-gray-500">
+                                                                        {item.person_count && <span>{item.person_count} Jiwa</span>}
+                                                                        {item.person_count && item.rice_kg && <span> • </span>}
+                                                                        {item.rice_kg && <span>{item.rice_kg} Kg Beras</span>}
+                                                                    </div>
+                                                                )}
+                                                            </div>
+                                                        ) : '-'}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
+                                                        {item.notes || '-'}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-text-primary">
+                                                        {formatCurrency(item.amount)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

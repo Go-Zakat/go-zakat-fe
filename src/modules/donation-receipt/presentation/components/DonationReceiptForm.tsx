@@ -61,6 +61,8 @@ export const DonationReceiptForm = ({
 }: DonationReceiptFormProps) => {
 
     const items = watch('items');
+    const muzakkiValue = watch('muzakki_id');
+    const paymentMethodValue = watch('payment_method');
 
     // Perhitungan total
     const totalAmount = items?.reduce((sum, item) => sum + (Number(item.amount) || 0), 0) || 0;
@@ -119,12 +121,14 @@ export const DonationReceiptForm = ({
                             options={muzakkiOptions}
                             error={errors.muzakki_id}
                             registration={register('muzakki_id')}
+                            value={muzakkiValue || ''}
                         />
                         <Select
                             label="Metode Pembayaran"
                             options={paymentMethodOptions}
                             error={errors.payment_method}
                             registration={register('payment_method')}
+                            value={paymentMethodValue || ''}
                         />
                     </div>
                 </div>
@@ -167,6 +171,7 @@ export const DonationReceiptForm = ({
                                             options={fundTypeOptions}
                                             error={errors.items?.[index]?.fund_type}
                                             registration={register(`items.${index}.fund_type`)}
+                                            value={items?.[index]?.fund_type || ''}
                                         />
                                     </div>
 
@@ -197,6 +202,7 @@ export const DonationReceiptForm = ({
                                                 options={zakatTypeOptions}
                                                 error={errors.items?.[index]?.zakat_type}
                                                 registration={register(`items.${index}.zakat_type`)}
+                                                value={items?.[index]?.zakat_type || ''}
                                             />
                                         </div>
                                     )}

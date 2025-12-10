@@ -142,43 +142,47 @@ export const DistributionDetailView = ({ id }: DistributionDetailViewProps) => {
                             Detail Penerima (Mustahiq)
                         </h3>
                         <div className="border border-gray-200 dark:border-dark-border rounded-lg overflow-hidden">
-                            <table className="w-full text-sm text-left">
-                                <thead className="bg-gray-50 dark:bg-dark-main text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-dark-border">
-                                <tr>
-                                    <th className="px-4 py-3">Nama Mustahiq</th>
-                                    <th className="px-4 py-3">Asnaf</th>
-                                    <th className="px-4 py-3">Catatan</th>
-                                    <th className="px-4 py-3 text-right">Nominal</th>
-                                </tr>
-                                </thead>
-                                <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
-                                {distribution.items?.map((item) => (
-                                    <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
-                                        <td className="px-4 py-3 font-medium text-gray-900 dark:text-text-primary">
-                                            {item.mustahiq_name || '-'}
-                                        </td>
-                                        <td className="px-4 py-3">
-                                                <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                                                    {item.asnaf_name || '-'}
-                                                </span>
-                                        </td>
-                                        <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
-                                            {item.notes || '-'}
-                                        </td>
-                                        <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-text-primary">
-                                            {formatCurrency(item.amount)}
-                                        </td>
-                                    </tr>
-                                ))}
-                                {(!distribution.items || distribution.items.length === 0) && (
-                                    <tr>
-                                        <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
-                                            Tidak ada data penerima
-                                        </td>
-                                    </tr>
-                                )}
-                                </tbody>
-                            </table>
+                            <div className="overflow-x-auto">
+                                <div className="min-w-[800px]">
+                                    <table className="w-full text-sm text-left">
+                                        <thead className="bg-gray-50 dark:bg-dark-main text-gray-500 dark:text-gray-400 font-medium border-b border-gray-200 dark:border-dark-border">
+                                            <tr>
+                                                <th className="px-4 py-3">Nama Mustahiq</th>
+                                                <th className="px-4 py-3">Asnaf</th>
+                                                <th className="px-4 py-3">Catatan</th>
+                                                <th className="px-4 py-3 text-right">Nominal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-gray-100 dark:divide-dark-border">
+                                            {distribution.items?.map((item) => (
+                                                <tr key={item.id} className="hover:bg-gray-50/50 dark:hover:bg-dark-main/50">
+                                                    <td className="px-4 py-3 font-medium text-gray-900 dark:text-text-primary">
+                                                        {item.mustahiq_name || '-'}
+                                                    </td>
+                                                    <td className="px-4 py-3">
+                                                        <span className="px-2 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                                                            {item.asnaf_name || '-'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-4 py-3 text-gray-500 dark:text-gray-400">
+                                                        {item.notes || '-'}
+                                                    </td>
+                                                    <td className="px-4 py-3 text-right font-semibold text-gray-900 dark:text-text-primary">
+                                                        {formatCurrency(item.amount)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                            {(!distribution.items || distribution.items.length === 0) && (
+                                                <tr>
+                                                    <td colSpan={4} className="px-4 py-8 text-center text-gray-500">
+                                                        Tidak ada data penerima
+                                                    </td>
+                                                </tr>
+                                            )}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

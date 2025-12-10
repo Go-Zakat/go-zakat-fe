@@ -24,6 +24,7 @@ export const useMustahiqUpdateController = (id: string) => {
         register,
         handleSubmit,
         reset,
+        watch,
         formState: { errors },
     } = useForm<MustahiqFormValues>({
         // Casting Resolver
@@ -55,6 +56,9 @@ export const useMustahiqUpdateController = (id: string) => {
             });
     };
 
+    const asnafValue = watch('asnafID');
+    const statusValue = watch('status');
+
     return {
         register,
         handleSubmit,
@@ -64,5 +68,7 @@ export const useMustahiqUpdateController = (id: string) => {
         onSubmit,
         mustahiq,
         asnafList,
+        asnafValue,
+        statusValue
     };
 };
