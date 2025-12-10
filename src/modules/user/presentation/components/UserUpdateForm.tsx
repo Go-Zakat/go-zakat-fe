@@ -15,7 +15,8 @@ export const UserUpdateForm = ({ id }: UserUpdateFormProps) => {
         isLoading,
         error,
         onSubmit,
-        user
+        user,
+        roleValue
     } = useUserUpdateController(id);
 
     return (
@@ -27,6 +28,7 @@ export const UserUpdateForm = ({ id }: UserUpdateFormProps) => {
             error={error}
             userName={user?.name}
             userEmail={user?.email}
+            roleValue={roleValue}
         />
     );
 };

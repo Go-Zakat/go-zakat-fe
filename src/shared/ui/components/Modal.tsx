@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactNode, useEffect, useState} from 'react';
+import { ReactNode, useEffect, useSyncExternalStore } from 'react';
 import { X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import { clsx } from 'clsx';
@@ -14,6 +14,16 @@ interface ModalProps {
     className?: string;
 }
 
+const emptySubscribe = () => () => {};
+
+export function useMounted() {
+    return useSyncExternalStore(
+        emptySubscribe,
+        () => true,  // Client: Selalu true
+        () => false  // Server: Selalu false
+    );
+}
+
 export const Modal = ({
     isOpen,
     onClose,
@@ -21,34 +31,30 @@ export const Modal = ({
     children,
     className = '',
 }: ModalProps) => {
-    const [mounted, setMounted] = useState(false);
+    // 1. Gunakan hook useMounted pengganti useState+useEffect
+    const isMounted = useMounted();
 
-    // EFFECT 1: Handle Hydration
+    // EFFECT: Handle Scroll Lock
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setMounted(true);
-        }, 0);
-
-        return () => clearTimeout(timer);
-    }, []);
-
-    // EFFECT 2: Handle Scroll Lock
-    useEffect(() => {
+        // Kita tidak perlu cek isMounted di sini karena useEffect
+        // secara natural hanya berjalan di client-side.
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = '';
         }
 
         return () => {
-            document.body.style.overflow = 'unset';
+            document.body.style.overflow = '';
         };
     }, [isOpen]);
 
-    // Prevent hydration mismatch
-    if (!mounted) return null;
+    // 2. Jika belum mounted (Server Side), jangan render apa pun
+    if (!isMounted) return null;
 
-    // Gunakan createPortal agar modal di-render di luar root aplikasi
+    // 3. Safety check untuk TypeScript agar yakin document ada
+    if (typeof document === 'undefined') return null;
+
     return createPortal(
         <AnimatePresence>
             {isOpen && (

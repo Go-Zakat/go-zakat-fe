@@ -41,7 +41,7 @@ export const StatCard = ({ title, value, icon, stats, colorClass = "text-blue-60
     };
 
     return (
-        <Card className="p-5 flex flex-col justify-between h-full transition-shadow hover:shadow-md bg-white dark:bg-dark-paper border-gray-100 dark:border-dark-border">
+        <Card className="p-5 flex flex-col justify-between h-full transition-shadow bg-white dark:bg-dark-paper border-gray-100 dark:border-dark-border">
             <div className="flex justify-between items-start mb-4">
                 <div>
                     <div className="flex items-center gap-2 mb-1">

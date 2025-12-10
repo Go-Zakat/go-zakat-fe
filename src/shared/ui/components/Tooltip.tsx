@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect, ReactNode } from 'react';
+import React, { useState, useRef, ReactNode, useSyncExternalStore } from 'react';
 import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -9,6 +9,16 @@ interface TooltipProps {
     content: ReactNode;
     className?: string;
     contentClassName?: string;
+}
+
+const emptySubscribe = () => () => {};
+
+export function useMounted() {
+    return useSyncExternalStore(
+        emptySubscribe,
+        () => true,  // Client: Selalu true
+        () => false  // Server: Selalu false
+    );
 }
 
 export const Tooltip = ({
@@ -21,14 +31,15 @@ export const Tooltip = ({
     const [position, setPosition] = useState({ top: 0, left: 0 });
     const triggerRef = useRef<HTMLDivElement>(null);
 
+    // Ganti useState/useEffect lama dengan hook modern ini
+    const isMounted = useMounted();
+
     const updatePosition = () => {
         if (triggerRef.current) {
             const rect = triggerRef.current.getBoundingClientRect();
-            // Default position: above the trigger, centered horizontally
-            // Note: We might want to make this configurable later, but for snippets this is a good default
             setPosition({
-                top: rect.top + window.scrollY, // Calculate absolute top
-                left: rect.left + window.scrollX, // Calculate absolute left
+                top: rect.top + window.scrollY,
+                left: rect.left + window.scrollX,
             });
         }
     };
@@ -42,12 +53,6 @@ export const Tooltip = ({
         setIsVisible(false);
     };
 
-    // Portal target: document.body (only available on client)
-    const [mounted, setMounted] = useState(false);
-    useEffect(() => {
-        setMounted(true);
-    }, []);
-
     if (!content) return <>{children}</>;
 
     return (
@@ -59,7 +64,8 @@ export const Tooltip = ({
         >
             {children}
 
-            {mounted && isVisible && createPortal(
+            {/* Render Portal hanya jika sudah di Client (Mounted) */}
+            {isMounted && typeof document !== 'undefined' && createPortal(
                 <AnimatePresence>
                     {isVisible && (
                         <motion.div
@@ -69,56 +75,26 @@ export const Tooltip = ({
                             transition={{ duration: 0.2, ease: "easeOut" }}
                             style={{
                                 position: 'absolute',
-                                top: position.top, // We will offset this using translateY in CSS or transform
+                                top: position.top,
                                 left: position.left,
-                                zIndex: 9999, // Ensure it's on top of everything
+                                zIndex: 9999,
                             }}
-                            className="pointer-events-none" // Optional: let clicks pass through if just information
+                            className="pointer-events-none"
                         >
-                            {/* 
-                                Wrapper to position the tooltip accurately relative to the trigger.
-                                We move it UP by 100% of its own height + some margin.
-                                We can't know the height easily without ref, but typical tooltips go above.
-                                
-                                Strategy: 
-                                Render it at the *trigger's top-left* coordinate.
-                                Then transform: translate(-50%, -100%) to center and move up? NO.
-                                
-                                For "Snippet" style (like VSCode intellisense or large description popups),
-                                it might be better to align left-to-left or just float above/below.
-                                
-                                Let's try: Align Top-Left of tooltip to Bottom-Left of trigger (Dropdown style) 
-                                OR Top-Left of tooltip to Top-Left of trigger (Cover style).
-                                
-                                The user asked for "Description Snippet", which sounds like "Expand this item".
-                                So let's align it exactly over the text or slightly floated.
-                                
-                                Let's go with: Positioned slightly below the cursor/trigger or "Pop over".
-                                Given table cells, a "Pop over" (floating just above/below) is safest.
-                                
-                                Let's align: 
-                                top: rect.bottom + 8px
-                                left: rect.left + (rect.width / 2)
-                                transform: translateX(-50%)
-                            */}
                             <div
                                 className={`
                                     bg-gray-900 dark:bg-gray-800 text-white 
                                     text-xs sm:text-sm rounded-lg py-2 px-3 shadow-xl 
-                                    max-w-xs sm:max-w-sm md:max-w-md break-words
+                                    max-w-xs sm:max-w-sm md:max-w-md 
                                     border border-gray-700 dark:border-gray-600
                                     ${contentClassName}
                                 `}
                                 style={{
-                                    // Adjust positioning logic here. 
-                                    // For a description snippet, let's make it appear ABOVE the trigger if possible, or BELOW.
-                                    // Let's mimic a "tooltip" standard: Centered above.
-                                    transform: 'translate(-10%, -110%)', // Move up and slightly left adjust
+                                    transform: 'translate(-10%, -110%)',
                                     marginTop: '-8px'
                                 }}
                             >
                                 {content}
-                                {/* Arrow (Optional, skipping for clean snippet look) */}
                             </div>
                         </motion.div>
                     )}

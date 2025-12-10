@@ -16,6 +16,7 @@ interface UserFormProps {
     error: string | null;
     userName?: string;
     userEmail?: string;
+    roleValue?: string;
 }
 
 export const UserForm = ({
@@ -25,7 +26,8 @@ export const UserForm = ({
     isLoading,
     error,
     userName,
-    userEmail
+    userEmail,
+    roleValue
 }: UserFormProps) => {
     return (
         <Card className="p-6">
@@ -58,6 +60,7 @@ export const UserForm = ({
                         label="Role"
                         registration={register('role')}
                         error={errors.role}
+                        value={roleValue}
                         options={[
                             { value: 'admin', label: 'Administrator' },
                             { value: 'staf', label: 'Staf' },

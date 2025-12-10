@@ -1,13 +1,13 @@
 'use client';
 
-import { UseFormRegisterReturn } from 'react-hook-form';
+import { UseFormRegisterReturn, FieldError } from 'react-hook-form';
 import { clsx } from 'clsx';
 
 interface TextareaProps {
     label?: string;
     placeholder?: string;
     registration: UseFormRegisterReturn;
-    error?: any;
+    error?: FieldError;
     rows?: number;
     className?: string;
 }

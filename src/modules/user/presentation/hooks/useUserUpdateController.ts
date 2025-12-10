@@ -17,6 +17,7 @@ export const useUserUpdateController = (id: string) => {
         register,
         handleSubmit,
         reset,
+        watch,
         formState: { errors },
     } = useForm<UpdateRoleFormValues>({
         resolver: zodResolver(updateRoleSchema) as unknown as Resolver<UpdateRoleFormValues>,
@@ -31,7 +32,7 @@ export const useUserUpdateController = (id: string) => {
     useEffect(() => {
         if (user) {
             reset({
-                role: user.role,
+                role: user.role as UpdateRoleFormValues['role'],
             });
         }
     }, [user, reset]);
@@ -41,9 +42,12 @@ export const useUserUpdateController = (id: string) => {
 
         const success = await updateUserRole(id, requestData);
         if (success) {
-            router.push('/user'); // Redirect to list after success
+            router.push('/user');
         }
     };
+
+    // eslint-disable-next-line react-hooks/incompatible-library
+    const roleValue = watch('role');
 
     return {
         register,
@@ -53,5 +57,6 @@ export const useUserUpdateController = (id: string) => {
         error: updateError || detailError,
         onSubmit,
         user,
+        roleValue
     };
 };
