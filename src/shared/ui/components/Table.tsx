@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 
 export interface Column<T> {
     header: string;
@@ -22,10 +22,9 @@ interface TableProps<T> {
 const rowVariants = {
     hidden: { opacity: 0, y: 10 },
     visible: { opacity: 1, y: 0 },
-    exit: { opacity: 0, x: -10 }
 };
 
-export const Table = <T, >({
+export const Table = <T,>({
     columns,
     data,
     isLoading = false,
@@ -36,25 +35,24 @@ export const Table = <T, >({
         <div>
             <table className="w-full text-left">
                 <thead>
-                <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
-                    {/* Checkbox Header */}
-                    <th className="px-6 py-4 w-12 text-center">
-                        <input type="checkbox"
-                               className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent"/>
-                    </th>
-
-                    {columns.map((col, index) => (
-                        <th
-                            key={index}
-                            className={`px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap ${col.headerClassName || ''}`}
-                        >
-                            {col.header}
+                    <tr className="bg-gray-50/50 dark:bg-dark-main/50 border-y border-gray-100 dark:border-dark-border">
+                        {/* Checkbox Header */}
+                        <th className="px-6 py-4 w-12 text-center">
+                            <input type="checkbox"
+                                className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
                         </th>
-                    ))}
-                </tr>
+
+                        {columns.map((col, index) => (
+                            <th
+                                key={index}
+                                className={`px-6 py-4 text-left text-xs font-semibold text-gray-500 dark:text-text-secondary uppercase tracking-wider whitespace-nowrap ${col.headerClassName || ''}`}
+                            >
+                                {col.header}
+                            </th>
+                        ))}
+                    </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100 dark:divide-dark-border bg-white dark:bg-dark-paper">
-                <AnimatePresence mode='wait'>
                     {isLoading ? (
                         <tr>
                             <td colSpan={columns.length + 1}
@@ -78,14 +76,12 @@ export const Table = <T, >({
                                 variants={rowVariants}
                                 initial="hidden"
                                 animate="visible"
-                                exit="exit"
                                 transition={{ duration: 0.2, delay: i * 0.05 }}
-                                layout
                             >
                                 {/* Checkbox Cell */}
                                 <td className="px-6 py-4 text-center">
                                     <input type="checkbox"
-                                           className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent"/>
+                                        className="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-primary-blue focus:ring-primary-blue cursor-pointer bg-transparent" />
                                 </td>
 
                                 {columns.map((col, index) => (
@@ -96,7 +92,6 @@ export const Table = <T, >({
                             </motion.tr>
                         ))
                     )}
-                </AnimatePresence>
                 </tbody>
             </table>
         </div>
