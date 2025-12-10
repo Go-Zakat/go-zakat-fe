@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { reportsApi } from '../infrastructure/reports.api';
-import { GetDistributionSummaryParams } from '../domain/reports.types';
+import { reportApi } from '../infrastructure/report.api';
+import { GetDistributionSummaryParams } from '../domain/report.types';
 import { DistributionSummaryItem } from '@/src/shared/types/common.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -15,7 +15,7 @@ export const useDistributionSummary = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await reportsApi.getDistributionSummary(params);
+            const response = await reportApi.getDistributionSummary(params);
             setData(response.data);
         } catch (err) {
             setError(extractErrorMessage(err));

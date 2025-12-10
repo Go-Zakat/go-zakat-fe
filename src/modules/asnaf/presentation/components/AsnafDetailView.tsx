@@ -69,7 +69,7 @@ export const AsnafDetailView = ({ id }: AsnafDetailViewProps) => {
                     </div>
 
                     <div className="flex flex-col sm:flex-row gap-6">
-                        <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
+                        <div className="flex items-center gap-3 text-gray-600 dark:text-gray-400">
                             <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
                                 <Calendar className="w-4 h-4" />
                             </div>

@@ -9,23 +9,25 @@ export default function ProtectedLayout({ children }: { children: ReactNode }) {
     const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
     return (
-        <div className="flex h-screen bg-white dark:bg-dark-paper text-gray-900 dark:text-text-primary">
+        <div className="flex h-screen bg-white dark:bg-dark-paper text-gray-900 dark:text-text-primary overflow-hidden">
             <Sidebar
                 isMobileOpen={isMobileSidebarOpen}
                 onMobileClose={() => setIsMobileSidebarOpen(false)}
                 isCollapsed={isSidebarCollapsed}
             />
 
-            <div className="flex-1 flex flex-col overflow-y-auto ">
-                <Header
-                    onMobileMenuClick={() => setIsMobileSidebarOpen(true)}
-                    onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
-                    isSidebarCollapsed={isSidebarCollapsed}
-                />
+            <div className="flex-1 flex flex-col overflow-hidden">
+                <div className="flex-1 flex flex-col overflow-y-auto">
+                    <Header
+                        onMobileMenuClick={() => setIsMobileSidebarOpen(true)}
+                        onToggleSidebar={() => setIsSidebarCollapsed(prev => !prev)}
+                        isSidebarCollapsed={isSidebarCollapsed}
+                    />
 
-                <main className="flex-1 p-6 bg-white dark:bg-dark-paper">
-                    {children}
-                </main>
+                    <main className="flex-1 p-6 bg-white dark:bg-dark-paper">
+                        {children}
+                    </main>
+                </div>
             </div>
         </div>
     );

@@ -8,13 +8,13 @@ import {
     FundBalanceResponse,
     MustahiqHistoryResponse,
     GetFundBalanceParams,
-} from '../domain/reports.types';
+} from '../domain/report.types';
 
 /**
  * Reports API
  * API calls untuk data statistik dan laporan
  */
-export const reportsApi = {
+export const reportApi = {
     getIncomeSummary: async (params?: GetIncomeSummaryParams): Promise<IncomeSummaryResponse> => {
         const response = await httpClient.get<IncomeSummaryResponse>(
             ENDPOINTS.REPORTS.INCOME_SUMMARY,

@@ -1,33 +1,33 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { reportApi } from '../infrastructure/report.api';
-import { MustahiqHistoryReport } from '@/src/shared/types/common.types';
+import { userApi } from '../infrastructure/user.api';
+import { UpdateRoleRequest } from '../domain/user.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
-export const useMustahiqHistory = () => {
-    const [data, setData] = useState<MustahiqHistoryReport | null>(null);
+export const useUserUpdateRole = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMustahiqHistory = useCallback(async (id: string) => {
-        if (!id) return;
+    const updateUserRole = useCallback(async (id: string, payload: UpdateRoleRequest) => {
+        if (!id) return false;
         setIsLoading(true);
         setError(null);
+
         try {
-            const response = await reportApi.getMustahiqHistory(id);
-            setData(response.data);
+            await userApi.updateRole(id, payload);
+            return true;
         } catch (err) {
             setError(extractErrorMessage(err));
+            return false;
         } finally {
             setIsLoading(false);
         }
     }, []);
 
     return {
-        getMustahiqHistory,
-        data,
+        updateUserRole,
         isLoading,
-        error
+        error,
     };
 };

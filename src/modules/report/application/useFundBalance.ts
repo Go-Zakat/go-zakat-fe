@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { reportsApi } from '../infrastructure/reports.api';
-import { GetFundBalanceParams } from '../domain/reports.types';
+import { reportApi } from '../infrastructure/report.api';
+import { GetFundBalanceParams } from '../domain/report.types';
 import { FundBalance } from '@/src/shared/types/common.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -15,7 +15,7 @@ export const useFundBalance = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await reportsApi.getFundBalance(params);
+            const response = await reportApi.getFundBalance(params);
             setData(response.data);
         } catch (err) {
             setError(extractErrorMessage(err));

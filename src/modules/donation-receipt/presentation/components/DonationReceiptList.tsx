@@ -71,7 +71,7 @@ export const DonationReceiptList = () => {
     ];
 
     const paymentMethodOptions = [
-        { value: '', label: 'Semua Metode Pembayaran' },
+        { value: '', label: 'Metode Pembayaran' },
         { value: PAYMENT_METHODS.CASH, label: 'Tunai' },
         { value: PAYMENT_METHODS.BANK_TRANSFER, label: 'Transfer Bank' },
         { value: PAYMENT_METHODS.E_WALLET, label: 'E-Wallet' },
@@ -200,7 +200,7 @@ export const DonationReceiptList = () => {
                                         className="w-full"
                                     />
                                 </div>
-                                <div className="w-48">
+                                <div className="w-54">
                                     <Select
                                         value={paymentMethodFilter}
                                         onChange={(e) => setPaymentMethodFilter(e.target.value)}

@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { reportsApi } from '../infrastructure/reports.api';
-import { GetIncomeSummaryParams } from '../domain/reports.types';
+import { reportApi } from '../infrastructure/report.api';
+import { GetIncomeSummaryParams } from '../domain/report.types';
 import { IncomeSummaryItem } from '@/src/shared/types/common.types';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
 
@@ -15,7 +15,7 @@ export const useIncomeSummary = () => {
         setIsLoading(true);
         setError(null);
         try {
-            const response = await reportsApi.getIncomeSummary(params);
+            const response = await reportApi.getIncomeSummary(params);
             setData(response.data);
         } catch (err) {
             setError(extractErrorMessage(err));

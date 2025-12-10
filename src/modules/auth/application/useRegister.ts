@@ -38,7 +38,6 @@ export const useRegister = () => {
                 name: user.name,
                 email: user.email,
                 role: user.role,
-                avatar: user.avatar,
             });
 
             // Redirect ke dashboard

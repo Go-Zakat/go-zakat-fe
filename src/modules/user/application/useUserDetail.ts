@@ -1,22 +1,23 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { reportApi } from '../infrastructure/report.api';
-import { MustahiqHistoryReport } from '@/src/shared/types/common.types';
+import { userApi } from '../infrastructure/user.api';
 import { extractErrorMessage } from '@/src/shared/api/errorHandler';
+import { User } from "@/src/shared/types/common.types";
 
-export const useMustahiqHistory = () => {
-    const [data, setData] = useState<MustahiqHistoryReport | null>(null);
+export const useUserDetail = () => {
+    const [data, setData] = useState<User | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
-    const getMustahiqHistory = useCallback(async (id: string) => {
+    const getUserById = useCallback(async (id: string) => {
         if (!id) return;
         setIsLoading(true);
         setError(null);
+
         try {
-            const response = await reportApi.getMustahiqHistory(id);
-            setData(response.data);
+            const res = await userApi.getById(id);
+            setData(res.data);
         } catch (err) {
             setError(extractErrorMessage(err));
         } finally {
@@ -25,9 +26,9 @@ export const useMustahiqHistory = () => {
     }, []);
 
     return {
-        getMustahiqHistory,
+        getUserById,
         data,
         isLoading,
-        error
+        error,
     };
 };

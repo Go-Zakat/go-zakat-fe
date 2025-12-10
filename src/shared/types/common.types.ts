@@ -28,11 +28,9 @@ export interface BaseEntityCamel {
  * User Type (dto.UserResponse)
  */
 export interface User extends BaseEntityCamel {
-    name: string;
     email: string;
+    name: string;
     role: Role;
-    avatar?: string | null;
-    is_active: boolean;
 }
 
 /**

@@ -50,7 +50,7 @@ export const DistributionList = () => {
 
     // Option Lists
     const sourceFundOptions = [
-        { value: '', label: 'Semua Sumber Dana' },
+        { value: '', label: 'Sumber Dana' },
         { value: 'zakat_fitrah', label: 'Zakat Fitrah' },
         { value: 'zakat_maal', label: 'Zakat Maal' },
         { value: 'infaq', label: 'Infaq' },

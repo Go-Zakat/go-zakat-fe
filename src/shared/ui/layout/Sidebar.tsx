@@ -217,11 +217,16 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                                             Butuh Bantuan?
                                         </h5>
                                         <p className="text-xs mb-3 truncate">
-                                            Hubungi tim support kami
+                                            Hubungi Muhammad Dila.
                                         </p>
-                                        <button className="cursor-pointer text-xs bg-blue-600/80 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700/80 transition-colors truncate">
-                                            Contact Support
-                                        </button>
+                                        <a
+                                            href="https://muhdila.com"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="cursor-pointer text-xs bg-blue-600/80 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700/80 transition-colors truncate inline-block text-center"
+                                        >
+                                            Hubungi Saya
+                                        </a>
                                     </div>
                                     <div className="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-500/20 rounded-full" />
                                 </motion.div>
