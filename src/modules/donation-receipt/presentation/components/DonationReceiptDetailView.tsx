@@ -204,7 +204,7 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                             <div>
                                 <p className="text-xs text-gray-500 dark:text-gray-500">Dibuat Pada</p>
                                 <p className="font-medium">
-                                    {new Date(donationReceipt.created_at).toLocaleDateString('id-ID', {
+                                    {new Date(donationReceipt.createdAt).toLocaleDateString('id-ID', {
                                         day: 'numeric',
                                         month: 'long',
                                         year: 'numeric',
