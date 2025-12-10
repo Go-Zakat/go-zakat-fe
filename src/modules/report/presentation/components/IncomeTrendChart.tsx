@@ -32,7 +32,7 @@ export const IncomeTrendChart = () => {
                 ) : (
                     <ResponsiveContainer width="100%" height="100%">
                         {/* PERBAIKAN 1: Tambahkan margin kiri agar label Y-Axis tidak tertimbun */}
-                        <AreaChart data={data} margin={{ top: 20, right: 10, left: 0, bottom: 0 }}>
+                        <AreaChart data={data} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorFitrah" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor={CHART_CONFIG.zakat_fitrah.color} stopOpacity={0.2} />

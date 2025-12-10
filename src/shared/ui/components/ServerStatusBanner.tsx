@@ -26,17 +26,15 @@ export const ServerStatusBanner = () => {
                             <div className="flex items-center gap-2 text-sm text-amber-800 dark:text-amber-200 font-medium">
                                 <Info className="w-4 h-4 text-amber-500 shrink-0" />
                                 <p className="text-center leading-snug">
-                                    Mohon maaf jika aplikasi terasa lambat, karena API menggunakan server gratis.
+                                    Mohon maaf jika aplikasi terasa lambat, karena API menggunakan server gratis
                                 </p>
+                                <button
+                                    onClick={() => setIsVisible(false)}
+                                    className="text-amber-500 hover:text-amber-700 dark:hover:text-amber-300 hover:bg-amber-100/50 dark:hover:bg-amber-900/30 transition-all duration-200"
+                                >
+                                    <X size={16} />
+                                </button>
                             </div>
-
-                            {/* Absolute Close Button */}
-                            <button
-                                onClick={() => setIsVisible(false)}
-                                className="absolute right-4 p-1 rounded-full text-amber-500 hover:text-amber-700 dark:hover:text-amber-300 hover:bg-amber-100/50 dark:hover:bg-amber-900/30 transition-all duration-200"
-                            >
-                                <X size={16} />
-                            </button>
                         </div>
                     </div>
                 </motion.div>
