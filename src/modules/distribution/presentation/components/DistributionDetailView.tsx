@@ -5,6 +5,8 @@ import { Edit, Calendar, Tag, FileText, Send, User } from 'lucide-react';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useDistributionDetailController } from '../hooks/useDistributionDetailController';
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { usePermission } from '@/src/shared/hooks/usePermission';
 
 interface DistributionDetailViewProps {
     id: string;
@@ -12,6 +14,7 @@ interface DistributionDetailViewProps {
 
 export const DistributionDetailView = ({ id }: DistributionDetailViewProps) => {
     const { distribution, isLoading, error } = useDistributionDetailController(id);
+    const { can } = usePermission();
 
     if (isLoading) {
         return (
@@ -74,15 +77,28 @@ export const DistributionDetailView = ({ id }: DistributionDetailViewProps) => {
                             {formatCurrency(distribution.total_amount)}
                         </h2>
                     </div>
-                    <Link href={`/distribution/${distribution.id}/edit`} className="w-full sm:w-auto">
-                        <Button className="w-full shadow-sm">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                        </Button>
-                    </Link>
+                    {can('update', 'distribution') ? (
+                        <Link href={`/distribution/${distribution.id}/edit`} className="w-full sm:w-auto">
+                            <Button className="w-full shadow-sm">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="w-full sm:w-auto cursor-not-allowed opacity-50">
+                            <Tooltip content="Anda tidak memiliki akses untuk fitur ini">
+                                <div>
+                                    <Button className="w-full shadow-sm" disabled>
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </div>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
 
-                <div className="px-6 space-y-8">
+                <div className="lg:px-6 space-y-8">
                     {/* Info Grid */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">

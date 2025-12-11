@@ -17,9 +17,13 @@ import { DateRangePicker } from '@/src/shared/ui/components/DateRangePicker';
 import { Pagination } from "@/src/shared/ui/components/Pagination";
 import { Table, Column } from "@/src/shared/ui/components/Table";
 import { useDistributionListController } from '../hooks/useDistributionListController';
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { ActionButton } from '@/src/shared/ui/components/ActionButton';
+import { usePermission } from '@/src/shared/hooks/usePermission';
 
 export const DistributionList = () => {
     const router = useRouter();
+    const { can } = usePermission();
 
     const {
         items,
@@ -128,33 +132,28 @@ export const DistributionList = () => {
             header: 'Aksi',
             cell: (item) => (
                 <div className="flex items-center justify-center gap-2">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue"
+                    <ActionButton
+                        icon={Edit}
                         onClick={() => router.push(`/distribution/${item.id}/edit`)}
+                        className="h-8 w-8 hover:bg-blue-50 dark:hover:bg-primary-blue/10 text-blue-600 dark:text-primary-blue"
                         title="Edit"
-                    >
-                        <Edit size={16} />
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
+                        disabled={!can('update', 'distribution')}
+                    />
+
+                    <ActionButton
+                        icon={Eye}
                         onClick={() => router.push(`/distribution/${item.id}`)}
+                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
                         title="Detail"
-                    >
-                        <Eye size={16} />
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
+                    />
+
+                    <ActionButton
+                        icon={Trash2}
                         onClick={() => handleOpenDeleteModal(item.id)}
+                        className="h-8 w-8 hover:bg-red-50 dark:hover:bg-red-900/20 text-red-600 dark:text-red-400"
                         title="Hapus"
-                    >
-                        <Trash2 size={16} />
-                    </Button>
+                        disabled={!can('delete', 'distribution')}
+                    />
                 </div>
             ),
             headerClassName: 'text-right',
@@ -193,14 +192,29 @@ export const DistributionList = () => {
                                         />
                                     </div>
                                 </div>
-                                <Button
-                                    onClick={() => router.push('/distribution/create')}
-                                    className="w-auto"
-                                    size="md"
-                                >
-                                    <Plus size={18} />
-                                    Buat Penyaluran
-                                </Button>
+                                {can('create', 'distribution') ? (
+                                    <Button
+                                        onClick={() => router.push('/distribution/create')}
+                                        className="w-auto"
+                                        size="md"
+                                    >
+                                        <Plus size={18} />
+                                        Buat Penyaluran
+                                    </Button>
+                                ) : (
+                                    <Tooltip content="Anda tidak memiliki akses untuk fitur ini">
+                                        <div className="cursor-not-allowed opacity-50">
+                                            <Button
+                                                className="w-auto"
+                                                size="md"
+                                                disabled={true}
+                                            >
+                                                <Plus size={18} />
+                                                Buat Penyaluran
+                                            </Button>
+                                        </div>
+                                    </Tooltip>
+                                )}
                             </div>
 
                             {/* Filters Row */}

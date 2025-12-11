@@ -6,12 +6,16 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useMustahiqDetailController } from "@/src/modules/mustahiq/presentation/hooks/useMustahiqDetailController";
 
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { usePermission } from '@/src/shared/hooks/usePermission';
+
 interface MustahiqDetailViewProps {
     id: string;
 }
 
 export const MustahiqDetailView = ({ id }: MustahiqDetailViewProps) => {
     const { mustahiq, isLoading, error } = useMustahiqDetailController(id);
+    const { can } = usePermission();
 
     if (isLoading) {
         return (
@@ -50,12 +54,26 @@ export const MustahiqDetailView = ({ id }: MustahiqDetailViewProps) => {
                             <p className="text-sm text-gray-500 dark:text-gray-400">ID: {mustahiq.id}</p>
                         </div>
                     </div>
-                    <Link href={`/mustahiq/${mustahiq.id}/edit`} className="w-full sm:w-auto">
-                        <Button className="w-full">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                        </Button>
-                    </Link>
+
+                    {can('update', 'mustahiq') ? (
+                        <Link href={`/mustahiq/${mustahiq.id}/edit`} className="w-full sm:w-auto">
+                            <Button className="w-full">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="w-full sm:w-auto cursor-not-allowed opacity-50">
+                            <Tooltip content="Anda tidak memiliki akses untuk fitur ini">
+                                <div>
+                                    <Button className="w-full" disabled>
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </div>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
 
                 <div className="space-y-6">
@@ -75,10 +93,10 @@ export const MustahiqDetailView = ({ id }: MustahiqDetailViewProps) => {
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
                                 <div className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
                                     <div className={`w-4 h-4 rounded-full ${mustahiq.status === 'active'
-                                            ? 'bg-green-500'
-                                            : mustahiq.status === 'inactive'
-                                                ? 'bg-red-500'
-                                                : 'bg-blue-500'
+                                        ? 'bg-green-500'
+                                        : mustahiq.status === 'inactive'
+                                            ? 'bg-red-500'
+                                            : 'bg-blue-500'
                                         }`} />
                                 </div>
                                 <div>

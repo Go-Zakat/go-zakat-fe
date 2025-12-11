@@ -56,6 +56,7 @@ export const useMustahiqUpdateController = (id: string) => {
             });
     };
 
+    // eslint-disable-next-line react-hooks/incompatible-library
     const asnafValue = watch('asnafID');
     const statusValue = watch('status');
 

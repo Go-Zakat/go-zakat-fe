@@ -17,6 +17,8 @@ import { clsx } from 'clsx';
 import { SidebarItem } from './SidebarItem';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { usePathname } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface SidebarProps {
     isMobileOpen: boolean;
@@ -30,6 +32,12 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
 
     // ini yang dipakai untuk nentuin apakah icon-only atau pakai label
     const isViewCollapsed = isCollapsed && !isHoverExpanded;
+    const pathname = usePathname();
+
+    // Close sidebar on route change (mobile)
+    useEffect(() => {
+        onMobileClose();
+    }, [pathname, onMobileClose]);
 
     const sidebarVariants = {
         expanded: { width: '16rem' }, // 64 * 0.25rem = 16rem
@@ -65,7 +73,7 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
                 className={clsx(
                     'fixed inset-y-0 left-0 z-40 h-screen overflow-visible bg-white dark:bg-dark-paper border-r border-gray-200 dark:border-dark-border',
                     'lg:static lg:inset-auto', // Reset fixed positioning on desktop
-                    'transform transition-transform duration-300 lg:transition-none', // ⬅️ tambahin ini
+                    'transform transition-transform duration-300 lg:transition-none',
                     isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0' // Handle mobile slide-in
                 )}
                 style={{
