@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useDonationReceiptList } from '../../application/useDonationReceiptList';
 import { useDonationReceiptDelete } from '../../application/useDonationReceiptDelete';
 import { useDebounce } from '@/src/shared/hooks/useDebounce';
 
 export const useDonationReceiptListController = () => {
     const { getDonationReceiptList, items, meta, isLoading } = useDonationReceiptList();
-    const { deleteDonationReceipt, isLoading: isDeleting } = useDonationReceiptDelete();
+    const { deleteDonationReceipt, isLoading: isDeleting, error: deleteError, resetError } = useDonationReceiptDelete();
 
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500);
@@ -56,6 +56,7 @@ export const useDonationReceiptListController = () => {
     };
 
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedId(id);
         setIsDeleteModalOpen(true);
     };
@@ -63,6 +64,7 @@ export const useDonationReceiptListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedId(null);
+        resetError();
     };
 
     const handleConfirmDelete = async () => {
@@ -86,6 +88,7 @@ export const useDonationReceiptListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,

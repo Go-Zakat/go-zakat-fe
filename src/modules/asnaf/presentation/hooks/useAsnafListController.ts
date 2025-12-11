@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState} from 'react';
+import { useEffect, useState } from 'react';
 import { useAsnafList } from '../../application/useAsnafList';
 import { useAsnafDelete } from '../../application/useAsnafDelete';
 import { useDebounce } from '@/src/shared/hooks/useDebounce';
 
 export const useAsnafListController = () => {
     const { getAsnafList, items, meta, isLoading } = useAsnafList();
-    const { deleteAsnaf, isLoading: isDeleting } = useAsnafDelete();
+    const { deleteAsnaf, isLoading: isDeleting, error: deleteError, resetError } = useAsnafDelete();
 
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500);
@@ -38,6 +38,7 @@ export const useAsnafListController = () => {
     };
 
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedAsnafId(id);
         setIsDeleteModalOpen(true);
     };
@@ -45,6 +46,7 @@ export const useAsnafListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedAsnafId(null);
+        resetError();
     };
 
     const handleConfirmDelete = async () => {
@@ -66,6 +68,7 @@ export const useAsnafListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,

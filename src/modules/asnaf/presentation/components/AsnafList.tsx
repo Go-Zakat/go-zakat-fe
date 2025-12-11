@@ -12,10 +12,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/src/shared/ui/components/Button';
 import { Input } from '@/src/shared/ui/components/Input';
 import { Modal } from '@/src/shared/ui/components/Modal';
-import { useAsnafListController } from '@/src/modules/asnaf/presentation/hooks/useAsnafListController';
 import { Tooltip } from '@/src/shared/ui/components/Tooltip';
-import {Pagination} from "@/src/shared/ui/components/Pagination";
-import {Column, Table} from "@/src/shared/ui/components/Table";
+import { useAsnafListController } from "@/src/modules/asnaf/presentation/hooks/useAsnafListController";
+import { Column, Table } from "@/src/shared/ui/components/Table";
+import { Pagination } from "@/src/shared/ui/components/Pagination";
 
 export const AsnafList = () => {
     const router = useRouter();
@@ -25,6 +25,7 @@ export const AsnafList = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,
@@ -86,9 +87,9 @@ export const AsnafList = () => {
                         <Edit size={16} />
                     </Button>
                     <Button variant="ghost" size="icon"
-                            className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
-                            title="Detail"
-                            onClick={() => router.push(`/asnaf/${item.id}`)}
+                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
+                        title="Detail"
+                        onClick={() => router.push(`/asnaf/${item.id}`)}
                     >
                         <Eye size={16} />
                     </Button>
@@ -173,6 +174,19 @@ export const AsnafList = () => {
                             Apakah Anda yakin ingin menghapus data asnaf ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
+
+                    {isDeleting && (
+                        <div className="flex items-center gap-3 text-blue-500 dark:text-blue-400 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p className="text-sm">Sedang menghapus...</p>
+                        </div>
+                    )}
+
+                    {!isDeleting && deleteError && (
+                        <div className="flex items-center gap-3 text-red-500 dark:text-red-400 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <AlertTriangle className="h-6 w-6 shrink-0" />
+                            <p className="text-sm">{deleteError}</p>
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-end gap-3 pt-2">
                         <Button

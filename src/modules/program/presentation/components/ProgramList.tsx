@@ -25,6 +25,7 @@ export const ProgramList = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         typeFilter,
         activeFilter,
@@ -71,7 +72,7 @@ export const ProgramList = () => {
                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${item.active
                     ? 'bg-green-100 dark:bg-green-900/20 text-green-700 dark:text-green-400'
                     : 'bg-red-100 dark:bg-red-900/20 text-red-700 dark:text-red-400'
-                }`}>
+                    }`}>
                     {item.active ? 'Aktif' : 'Tidak Aktif'}
                 </span>
             ),
@@ -98,9 +99,9 @@ export const ProgramList = () => {
                         <Edit size={16} />
                     </Button>
                     <Button variant="ghost" size="icon"
-                            className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
-                            title="Detail"
-                            onClick={() => router.push(`/program/${item.id}`)}
+                        className="h-8 w-8 hover:bg-gray-100 dark:hover:bg-dark-border text-gray-600 dark:text-text-secondary"
+                        title="Detail"
+                        onClick={() => router.push(`/program/${item.id}`)}
                     >
                         <Eye size={16} />
                     </Button>
@@ -211,6 +212,19 @@ export const ProgramList = () => {
                             Apakah Anda yakin ingin menghapus program ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
+
+                    {isDeleting && (
+                        <div className="flex items-center gap-3 text-blue-500 dark:text-blue-400 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p className="text-sm">Sedang menghapus...</p>
+                        </div>
+                    )}
+
+                    {!isDeleting && deleteError && (
+                        <div className="flex items-center gap-3 text-red-500 dark:text-red-400 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <AlertTriangle className="h-6 w-6 shrink-0" />
+                            <p className="text-sm">{deleteError}</p>
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-end gap-3 pt-2">
                         <Button

@@ -9,7 +9,7 @@ import { useDebounce } from '@/src/shared/hooks/useDebounce';
 export const useDistributionListController = () => {
     // Hooks Application Layer
     const { getDistributionList, items, meta, isLoading } = useDistributionList();
-    const { deleteDistribution, isLoading: isDeleting } = useDistributionDelete();
+    const { deleteDistribution, isLoading: isDeleting, error: deleteError, resetError } = useDistributionDelete();
 
     // Restore: Fetch Program List untuk Filter Dropdown
     const { getProgramList, items: programList } = useProgramList();
@@ -66,6 +66,7 @@ export const useDistributionListController = () => {
     };
 
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedId(id);
         setIsDeleteModalOpen(true);
     };
@@ -73,6 +74,7 @@ export const useDistributionListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedId(null);
+        resetError();
     };
 
     const handleConfirmDelete = async () => {
@@ -98,6 +100,7 @@ export const useDistributionListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         programList, // Restore: Untuk dropdown filter program
 
         // Filter States

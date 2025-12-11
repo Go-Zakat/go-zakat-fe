@@ -26,6 +26,7 @@ export const DistributionList = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,
@@ -259,6 +260,19 @@ export const DistributionList = () => {
                             Apakah Anda yakin ingin menghapus data penyaluran ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
+
+                    {isDeleting && (
+                        <div className="flex items-center gap-3 text-blue-500 dark:text-blue-400 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p className="text-sm">Sedang menghapus...</p>
+                        </div>
+                    )}
+
+                    {!isDeleting && deleteError && (
+                        <div className="flex items-center gap-3 text-red-500 dark:text-red-400 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <AlertTriangle className="h-6 w-6 shrink-0" />
+                            <p className="text-sm">{deleteError}</p>
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-end gap-3 pt-2">
                         <Button

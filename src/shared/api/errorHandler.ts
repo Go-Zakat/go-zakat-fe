@@ -13,6 +13,7 @@ export const extractErrorMessage = (error: unknown): string => {
     const axiosError = error as AxiosError<{
         message?: string;
         errors?: Record<string, string[]>;
+        error?: string;
     }>;
 
     // Jika ada response dari server
@@ -20,7 +21,8 @@ export const extractErrorMessage = (error: unknown): string => {
         const { data, status } = axiosError.response;
 
         // Jika ada pesan error dari server
-        if (data?.message) {
+        // Kita skip untuk status 400 sesuai request, agar pengguna tidak mendapat pesan technical (SQL error dll)
+        if (data?.message && status !== 400) {
             return data.message;
         }
 
@@ -32,10 +34,16 @@ export const extractErrorMessage = (error: unknown): string => {
             }
         }
 
+        // Fallback untuk format error { error: "forbidden", message: "..." } atau { error: "message" }
+        // Kadang error message ada di property 'error' jika strings
+        if (typeof data?.error === 'string' && status !== 400) {
+            return data.error;
+        }
+
         // Pesan berdasarkan status code
         switch (status) {
             case 400:
-                return 'Permintaan tidak valid';
+                return 'Permintaan tidak dapat diproses';
             case 401:
                 return 'Anda harus login terlebih dahulu';
             case 403:

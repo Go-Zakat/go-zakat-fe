@@ -29,9 +29,14 @@ export const useProgramDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteProgram,
         isLoading,
         error,
+        resetError
     };
 };

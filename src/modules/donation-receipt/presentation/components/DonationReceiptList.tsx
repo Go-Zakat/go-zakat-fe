@@ -16,8 +16,8 @@ import { Modal } from '@/src/shared/ui/components/Modal';
 import { DateRangePicker } from '@/src/shared/ui/components/DateRangePicker';
 import { useDonationReceiptListController } from '../hooks/useDonationReceiptListController';
 import { FUND_TYPES, PAYMENT_METHODS } from '@/src/shared/config/constants';
-import {Pagination} from "@/src/shared/ui/components/Pagination";
-import {Column, Table} from "@/src/shared/ui/components/Table";
+import { Pagination } from "@/src/shared/ui/components/Pagination";
+import { Column, Table } from "@/src/shared/ui/components/Table";
 
 const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('id-ID', {
@@ -43,6 +43,7 @@ export const DonationReceiptList = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,
@@ -247,6 +248,19 @@ export const DonationReceiptList = () => {
                             Apakah Anda yakin ingin menghapus data penerimaan donasi ini? Data yang dihapus tidak dapat dikembalikan.
                         </p>
                     </div>
+
+                    {isDeleting && (
+                        <div className="flex items-center gap-3 text-blue-500 dark:text-blue-400 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                            <p className="text-sm">Sedang menghapus...</p>
+                        </div>
+                    )}
+
+                    {!isDeleting && deleteError && (
+                        <div className="flex items-center gap-3 text-red-500 dark:text-red-400 p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
+                            <AlertTriangle className="h-6 w-6 shrink-0" />
+                            <p className="text-sm">{deleteError}</p>
+                        </div>
+                    )}
 
                     <div className="flex items-center justify-end gap-3 pt-2">
                         <Button

@@ -29,9 +29,14 @@ export const useMuzakkiDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteMuzakki,
         isLoading,
         error,
+        resetError
     };
 };

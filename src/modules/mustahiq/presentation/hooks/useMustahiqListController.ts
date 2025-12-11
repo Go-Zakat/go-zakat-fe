@@ -10,7 +10,7 @@ export const useMustahiqListController = () => {
     // Hook untuk mengambil data list mustahiq
     const { getMustahiqList, items, meta, isLoading } = useMustahiqList();
     // Hook untuk menghapus mustahiq
-    const { deleteMustahiq, isLoading: isDeleting } = useMustahiqDelete();
+    const { deleteMustahiq, isLoading: isDeleting, error: deleteError, resetError } = useMustahiqDelete();
 
     // Hook untuk mengambil data list asnaf (untuk filter)
     const { getAsnafList, items: asnafList } = useAsnafList();
@@ -62,6 +62,7 @@ export const useMustahiqListController = () => {
 
     // Fungsi untuk membuka modal konfirmasi hapus
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedMustahiqId(id);
         setIsDeleteModalOpen(true);
     };
@@ -70,6 +71,7 @@ export const useMustahiqListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedMustahiqId(null);
+        resetError();
     };
 
     // Fungsi untuk melakukan penghapusan data
@@ -96,6 +98,7 @@ export const useMustahiqListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,

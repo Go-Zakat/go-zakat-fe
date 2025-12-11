@@ -28,9 +28,14 @@ export const useAsnafDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteAsnaf,
         isLoading,
         error,
+        resetError
     };
 };

@@ -26,9 +26,14 @@ export const useDonationReceiptDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteDonationReceipt,
         isLoading,
         error,
+        resetError
     };
 };

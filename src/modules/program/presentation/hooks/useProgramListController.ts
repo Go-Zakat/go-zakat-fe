@@ -7,7 +7,7 @@ import { useDebounce } from '@/src/shared/hooks/useDebounce';
 
 export const useProgramListController = () => {
     const { getProgramList, items, meta, isLoading } = useProgramList();
-    const { deleteProgram, isLoading: isDeleting } = useProgramDelete();
+    const { deleteProgram, isLoading: isDeleting, error: deleteError, resetError } = useProgramDelete();
 
     const [search, setSearch] = useState('');
     const debouncedSearch = useDebounce(search, 500);
@@ -69,6 +69,7 @@ export const useProgramListController = () => {
     };
 
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedProgramId(id);
         setIsDeleteModalOpen(true);
     };
@@ -76,6 +77,7 @@ export const useProgramListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedProgramId(null);
+        resetError();
     };
 
     const handleConfirmDelete = async () => {
@@ -99,6 +101,7 @@ export const useProgramListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         typeFilter,
         activeFilter,

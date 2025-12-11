@@ -28,9 +28,14 @@ export const useMustahiqDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteMustahiq,
         isLoading,
         error,
+        resetError
     };
 };

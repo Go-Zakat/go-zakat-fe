@@ -9,7 +9,7 @@ export const useMuzakkiListController = () => {
     // Hook untuk mengambil data list muzakki
     const { getMuzakkiList, items, meta, isLoading } = useMuzakkiList();
     // Hook untuk menghapus muzakki
-    const { deleteMuzakki, isLoading: isDeleting } = useMuzakkiDelete();
+    const { deleteMuzakki, isLoading: isDeleting, error: deleteError, resetError } = useMuzakkiDelete();
 
     // State untuk menyimpan keyword pencarian
     const [search, setSearch] = useState('');
@@ -48,6 +48,7 @@ export const useMuzakkiListController = () => {
 
     // Fungsi untuk membuka modal konfirmasi hapus
     const handleOpenDeleteModal = (id: string) => {
+        resetError();
         setSelectedMuzakkiId(id);
         setIsDeleteModalOpen(true);
     };
@@ -56,6 +57,7 @@ export const useMuzakkiListController = () => {
     const handleCloseDeleteModal = () => {
         setIsDeleteModalOpen(false);
         setSelectedMuzakkiId(null);
+        resetError();
     };
 
     // Fungsi untuk melakukan penghapusan data
@@ -80,6 +82,7 @@ export const useMuzakkiListController = () => {
         meta,
         isLoading,
         isDeleting,
+        deleteError,
         search,
         page,
         perPage,

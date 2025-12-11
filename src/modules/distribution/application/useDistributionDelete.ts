@@ -28,9 +28,14 @@ export const useDistributionDelete = () => {
         }
     }, []);
 
+    const resetError = useCallback(() => {
+        setError(null);
+    }, []);
+
     return {
         deleteDistribution,
         isLoading,
         error,
+        resetError
     };
 };
