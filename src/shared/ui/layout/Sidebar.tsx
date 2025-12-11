@@ -36,8 +36,11 @@ export function Sidebar({ isMobileOpen, onMobileClose, isCollapsed }: SidebarPro
 
     // Close sidebar on route change (mobile)
     useEffect(() => {
-        onMobileClose();
-    }, [pathname, onMobileClose]);
+        if (isMobileOpen) {
+            onMobileClose();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pathname]);
 
     const sidebarVariants = {
         expanded: { width: '16rem' }, // 64 * 0.25rem = 16rem
