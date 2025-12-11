@@ -23,7 +23,10 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <head>
                 <title>Move…</title>
-                <link rel="icon" href="/go-zakat-fe/icons/Mosque.svg" type="image/png" sizes="22x22"/>
+
+                {/* TODO Gunakan href="icons/Mosque.svg" jika masih tahap dev */}
+                <link rel="icon" href="/go-zakat/icons/Mosque.svg" type="image/png" sizes="22x22"/>
+
             </head>
             <body className={`${outfit.variable} antialiased `}>
                 <ThemeProvider>
