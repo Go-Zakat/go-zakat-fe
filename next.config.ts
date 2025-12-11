@@ -3,28 +3,26 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
     reactStrictMode: true,
 
-    // TODO Hapus basePath dan redircts jika dalam proses dev
+    // TODO Hapus basePath dan redirects jika dalam proses dev (lokal)
 
-    // Basepath tetap wajib ada
+    // Base path tetap ada agar aplikasi berjalan di /go-zakat
     basePath: '/go-zakat',
 
     async redirects() {
         return [
-            // ATURAN 1: Menangani halaman root kosong (https://go-zakat.vercel.app/)
+            // 1. Menangani halaman root kosong (https://go-zakat.vercel.app/)
             {
                 source: '/',
                 destination: 'https://www.muhdila.com/go-zakat',
-                basePath: false, // Abaikan /go-zakat untuk rule ini
+                basePath: false,
                 permanent: false,
             },
-            // ATURAN 2: Menangani semua halaman dalam (https://go-zakat.vercel.app/go-zakat-fe/...)
+            // 2. Menangani semua halaman dalam (misal: /dashboard, /login)
             {
-                source: '/:path*', // Tangkap semua halaman
-                destination: 'https://www.muhdila.com/go-zakat/:path*', // Lempar ke domain utama
+                source: '/:path*',
+                destination: 'https://www.muhdila.com/go-zakat/:path*',
+                basePath: false,
                 permanent: false,
-                // KUNCI AJAIBNYA DI SINI:
-                // Rule ini HANYA jalan kalau header 'x-forwarded-host' TIDAK ADA.
-                // (Artinya akses langsung, bukan via rewrite muhdila.com)
                 missing: [
                     {
                         type: 'header',
