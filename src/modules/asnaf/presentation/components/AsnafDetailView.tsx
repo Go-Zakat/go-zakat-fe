@@ -6,12 +6,16 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useAsnafDetailController } from "@/src/modules/asnaf/presentation/hooks/useAsnafDetailController";
 
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { usePermission } from '@/src/shared/hooks/usePermission';
+
 interface AsnafDetailViewProps {
     id: string;
 }
 
 export const AsnafDetailView = ({ id }: AsnafDetailViewProps) => {
     const { asnaf, isLoading, error } = useAsnafDetailController(id);
+    const { can } = usePermission();
 
     if (isLoading) {
         return (
@@ -50,12 +54,26 @@ export const AsnafDetailView = ({ id }: AsnafDetailViewProps) => {
                             <p className="text-sm text-gray-500 dark:text-gray-400">ID: {asnaf.id}</p>
                         </div>
                     </div>
-                    <Link href={`/asnaf/${asnaf.id}/edit`} className="w-full sm:w-auto">
-                        <Button className="w-full">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                        </Button>
-                    </Link>
+
+                    {can('update', 'asnaf') ? (
+                        <Link href={`/asnaf/${asnaf.id}/edit`} className="w-full sm:w-auto">
+                            <Button className="w-full">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="w-full sm:w-auto cursor-not-allowed opacity-50">
+                            <Tooltip content="Anda tidak memiliki akses untuk fitur ini" className="min-w-[100px]">
+                                <div>
+                                    <Button className="w-full" disabled>
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </div>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
 
                 <div className="space-y-6">

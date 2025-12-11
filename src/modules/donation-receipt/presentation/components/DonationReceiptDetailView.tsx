@@ -6,6 +6,8 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useDonationReceiptDetailController } from '../hooks/useDonationReceiptDetailController';
 import { PAYMENT_METHODS } from '@/src/shared/config/constants';
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { usePermission } from '@/src/shared/hooks/usePermission';
 
 interface DonationReceiptDetailViewProps {
     id: string;
@@ -27,6 +29,7 @@ const getPaymentMethodLabel = (method: string | undefined) => {
 
 export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps) => {
     const { donationReceipt, isLoading, error } = useDonationReceiptDetailController(id);
+    const { can } = usePermission();
 
     if (isLoading) {
         return (
@@ -84,15 +87,28 @@ export const DonationReceiptDetailView = ({ id }: DonationReceiptDetailViewProps
                             {formatCurrency(donationReceipt.total_amount)}
                         </h2>
                     </div>
-                    <Link href={`/donation-receipt/${donationReceipt.id}/edit`} className="w-full sm:w-auto">
-                        <Button className="w-full">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                        </Button>
-                    </Link>
+                    {can('update', 'donation_receipt') ? (
+                        <Link href={`/donation-receipt/${donationReceipt.id}/edit`} className="w-full sm:w-auto">
+                            <Button className="w-full">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="w-full sm:w-auto cursor-not-allowed opacity-50">
+                            <Tooltip content="Anda tidak memiliki akses untuk fitur ini">
+                                <div>
+                                    <Button className="w-full" disabled>
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </div>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
 
-                <div className="px-6 space-y-8">
+                <div className="lg:px-6 space-y-8">
                     {/* General Info */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">

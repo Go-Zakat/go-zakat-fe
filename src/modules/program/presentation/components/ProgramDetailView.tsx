@@ -6,12 +6,16 @@ import { Button } from '@/src/shared/ui/components/Button';
 import { Card } from '@/src/shared/ui/components/Card';
 import { useProgramDetailController } from '../hooks/useProgramDetailController';
 
+import { Tooltip } from '@/src/shared/ui/components/Tooltip';
+import { usePermission } from '@/src/shared/hooks/usePermission';
+
 interface ProgramDetailViewProps {
     id: string;
 }
 
 export const ProgramDetailView = ({ id }: ProgramDetailViewProps) => {
     const { program, isLoading, error } = useProgramDetailController(id);
+    const { can } = usePermission();
 
     if (isLoading) {
         return (
@@ -51,12 +55,26 @@ export const ProgramDetailView = ({ id }: ProgramDetailViewProps) => {
                             <p className="text-sm text-gray-500 dark:text-gray-400">ID: {program.id}</p>
                         </div>
                     </div>
-                    <Link href={`/program/${program.id}/edit`} className="w-full sm:w-auto">
-                        <Button className="w-full">
-                            <Edit className="w-4 h-4 mr-2" />
-                            Edit
-                        </Button>
-                    </Link>
+
+                    {can('update', 'program') ? (
+                        <Link href={`/program/${program.id}/edit`} className="w-full sm:w-auto">
+                            <Button className="w-full">
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit
+                            </Button>
+                        </Link>
+                    ) : (
+                        <div className="w-full sm:w-auto cursor-not-allowed opacity-50">
+                            <Tooltip content="Anda tidak memiliki akses untuk fitur ini">
+                                <div>
+                                    <Button className="w-full" disabled>
+                                        <Edit className="w-4 h-4 mr-2" />
+                                        Edit
+                                    </Button>
+                                </div>
+                            </Tooltip>
+                        </div>
+                    )}
                 </div>
 
                 <div className="space-y-6">
@@ -78,11 +96,10 @@ export const ProgramDetailView = ({ id }: ProgramDetailViewProps) => {
                         {/* Column 2: Status */}
                         <div className="space-y-4">
                             <div className="flex items-center gap-3 text-sm text-gray-600 dark:text-gray-400">
-                                <div className={`p-2 rounded-lg ${
-                                    program.active
+                                <div className={`p-2 rounded-lg ${program.active
                                         ? 'bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400'
                                         : 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400'
-                                }`}>
+                                    }`}>
                                     {program.active ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                                 </div>
                                 <div>
