@@ -20,6 +20,7 @@ import { useDistributionListController } from '../hooks/useDistributionListContr
 import { Tooltip } from '@/src/shared/ui/components/Tooltip';
 import { ActionButton } from '@/src/shared/ui/components/ActionButton';
 import { usePermission } from '@/src/shared/hooks/usePermission';
+import React from "react";
 
 export const DistributionList = () => {
     const router = useRouter();
@@ -113,9 +114,15 @@ export const DistributionList = () => {
             header: 'Catatan',
             accessorKey: 'notes',
             cell: (item) => (
-                <span className="text-sm text-gray-500 dark:text-text-secondary truncate block max-w-[200px]">
-                    {item.notes || '-'}
-                </span>
+                <div className="text-sm text-gray-600 dark:text-text-secondary w-full truncate">
+                    {item.notes ? (
+                        <Tooltip content={<p>{item.notes}</p>}>
+                                    <span className="cursor-help border-b border-dashed border-gray-300 dark:border-gray-600">
+                                        {item.notes}
+                                    </span>
+                        </Tooltip>
+                    ) : '-'}
+                </div>
             ),
             className: 'w-[20%]'
         },
